@@ -1,0 +1,81 @@
+{
+  "dpp_version":   1,
+  "file_version": 1,
+  "file_mtime":    "Mon Aug 25 19:23:31 PDT 2014",
+  "file_type":    "ecu",
+  "uuid":         "3CD3AE6B-7826-4884-AC6A-A88FCF682B85",
+  "address":       "0x5B",
+  "family":       "IHKA",
+  "name":         "E46 Auto Climate Control",
+  "parent_id":    "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "matches": {
+    "hardware_number": "0x22",
+    "software_number": "0x05",
+    "coding_index":    "0x03"
+  },
+  "operations": {
+    "status":  {
+      "uuid":     "43CE7889-9A3E-4779-BD50-AC687C286046",
+      "command":  ["0x0B", "0x03"],
+      "results": {
+        "fan_control": {
+          "uuid":       "965E012A-0477-4475-9739-3DD6D22830DA",
+          "type":        "boolean",
+          "display":     "string",
+          "start_pos":   2,
+          "length":      1,
+          "mask":       "0x10",
+          "yes_value":  "manual",
+          "no_value":   "auto"
+        },
+        "fan_speed": {
+          "uuid":       "F06FD78E-3228-4DE6-8924-96608B77969F",
+          "type":        "byte",
+          "display":     "raw",
+          "start_pos":   4,
+          "length":      1,
+          "mask":        null
+        },
+        "front_defrost": {
+          "uuid":       "E640C8C9-3B42-483D-9BA1-13B52BF639E3",
+          "type":        "boolean",
+          "display":     "string",
+          "start_pos":   2,
+          "length":      1,
+          "mask":       "0x08",
+          "yes_value":  "on",
+          "no_value":   "off"
+        },
+        "air_conditioning": {
+          "uuid":       "E5AEA135-01BE-4016-98BA-282A0D54E589",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x80",
+          "yes_value":  "on",
+          "no_value":   "off"
+        },
+        "rear_defroster": {
+          "uuid":       "E061817B-4C52-42EC-9FE8-37ABEE0A2B9F",
+          "type":        "boolean",
+          "display":     "string",
+          "start_pos":   1,
+          "length":      1,
+          "mask":       "0x40",
+          "yes_value":  "on",
+          "no_value":   "off"
+        },
+        "temperature": {
+          "uuid":       "CB9C34EE-0D24-456F-A2D0-D508D9F845C6",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  3,
+          "length":     1,
+          "factor_a":   0.5,
+          "factor_b":   -13.5
+        }
+      }
+    }
+  }
+}

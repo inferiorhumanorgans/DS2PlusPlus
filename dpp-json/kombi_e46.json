@@ -1,0 +1,18 @@
+{
+	"dpp_version": 	1,
+	"file_version": 1,
+	"file_mtime":		"Mon Aug 25 19:23:31 PDT 2014",
+	"file_type":    "ecu",
+	"uuid":   			"D077EE50-034D-4DA7-B106-18D23AA9E6CB",
+	"address": 			"0x80",
+	"family": 			"KOMBI",
+	"name":   			"E46 Instrument Cluster",
+	"parent_id":		"B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+	"matches": {
+		"hardware_number": "0x10",
+		"software_number": "0x20",
+		"coding_index": 	 "0x04"
+	},
+	"operations": {
+	}
+}

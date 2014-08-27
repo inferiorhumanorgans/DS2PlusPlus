@@ -1,0 +1,34 @@
+{
+  "dpp_version":  1,
+  "file_version": 1,
+  "file_mtime":   "Thu Aug 28 21:43:39 PDT 2014",
+  "file_type":    "ecu",
+  "uuid":         "67FEBF5E-0109-42B9-83C8-2B68D2CAE2FD",
+  "address":      "0x00",
+  "family":       "ZKE",
+  "name":         "Central Body Electronics",
+  "parent_id":    "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "matches": {
+    "hardware_number": "0x44",
+    "software_number": "0x43",
+    "coding_index":    "0x01"
+  },
+  "operations": {
+    "identify":  {
+      "uuid":     "887E29A3-D2B9-4466-BE43-12665AF6E55A",
+      "parent":   "023A31A5-AEA7-48D5-955D-40096C55C1C5",
+      "results": {
+        "variant": {
+          "uuid":       "76AB946C-6FFD-4DD8-BA5E-168F1840396B",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  5,
+          "length":     1,
+          "mask":       null,
+          "factor_a":   null,
+          "factor_b":   null
+        }
+      }
+    }
+  }
+}

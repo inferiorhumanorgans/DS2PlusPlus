@@ -1,0 +1,119 @@
+{
+	"dpp_version": 	1,
+	"file_version": 1,
+	"file_mtime":   "Sun Aug 24 22:42:59 PDT 2014",
+	"file_type":    "ecu",
+	"uuid":   			"F5C34396-809C-44C0-868E-49500414BEAA",
+	"address": 			"0x12",
+	"family": 			"DME",
+	"name":   			"MS 42.0",
+	"parent_id":		"B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+	"matches": {
+		"part_number": 		 7500255,
+		"hardware_number": "0x15",
+		"software_number": "0xE3",
+		"coding_index": 	 "0x00"
+	},
+	"operations": {
+		"identify":	{
+			"uuid": 		"B8D66536-17F0-4494-91C5-B1817C548454",
+			"command":	["0x00"],
+			"results": {
+				"part_number": {
+					"uuid": 			"00AD6856-1C38-4EAE-9E87-C319CFD4071E",
+					"type": 	 		"string",
+					"display": 	 	"int",
+					"start_pos": 	1,
+					"length":			7,
+					"mask": 			null,
+					"factor_a":		null,
+					"factor_b": 	null
+				},
+				"hardware_number": {
+					"uuid": 			"E6B05454-6ECE-418C-9A33-6CFB00BFF239",
+					"type": 	 		"string",
+					"display": 	 	"hex_string",
+					"start_pos": 	8,
+					"length":			2,
+					"mask": 			null,
+					"factor_a":		null,
+					"factor_b": 	null
+				},
+				"coding_index": {
+					"uuid": 			"FABDC1F7-5645-40B8-9D71-0F536F4DA97A",
+					"type": 	 		"string",
+					"display": 	 	"hex_string",
+					"start_pos": 	10,
+					"length":			2,
+					"mask": 			null,
+					"factor_a":		null,
+					"factor_b": 	null
+				},
+				"diag_index": {
+					"uuid": 			"B7809A77-7BE5-4B52-968A-F7831FCA9E19",
+					"type": 	 		"string",
+					"display": 	 	"hex_string",
+					"start_pos": 	12,
+					"length":			2,
+					"mask": 			null,
+					"factor_a":		null,
+					"factor_b": 	null
+				},
+				"bus_index": {
+					"uuid": 			"A2E55EC3-F12B-4606-9315-0900943C75B1",
+					"type": 	 		"string",
+					"display": 	 	"hex_string",
+					"start_pos": 	14,
+					"length":			2,
+					"mask": 			null,
+					"factor_a":		null,
+					"factor_b": 	null
+				},
+				"mfr_week": {
+					"uuid": 			"665C0F3F-50BA-43B8-9826-BF68836456E4",
+					"type": 	 		"string",
+					"display": 	 	"int",
+					"start_pos": 	16,
+					"length":			2,
+					"mask": 			null,
+					"factor_a":		null,
+					"factor_b": 	null
+				},
+				"mfr_year": {
+					"uuid": 			"0E0B6392-CF6E-4777-9D07-59E2971A10E8",
+					"type": 	 		"string",
+					"display": 	 	"int",
+					"start_pos": 	12,
+					"length":			2,
+					"mask": 			null,
+					"factor_a":		null,
+					"factor_b": 	null
+				},
+				"supplier": {
+					"uuid": 			"E08EBE54-80FF-42F5-847E-A4EDF5A76A93",
+					"type": 	 		"string",
+					"display": 	 	"string",
+					"start_pos": 	20,
+					"length":			6,
+					"mask": 			null,
+					"factor_a":		null,
+					"factor_b": 	null,
+					"lookup":			"ecu_suppliers"
+				},
+				"software_number": {
+					"uuid": 			"FBDFE1BC-4F5C-4C07-BFB2-01ABBBF57400",
+					"type": 	 		"string",
+					"display": 	 	"hex_string",
+					"start_pos": 	26,
+					"length":			2,
+					"mask": 			null,
+					"factor_a":		null,
+					"factor_b": 	null
+				}
+			}
+		}
+	}
+}
+
+---
+DME at 
