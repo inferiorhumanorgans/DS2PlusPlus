@@ -236,7 +236,7 @@ namespace DS2PlusPlus {
         return _operations;
     }
 
-    const QHash<QString, QVariant> ControlUnit::matches() const
+    const QHash<QString, QVariant> ControlUnit::matchCriteria() const
     {
         return _matches;
     }

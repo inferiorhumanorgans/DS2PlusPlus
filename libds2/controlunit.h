@@ -97,7 +97,11 @@ namespace DS2PlusPlus {
 
         QHash<QString, OperationPtr> operations() const;
 
-        const QHash<QString, QVariant> matches() const;
+        /*!
+         * \brief matches
+         * \return Returns a list of match criteria for this ECU
+         */
+        const QHash<QString, QVariant> matchCriteria() const;
 
     protected:
         /*!

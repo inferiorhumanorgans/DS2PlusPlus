@@ -308,7 +308,7 @@ namespace DS2PlusPlus {
         for (moduleIt = modules.begin(); moduleIt != modules.end(); ++moduleIt) {
             ControlUnitPtr ecu(moduleIt.value());
 
-            if (ecu->matches().empty()) {
+            if (ecu->matchCriteria().empty()) {
                 continue;
             }
 
@@ -319,7 +319,7 @@ namespace DS2PlusPlus {
 
             int success = 0;
             QHash<QString, QVariant>::ConstIterator matchIt;
-            for (matchIt = ecu->matches().begin(); matchIt != ecu->matches().end(); ++matchIt) {
+            for (matchIt = ecu->matchCriteria().begin(); matchIt != ecu->matchCriteria().end(); ++matchIt) {
                 QVariant a = matchIt.value();
                 QVariant b = response.value(matchIt.key());
                 if (getenv("DPP_TRACE")) {
@@ -328,9 +328,9 @@ namespace DS2PlusPlus {
                 success += (a == b) ? 1 : -1;
             }
             if (getenv("DPP_TRACE")) {
-                qDebug() << "\tFound:" << moduleIt.key()  << ": " << ecu->name() << " success: " << success << " matches: " << ecu->matches().count();
+                qDebug() << "\tFound:" << moduleIt.key()  << ": " << ecu->name() << " success: " << success << " matches: " << ecu->matchCriteria().count();
             }
-            if (success == ecu->matches().count()) {
+            if (success == ecu->matchCriteria().count()) {
                 ret = ecu;
                 modules.remove(moduleIt.key());
                 break;
