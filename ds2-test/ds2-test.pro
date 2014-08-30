@@ -22,6 +22,7 @@ SOURCES += \
     ihka46_ident.cpp \
     kombi46_ident.cpp \
     dme_ms420_ident.cpp \
+    dme_ms420_status.cpp \
     zke5_ident.cpp \
     radio_cd53_ident.cpp
 
@@ -33,5 +34,6 @@ HEADERS += \
     ihka46_ident.h \
     kombi46_ident.h \
     dme_ms420_ident.h \
+    dme_ms420_status.h \
     zke5_ident.h \
     radio_cd53_ident.h

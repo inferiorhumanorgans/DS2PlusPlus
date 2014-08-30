@@ -111,6 +111,65 @@
           "factor_b":   null
         }
       }
+    },
+    "status":  {
+      "uuid":     "0830569F-964E-440F-8145-344929B790FE",
+      "command":  ["0x0b", "0x03"],
+      "results": {
+        "intake_temp": {
+          "uuid":       "D40F37F8-2D48-4D2D-9487-C6457695A4B2",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  8,
+          "length":     1,
+          "factor_a":   0.75,
+          "factor_b":   -48
+        },
+        "coolant_temp": {
+          "uuid":       "B9BB4B8F-2E46-48A1-85E2-76D77D037F21",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  9,
+          "length":     1,
+          "factor_a":   0.75,
+          "factor_b":   -48
+        },
+        "oil_temp": {
+          "uuid":       "24BA89AE-4086-4AC4-9D5C-0A542555F998",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  10,
+          "length":     1,
+          "factor_a":   0.7961,
+          "factor_b":   -48
+        },
+        "coolant_outlet_temp": {
+          "uuid":       "815020E6-FCDB-4D9A-9795-94F397850D76",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  11,
+          "length":     1,
+          "factor_a":   0.75,
+          "factor_b":   -48
+        },
+        "ignition_deg_kw": {
+          "uuid":       "13ADB316-5D80-43FB-A730-F01B14BD444B",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  12,
+          "length":     1,
+          "factor_a":   0.375,
+          "factor_b":   -60
+        },
+        "battery_voltage": {
+          "uuid":       "7ADCE62E-816B-4CB3-9566-77A74C37FFA5",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  21,
+          "length":     1,
+          "factor_a":   0.10196
+        }
+      }
     }
   }
 }
