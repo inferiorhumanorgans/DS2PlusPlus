@@ -32,11 +32,11 @@ namespace DS2PlusPlus {
         void setMask(const QString &aMask);
         int mask() const;
 
-        void setFactorA(float aFactor);
-        float factorA() const;
+        void setFactorA(double aFactor);
+        double factorA() const;
 
-        void setFactorB(float aFactor);
-        float factorB() const;
+        void setFactorB(double aFactor);
+        double factorB() const;
 
         void setYesValue(const QString &aString);
         const QString yesValue() const;

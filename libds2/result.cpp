@@ -86,22 +86,22 @@ namespace DS2PlusPlus {
         return _mask;
     }
 
-    void Result::setFactorA(float aFactor)
+    void Result::setFactorA(double aFactor)
     {
         _factorA = aFactor;
     }
 
-    float Result::factorA() const
+    double Result::factorA() const
     {
         return _factorA;
     }
 
-    void Result::setFactorB(float aFactor)
+    void Result::setFactorB(double aFactor)
     {
         _factorB = aFactor;
     }
 
-    float Result::factorB() const
+    double Result::factorB() const
     {
         return _factorB;
     }

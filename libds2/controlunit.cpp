@@ -114,8 +114,8 @@ namespace DS2PlusPlus {
                         result.setStartPosition(resultRecord.value(resultRecord.indexOf("start_pos")).toInt());
                         result.setLength(resultRecord.value(resultRecord.indexOf("length")).toInt());
                         result.setMask(resultRecord.value(resultRecord.indexOf("mask")).toString());
-                        result.setFactorA(resultRecord.value(resultRecord.indexOf("factor_a")).toFloat());
-                        result.setFactorB(resultRecord.value(resultRecord.indexOf("factor_b")).toFloat());
+                        result.setFactorA(resultRecord.value(resultRecord.indexOf("factor_a")).toDouble());
+                        result.setFactorB(resultRecord.value(resultRecord.indexOf("factor_b")).toDouble());
                         result.setYesValue(resultRecord.value(resultRecord.indexOf("yes_value")).toString());
                         result.setNoValue(resultRecord.value(resultRecord.indexOf("no_value")).toString());
 
@@ -268,8 +268,8 @@ namespace DS2PlusPlus {
 
             return QVariant(tableName);
         } else if (aResult.displayFormat() == "float") {
-            float value = (byte * aResult.factorA()) + aResult.factorB();
-            return QVariant((float)value);
+            double value = (byte * aResult.factorA()) + aResult.factorB();
+            return QVariant(value);
         } else {
             QString ourError = QObject::tr("Unknown display format for byte type: %1").arg(aResult.displayFormat());
             qDebug() << ourError << endl;
