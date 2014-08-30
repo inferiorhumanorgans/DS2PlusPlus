@@ -13,7 +13,7 @@ namespace DS2PlusPlus {
     class Manager;
 
     /*!
-     * \brief The ControlUnit class represents a module in thecar.
+     * \brief The ControlUnit class represents a module in a car.
      */
     class ControlUnit : public QObject
     {
@@ -21,8 +21,7 @@ namespace DS2PlusPlus {
     public:
         ControlUnit(const QString &aUuid = QString::null, Manager *aParent = 0);
 
-        // Addresses
-
+        // Typical ECU addresses
         static const int ADDRESS_DDE;
         static const int ADDRESS_DME;
         static const int ADDRESS_EWS;
@@ -33,7 +32,7 @@ namespace DS2PlusPlus {
         static const int ADDRESS_ZKE;
 
         /*!
-         * \brief loadByUuid fetches functional infor from the SQL database using the UUID as the key.
+         * \brief loadByUuid fetches functional info from the SQL database using the UUID as the key.
          * \param aUuid
          */
         void loadByUuid(const QString &aUuid);
@@ -61,18 +60,38 @@ namespace DS2PlusPlus {
          */
         virtual DS2Response parseOperation(const OperationPtr anOperation, const DS2PacketPtr aPacket);
 
+        /*!
+         * \brief dppVersion
+         * \return Returns the version of the DPP JSON definition file format used to initialize this object.
+         */
         quint32 dppVersion() const;
         Q_PROPERTY(quint32 dppVersion MEMBER _dppVersion READ dppVersion)
 
+        /*!
+         * \brief fileVersion
+         * \return Returns the revision of the JSON definition file used to initialize this object.
+         */
         quint32 fileVersion() const;
         Q_PROPERTY(quint32 fileVersion MEMBER _fileVersion READ fileVersion)
 
+        /*!
+         * \brief uuid
+         * \return Returns the UUID of the JSON definition file used to initialize this object.
+         */
         const QString uuid() const;
         Q_PROPERTY(const QString uuid MEMBER _uuid READ uuid)
 
+        /*!
+         * \brief address
+         * \return Returns the address of this ECU
+         */
         quint8 address() const;
         Q_PROPERTY(quint8 address MEMBER _address READ address)
 
+        /*!
+         * \brief name
+         * \return Returns the plain English name of this ECU
+         */
         const QString name() const;
         Q_PROPERTY(const QString name MEMBER _name READ name)
 
