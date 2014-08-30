@@ -492,6 +492,13 @@ namespace DS2PlusPlus {
         QString module_id(moduleJSON["uuid"].toString());
         QString parent_id(ourOperation["parent"].toString());
 
+        if (knownUuids.contains(uuid)) {
+            qErr << "Uh oh, UUID collision w/ operation " << uuid << " named: " << operationIt.key() << endl;
+            throw "we shouldn't be here, your data is corrupt";
+        } else {
+            knownUuids.insert(uuid);
+        }
+
         QHash<QString, QVariant> oldOperation = findOperationByUuid(uuid);
         if (!oldOperation.isEmpty()) {
             if (getenv("DPP_TRACE")) {
@@ -544,6 +551,14 @@ namespace DS2PlusPlus {
         QSqlRecord resultRecord = aResultsModel->record();
 
         QString uuid(ourResult["uuid"].toString());
+
+        if (knownUuids.contains(uuid)) {
+            qErr << "Uh oh, UUID collision w/ result" << uuid << " named: " << aResultIterator.key() << endl;
+            throw "we shouldn't be here, your data is corrupt";
+        } else {
+            knownUuids.insert(uuid);
+        }
+
 
         QHash<QString, QVariant> oldResult = findResultByUuid(uuid);
         if (!oldResult.isEmpty()) {
@@ -666,6 +681,7 @@ namespace DS2PlusPlus {
 
         QStringList jsonGlob("*.json");
         QDirIterator it(jsonDir(), jsonGlob, QDir::Files | QDir::Readable | QDir::NoDotAndDotDot, QDirIterator::Subdirectories | QDirIterator::FollowSymlinks);
+        knownUuids.clear();
         while (it.hasNext()) {
             QJsonDocument jsonDoc;
             QFile jsonFile;
@@ -685,6 +701,14 @@ namespace DS2PlusPlus {
 
             QString fileType = jsonDoc.object()["file_type"].toString();
             QString uuid = jsonDoc.object()["uuid"].toString();
+
+            if (knownUuids.contains(uuid)) {
+                qErr << "Uh oh, UUID collision w/ this file @ " << uuid << endl;
+                throw "we shouldn't be here, your data is corrupt";
+            } else {
+                knownUuids.insert(uuid);
+            }
+
             qErr << " (" << uuid << ")" << endl;
             if (fileType == "string_table") {
                 parseStringTableFile(jsonDoc.object());
@@ -692,6 +716,8 @@ namespace DS2PlusPlus {
                 parseEcuFile(jsonDoc.object());
             }
         }
+
+        knownUuids.clear();
     }
 
     QString Manager::findStringByTableAndNumber(const QString &aStringTable, int aNumber)

@@ -10,6 +10,8 @@
 
 #include <QJsonObject>
 
+#include <QSet>
+
 #include "controlunit.h"
 
 class QSerialPort;
@@ -139,6 +141,9 @@ namespace DS2PlusPlus
         QString _serialPortPath;
         QSerialPort *_serialPort;
         QSharedPointer<QCommandLineParser> _cliParser;
+
+    private:
+        QSet<QString> knownUuids;
     };
 
     typedef QSharedPointer<Manager> ManagerPtr;
