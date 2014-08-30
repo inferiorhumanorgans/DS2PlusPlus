@@ -4,6 +4,7 @@
 #include "kombi46_ident.h"
 #include "dme_ms420_ident.h"
 #include "zke5_ident.h"
+#include "radio_cd53_ident.h"
 
 int main(int argc, char** argv)
 {
@@ -28,5 +29,11 @@ int main(int argc, char** argv)
        ZKE5_Ident tc;
        status |= QTest::qExec(&tc, argc, argv);
    }
+
+   {
+       RADIO_CD53_Ident tc;
+       status |= QTest::qExec(&tc, argc, argv);
+   }
+
    return status;
 }

@@ -22,7 +22,8 @@ SOURCES += \
     ihka46_ident.cpp \
     kombi46_ident.cpp \
     dme_ms420_ident.cpp \
-    zke5_ident.cpp
+    zke5_ident.cpp \
+    radio_cd53_ident.cpp
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
@@ -32,4 +33,5 @@ HEADERS += \
     ihka46_ident.h \
     kombi46_ident.h \
     dme_ms420_ident.h \
-    zke5_ident.h
+    zke5_ident.h \
+    radio_cd53_ident.h
