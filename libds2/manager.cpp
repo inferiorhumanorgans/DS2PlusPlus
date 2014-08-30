@@ -1,3 +1,4 @@
+#include <iostream>
 #include <QTextStream>
 #include <QDebug>
 
@@ -21,6 +22,8 @@
 #include <QCommandLineParser>
 
 #include <QSerialPort>
+
+#include <json/json.h>
 
 #include "exception.h"
 #include "manager.h"
@@ -691,7 +694,17 @@ namespace DS2PlusPlus {
             qErr << "Parsing: " << it.fileName();
             jsonFile.setFileName(path);
             jsonFile.open(QIODevice::ReadOnly | QIODevice::Text);
-            jsonDoc = QJsonDocument::fromJson(jsonFile.readAll(), &jsonError);
+
+            Json::Value jsRoot;
+            Json::Reader jsReader;
+            bool jsonParseSuccess = jsReader.parse(jsonFile.readAll().constData(), jsRoot, false);
+            if (!jsonParseSuccess) {
+                qErr << endl << "\tError parsing " << it.fileName() << ": (jsoncpp)" << endl << endl;
+                continue;
+            }
+
+            // This is gross and we should migrate to jsoncpp wholly
+            jsonDoc = QJsonDocument::fromJson(jsRoot.toStyledString().c_str(), &jsonError);
             jsonFile.close();
 
             if (jsonError.error != QJsonParseError::NoError) {

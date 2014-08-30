@@ -33,3 +33,17 @@ unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../jsoncpp/ -ljsoncpp
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../jsoncpp/ -ljsoncppd
+else:unix: LIBS += -L$$OUT_PWD/../jsoncpp/ -ljsoncpp
+
+INCLUDEPATH += $$PWD/../jsoncpp
+DEPENDPATH += $$PWD/../jsoncpp
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../jsoncpp/libjsoncpp.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../jsoncpp/libjsoncppd.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../jsoncpp/jsoncpp.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../jsoncpp/jsoncppd.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../jsoncpp/libjsoncpp.a
+
