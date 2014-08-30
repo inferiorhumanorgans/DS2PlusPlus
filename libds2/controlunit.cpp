@@ -37,6 +37,9 @@ namespace DS2PlusPlus {
 
     void ControlUnit::loadByUuid(const QString &aUuid)
     {
+        QTextStream qOut(stdout);
+        QTextStream qErr(stderr);
+
         _operations.clear();
 
         QSqlTableModel *modulesTable = _manager->modulesTable();
@@ -72,7 +75,8 @@ namespace DS2PlusPlus {
                     } else if (value.startsWith("i:")) {
                         _matches.insert(key, value.mid(2).toUInt());
                     } else {
-                        qDebug() << "Invalid match string was: " << theRecord.value("matches");
+                        QVariant ourMatchesVariant = theRecord.value("matches");
+                        qErr << "Invalid match string was: " << ourMatchesVariant.typeName() << " / " << ourMatchesVariant.toString();
                         delete modulesTable;
                         throw "Invalid match string";
                     }
@@ -149,6 +153,9 @@ namespace DS2PlusPlus {
 
     DS2Response ControlUnit::parseOperation(const OperationPtr theOp, const DS2PacketPtr packet)
     {
+        QTextStream qOut(stdout);
+        QTextStream qErr(stderr);
+
         DS2Response ret;
 
         foreach(const Result &result, theOp->results()) {
@@ -176,11 +183,11 @@ namespace DS2PlusPlus {
                 } else if (result.displayFormat() == "int") {
                     ret.insert(result.name(), QVariant(string.toULongLong()) );
                 } else {
-                    qDebug() << "Unknown display type for string type: " << result.displayFormat() << endl;
+                    qErr << "Unknown display type for string type: " << result.displayFormat() << endl;
                 }
             } else if (result.type() == "boolean") {
                 if (result.length() != 1) {
-                    qDebug() << "Incorrect length for boolean type encountered";
+                    qErr << "Incorrect length for boolean type encountered" << endl;
                     throw "Incorrect length for boolean type encountered";
                 }
                 unsigned char byte = packet->data().at(result.startPosition());
@@ -191,7 +198,7 @@ namespace DS2PlusPlus {
                     ret.insert(result.name(), QVariant(condition));
                 }
             } else {
-                qDebug() << "Unknown result type" << endl;
+                qErr << "Unknown result type: " << result.type() << endl;
             }
         }
 

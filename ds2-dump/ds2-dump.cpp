@@ -118,7 +118,7 @@ void DataCollection::run()
                 QJsonDocument ourDoc(ourObj);
                 qOut << "Identity:" << endl << QString(ourDoc.toJson()) << endl;
             } else {
-                qDebug() << "Couldn't find a match";
+                qOut << "Couldn't find a match";
             }
         }
     } catch (Exception *e) {
