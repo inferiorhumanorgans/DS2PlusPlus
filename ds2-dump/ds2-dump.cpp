@@ -3,8 +3,6 @@
 #include <QDebug>
 #include <QCommandLineParser>
 #include <QSharedPointer>
-#include <QSqlRecord>
-
 #include <QJsonDocument>
 
 #include <ds2packet.h>

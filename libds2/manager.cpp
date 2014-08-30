@@ -3,7 +3,8 @@
 
 #include <QTextStream>
 #include <QDebug>
-
+#include <QSharedPointer>
+#include <QCommandLineParser>
 #include <QUuid>
 
 #include <QDir>
@@ -18,10 +19,6 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonParseError>
-
-#include <QSharedPointer>
-
-#include <QCommandLineParser>
 
 #include <QSerialPort>
 
