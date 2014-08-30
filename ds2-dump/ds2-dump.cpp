@@ -19,105 +19,101 @@ DataCollection::DataCollection(QObject *parent) :
 void DataCollection::run()
 {
     using namespace DS2PlusPlus;
-    try {
-        QTextStream qOut(stdout);
-        QTextStream qErr(stderr);
 
-        QSharedPointer<QCommandLineParser> parser(new QCommandLineParser);
-        parser->setApplicationDescription("Dumps a DS2 packet from an ECU");
-        parser->addHelpOption();
-        parser->addVersionOption();
+    QTextStream qOut(stdout);
+    QTextStream qErr(stderr);
 
-        ManagerPtr dbm(new Manager(parser));
+    QSharedPointer<QCommandLineParser> parser(new QCommandLineParser);
+    parser->setApplicationDescription("Dumps a DS2 packet from an ECU");
+    parser->addHelpOption();
+    parser->addVersionOption();
 
-        QCommandLineOption setEcuOption(QStringList() << "e" << "ecu", "The ECU to operate on.", "ecu");
-        parser->addOption(setEcuOption);
+    ManagerPtr dbm(new Manager(parser));
 
-        QCommandLineOption detectEcuOption(QStringList() << "p" << "probe", "Probe an ECU for its identity.");
-        parser->addOption(detectEcuOption);
+    QCommandLineOption setEcuOption(QStringList() << "e" << "ecu", "The ECU to operate on.", "ecu");
+    parser->addOption(setEcuOption);
 
-        QCommandLineOption runJobOption(QStringList() << "j" << "run-job", "Probe an ECU at <address> for its identity.", "job");
-        parser->addOption(runJobOption);
+    QCommandLineOption detectEcuOption(QStringList() << "p" << "probe", "Probe an ECU for its identity.");
+    parser->addOption(detectEcuOption);
 
-        QCommandLineOption iterateOption(QStringList() << "n" << "iterate", "Iterate <n> number of times over the job.", "n");
-        parser->addOption(iterateOption);
+    QCommandLineOption runJobOption(QStringList() << "j" << "run-job", "Probe an ECU at <address> for its identity.", "job");
+    parser->addOption(runJobOption);
 
-        parser->process(*QCoreApplication::instance());
-        dbm->initializeManager();
+    QCommandLineOption iterateOption(QStringList() << "n" << "iterate", "Iterate <n> number of times over the job.", "n");
+    parser->addOption(iterateOption);
 
-        // This will rescan all the JSON files, we should be smarter about doing this.
-        dbm->initializeDatabase();
+    parser->process(*QCoreApplication::instance());
+    dbm->initializeManager();
 
-        quint8 ecuAddress;
-        if (parser->isSet("ecu")) {
-            QString ecuString = parser->value("ecu");
-            bool ok;
-            if (ecuString.startsWith("0x")) {
-                ecuAddress = ecuString.toUShort(&ok, 16);
-            } else {
-                ecuAddress = ecuString.toUShort(&ok, 10);
-            }
-            if (!ok) {
-                std::cerr << "Please specify a valid positive integer for the ECU address." << std::endl;
-                emit finished();
-                return;
-            }
+    // This will rescan all the JSON files, we should be smarter about doing this.
+    dbm->initializeDatabase();
+
+    quint8 ecuAddress;
+    if (parser->isSet("ecu")) {
+        QString ecuString = parser->value("ecu");
+        bool ok;
+        if (ecuString.startsWith("0x")) {
+            ecuAddress = ecuString.toUShort(&ok, 16);
         } else {
-            qErr << "Please specify an ECU." << endl;
+            ecuAddress = ecuString.toUShort(&ok, 10);
+        }
+        if (!ok) {
+            std::cerr << "Please specify a valid positive integer for the ECU address." << std::endl;
             emit finished();
             return;
         }
+    } else {
+        emit finished();
+        return;
+    }
 
-        DS2PlusPlus::ControlUnitPtr autoDetect(dbm->findModuleAtAddress(ecuAddress));
+    DS2PlusPlus::ControlUnitPtr autoDetect(dbm->findModuleAtAddress(ecuAddress));
 
-        if (parser->isSet("run-job")) {
-            if (!autoDetect.isNull()) {
-                QString ourJob = parser->value("run-job");
-                qOut << QString("At 0x%1 we think we have: %2").arg(ecuAddress, 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
+    if (parser->isSet("run-job")) {
+        if (!autoDetect.isNull()) {
+            QString ourJob = parser->value("run-job");
+            qOut << QString("At 0x%1 we think we have: %2").arg(ecuAddress, 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
 
-                bool ok;
-                quint64 iterations;
-                if (!parser->value("iterate").isEmpty()) {
-                    iterations = parser->value("iterate").toULongLong(&ok);
-                    if (!ok) {
-                        qErr << "Please specify a valid positive integer for the number of iterations." << endl;
-                        emit finished();
-                        return;
-                    }
-                } else {
-                    iterations = 1;
+            bool ok;
+            quint64 iterations;
+            if (!parser->value("iterate").isEmpty()) {
+                iterations = parser->value("iterate").toULongLong(&ok);
+                if (!ok) {
+                    qErr << "Please specify a valid positive integer for the number of iterations." << endl;
+                    emit finished();
+                    return;
                 }
-
-                for (quint64 i=0; i < iterations; i++) {
-                    DS2Response ourResponse = autoDetect->executeOperation(ourJob);
-                    qDebug() << ourJob << ": " << ourResponse;
-                    if ((i < iterations - 1) and (iterations > 1)) {
-                        sleep(1);
-                    }
-                }
-
             } else {
-                qOut << "Couldn't find a match" << endl;
+                iterations = 1;
             }
 
-        } else if (parser->isSet("probe")) {
-            if (!autoDetect.isNull()) {
-                qOut << QString("At 0x%1 we think we have: %2").arg(ecuAddress, 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
-                DS2Response ourResponse = autoDetect->executeOperation("identify");
-                QVariantMap ughQt;
-                foreach (const QString &key, ourResponse.keys()) {
-                    ughQt.insert(key, ourResponse.value(key));
+            for (quint64 i=0; i < iterations; i++) {
+                DS2Response ourResponse = autoDetect->executeOperation(ourJob);
+                qDebug() << ourJob << ": " << ourResponse;
+                if ((i < iterations - 1) and (iterations > 1)) {
+                    sleep(1);
                 }
-
-                QJsonObject ourObj = QJsonObject::fromVariantMap(ughQt);
-                QJsonDocument ourDoc(ourObj);
-                qOut << "Identity:" << endl << QString(ourDoc.toJson()) << endl;
-            } else {
-                qOut << "Couldn't find a match";
             }
+
+        } else {
+            qOut << "Couldn't find a match" << endl;
         }
-    } catch (std::exception *e) {
-        std::cerr << "Uncaught exception: " << e << std::endl;
+
+    } else if (parser->isSet("probe")) {
+        if (!autoDetect.isNull()) {
+            qOut << QString("At 0x%1 we think we have: %2").arg(ecuAddress, 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
+            DS2Response ourResponse = autoDetect->executeOperation("identify");
+            QVariantMap ughQt;
+            foreach (const QString &key, ourResponse.keys()) {
+                ughQt.insert(key, ourResponse.value(key));
+            }
+
+            QJsonObject ourObj = QJsonObject::fromVariantMap(ughQt);
+            QJsonDocument ourDoc(ourObj);
+            qOut << "Identity:" << endl << QString(ourDoc.toJson()) << endl;
+        } else {
+            qOut << "Couldn't find a match";
+        }
     }
 
     emit finished();
