@@ -14,6 +14,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QJsonParseError>
 
 #include <QSharedPointer>
 
@@ -664,12 +665,18 @@ namespace DS2PlusPlus {
             QJsonDocument jsonDoc;
             QFile jsonFile;
             QString path = it.next();
+            QJsonParseError jsonError;
 
             qErr << "Parsing: " << it.fileName();
             jsonFile.setFileName(path);
             jsonFile.open(QIODevice::ReadOnly | QIODevice::Text);
-            jsonDoc = QJsonDocument::fromJson(jsonFile.readAll());
+            jsonDoc = QJsonDocument::fromJson(jsonFile.readAll(), &jsonError);
             jsonFile.close();
+
+            if (jsonError.error != QJsonParseError::NoError) {
+                qErr << endl << "\tError parsing " << it.fileName() << ": " <<jsonError.errorString() << endl << endl;
+                continue;
+            }
 
             QString fileType = jsonDoc.object()["file_type"].toString();
             QString uuid = jsonDoc.object()["uuid"].toString();
