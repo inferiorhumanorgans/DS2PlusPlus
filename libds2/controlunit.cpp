@@ -169,7 +169,7 @@ namespace DS2PlusPlus {
                 ret.insert(result.name(), resultByteToVariant(packet, result));
             } else if (result.isType("hex_string")) {
                 ret.insert(result.name(), resultHexStringToVariant(packet, result));
-            } else if (result.type() == "string") {
+            } else if (result.isType("string")) {
                 QString string;
                 for (int i=0; i < result.length(); i++) {
                     QChar byte(packet->data().at(result.startPosition() + i));
@@ -185,7 +185,7 @@ namespace DS2PlusPlus {
                 } else {
                     qErr << "Unknown display type for string type: " << result.displayFormat() << endl;
                 }
-            } else if (result.type() == "boolean") {
+            } else if (result.isType("boolean")) {
                 if (result.length() != 1) {
                     qErr << "Incorrect length for boolean type encountered" << endl;
                     throw "Incorrect length for boolean type encountered";
