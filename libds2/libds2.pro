@@ -30,6 +30,7 @@ HEADERS +=\
 unix {
     target.path = /usr/lib
     INSTALLS += target
+    VERSION = 0.5
 }
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../jsoncpp/ -ljsoncpp
@@ -44,4 +45,3 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../json
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../jsoncpp/jsoncpp.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../jsoncpp/jsoncppd.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../jsoncpp/libjsoncpp.a
-
