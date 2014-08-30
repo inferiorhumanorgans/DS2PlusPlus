@@ -4,8 +4,9 @@ const char DME_MS420_Status::dme_status[] = {0xa0, 0x00, 0x00, 0x00, 0x00, 0x00,
 
 DME_MS420_Status::DME_MS420_Status()
 {
-    packet = DS2PlusPlus::DS2PacketPtr(new DS2PlusPlus::DS2Packet(0x12, QByteArray(dme_status, sizeof(dme_status) / sizeof(char))));
-    json = DS2PlusPlus::ControlUnitPtr(new DS2PlusPlus::ControlUnit);
+    using namespace DS2PlusPlus;
+    packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::ADDRESS_DME, dme_status));
+    json = ControlUnitPtr(new DS2PlusPlus::ControlUnit);
     json->loadByUuid("F5C34396-809C-44C0-868E-49500414BEAA");
     results = json->parseOperation("status", packet);
 }

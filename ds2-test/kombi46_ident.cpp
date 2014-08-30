@@ -4,8 +4,9 @@ const char KOMBI46_Ident::kombi_ident[] = {0xa0, 0xf6, 0x90, 0x68, 0x96, 0x10, 0
 
 KOMBI46_Ident::KOMBI46_Ident()
 {
-    packet = DS2PlusPlus::DS2PacketPtr(new DS2PlusPlus::DS2Packet(0x5b, QByteArray(kombi_ident, sizeof(kombi_ident) / sizeof(char))));
-    json = DS2PlusPlus::ControlUnitPtr(new DS2PlusPlus::ControlUnit);
+    using namespace DS2PlusPlus;
+    packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::ADDRESS_KOMBI, kombi_ident));
+    json = ControlUnitPtr(new ControlUnit);
     json->loadByUuid("B9D20D07-B7DA-4207-B8E1-2142AD938AD2");
     results = json->parseOperation("identify", packet);
 }

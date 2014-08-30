@@ -7,6 +7,8 @@
 #include <QVariant>
 #include <QDebug>
 
+#define PACKET_FROM_CHARS(address, array) new DS2PlusPlus::DS2Packet(address, QByteArray(array, sizeof(array) / sizeof(char)))
+
 namespace DS2PlusPlus
 {
     /*!

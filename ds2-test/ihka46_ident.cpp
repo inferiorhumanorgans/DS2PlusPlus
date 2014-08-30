@@ -4,8 +4,9 @@ const char IHKA46_Ident::ihka_ident[] = {0xA0, 0x84, 0x10, 0x69, 0x30, 0x22, 0x0
 
 IHKA46_Ident::IHKA46_Ident()
 {
-    packet = DS2PlusPlus::DS2PacketPtr(new DS2PlusPlus::DS2Packet(0x5b, QByteArray(ihka_ident, sizeof(ihka_ident) / sizeof(char))));
-    json = DS2PlusPlus::ControlUnitPtr(new DS2PlusPlus::ControlUnit);
+    using namespace DS2PlusPlus;
+    packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::ADDRESS_IHKA, ihka_ident));
+    json = ControlUnitPtr(new DS2PlusPlus::ControlUnit);
     json->loadByUuid("3CD3AE6B-7826-4884-AC6A-A88FCF682B85");
     results = json->parseOperation("identify", packet);
 }

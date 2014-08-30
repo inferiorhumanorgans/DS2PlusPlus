@@ -6,7 +6,7 @@ const char ZKE5_Ident::zke_ident[] = {0xA0, 0x86, 0x90, 0x76, 0x63, 0x11, 0x02, 
 
 ZKE5_Ident::ZKE5_Ident()
 {
-    packet = DS2PacketPtr(new DS2Packet(ControlUnit::ADDRESS_ZKE, QByteArray(zke_ident, sizeof(zke_ident) / sizeof(char))));
+    packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::ADDRESS_ZKE, zke_ident));
     json = ControlUnitPtr(new ControlUnit);
     json->loadByUuid("B9D20D07-B7DA-4207-B8E1-2142AD938AD2");
     results = json->parseOperation("identify", packet);

@@ -4,8 +4,9 @@ const char DME_MS420_Ident::dme_ident[] = {0xa0, 0x37, 0x35, 0x30, 0x30, 0x32, 0
 
 DME_MS420_Ident::DME_MS420_Ident()
 {
-    packet = DS2PlusPlus::DS2PacketPtr(new DS2PlusPlus::DS2Packet(0x12, QByteArray(dme_ident, sizeof(dme_ident) / sizeof(char))));
-    json = DS2PlusPlus::ControlUnitPtr(new DS2PlusPlus::ControlUnit);
+    using namespace DS2PlusPlus;
+    packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::ADDRESS_DME, dme_ident));
+    json = ControlUnitPtr(new ControlUnit);
     //json.loadByUUID("B9D20D07-B7DA-4207-B8E1-2142AD938AD2");
     json->loadByUuid("F5C34396-809C-44C0-868E-49500414BEAA");
     results = json->parseOperation("identify", packet);

@@ -6,7 +6,7 @@ const char RADIO_CD53_Ident::cd53_ident[] = {0xa0, 0x86, 0x94, 0x15, 0x05, 0x44,
 
 RADIO_CD53_Ident::RADIO_CD53_Ident()
 {
-    packet = DS2PacketPtr(new DS2Packet(ControlUnit::ADDRESS_ZKE, QByteArray(cd53_ident, sizeof(cd53_ident) / sizeof(char))));
+    packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::ADDRESS_RADIO, cd53_ident));
     json = ControlUnitPtr(new ControlUnit);
     json->loadByUuid("36DAD065-4EC9-446C-A7E6-415F601BC150");
     results = json->parseOperation("identify", packet);
