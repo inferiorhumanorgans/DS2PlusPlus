@@ -547,7 +547,11 @@ namespace DS2PlusPlus {
             resultsCount++;
         }
 
-        qErr << "\tAdded operation '" << operationIt.key() << "', returns " << resultsCount << " results" << endl;
+        qErr << "\tAdded operation '" << operationIt.key() << "'";
+        if (!parent_id.isEmpty()) {
+            qErr << ", inherits from: " << parent_id;
+        }
+        qErr << ", returns " << resultsCount << ((parent_id.isEmpty()) ? "" : " additional") << ((resultsCount == 1) ? " result" : " results") << endl;
         return true;
     }
 
@@ -757,7 +761,7 @@ namespace DS2PlusPlus {
         QString uuid(stringJson["uuid"].toString());
         QString tableName(stringJson["table_name"].toString());
 
-        qErr << "\tFound table: " << tableName << endl;
+        qErr << "\tFound table: '" << tableName << "'" << endl;
 
         QSqlQuery removeThisStringTableQuery(_db);
         removeThisStringTableQuery.prepare("DELETE FROM strings WHERE table_uuid = :uuid");
@@ -791,7 +795,7 @@ namespace DS2PlusPlus {
             stringIterator++;
             stringCount++;
         }
-        qErr << "\tAdded " << stringCount << " strings" << endl << endl;
+        qErr << "\tTotal: " << stringCount << ((stringCount == 1) ? " string" : " strings") << endl << endl;
     }
 
     void Manager::parseEcuFile(const QJsonObject &aJsonObject)
@@ -833,7 +837,7 @@ namespace DS2PlusPlus {
             moduleRecord.setValue(moduleRecord.indexOf("address"), "");
         }
 
-        qErr << "\tFound module: " << name;
+        qErr << "\tFound module definition: " << name;
         if (!ecuAddressString.isEmpty()) {
             qErr << " at " << ecuAddressString;
         }
