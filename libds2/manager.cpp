@@ -489,6 +489,8 @@ namespace DS2PlusPlus {
         QSqlRecord operationRecord = operationsModel->record();
 
         QString uuid(ourOperation["uuid"].toString());
+        QString module_id(moduleJSON["uuid"].toString());
+        QString parent_id(ourOperation["parent"].toString());
 
         QHash<QString, QVariant> oldOperation = findOperationByUuid(uuid);
         if (!oldOperation.isEmpty()) {
@@ -499,8 +501,9 @@ namespace DS2PlusPlus {
         }
 
         operationRecord.setValue(operationRecord.indexOf("uuid"), uuid);
-        operationRecord.setValue(operationRecord.indexOf("module_id"), moduleJSON["uuid"].toString());
+        operationRecord.setValue(operationRecord.indexOf("module_id"), module_id);
         operationRecord.setValue(operationRecord.indexOf("name"), operationIt.key());
+        operationRecord.setValue(operationRecord.indexOf("parent_id"), parent_id);
 
         QStringList commandByteList;
         foreach (const QJsonValue &value, ourOperation["command"].toArray()) {
@@ -607,7 +610,9 @@ namespace DS2PlusPlus {
                                       "uuid      VARCHAR UNIQUE NOT NULL PRIMARY KEY,\n" \
                                       "module_id VARCHAR NOT NULL,\n"        \
                                       "name      VARCHAR NOT NULL,\n"        \
-                                      "command   VARCHAR NOT NULL\n"         \
+                                      "command   VARCHAR,\n"                 \
+                                      "parent_id VARCHAR,\n"                  \
+                                      "CHECK ((CASE WHEN command IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1)" \
                                       ");"                                   \
                                  );
             if (!ret) {
