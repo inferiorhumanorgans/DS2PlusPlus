@@ -11,7 +11,7 @@
   "matches": {
     "part_number":      7500255,
     "hardware_number": "0x15",
-    "software_number": "0xE3",
+    /*"software_number": "0xE3",*/ // This doesn't work on my car?
     "coding_index":    "0x00"
   },
   "operations": {
@@ -173,6 +173,3 @@
     }
   }
 }
-
----
-DME at ...

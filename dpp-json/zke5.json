@@ -18,7 +18,7 @@
       "uuid":     "887E29A3-D2B9-4466-BE43-12665AF6E55A",
       "parent":   "023A31A5-AEA7-48D5-955D-40096C55C1C5",
       "results": {
-        "variant": {
+        "variant": { /*This is bogus */
           "uuid":       "76AB946C-6FFD-4DD8-BA5E-168F1840396B",
           "type":       "byte",
           "display":    "hex_string",
