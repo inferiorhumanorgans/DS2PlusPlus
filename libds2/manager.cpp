@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdexcept>
+
 #include <QTextStream>
 #include <QDebug>
 
@@ -25,7 +27,6 @@
 
 #include <json/json.h>
 
-#include "exception.h"
 #include "manager.h"
 
 void waitForThisManyBytes(QSerialPort &aPort, qint64 someNumberOfBytes)
@@ -97,8 +98,8 @@ namespace DS2PlusPlus {
         _db.setDatabaseName(expandTilde(dppDbPath));
 
         if (!_db.open()) {
-            qErr << "Couldn't open the database: " << _db.lastError().databaseText() << endl;
-            throw "Couldn't open the database";
+            QString errorString = QString("Couldn't open the database: %1").arg(_db.lastError().databaseText());
+            throw std::runtime_error(qPrintable(errorString));
         }
 
         // Determine serial port -- platform specific
@@ -117,7 +118,8 @@ namespace DS2PlusPlus {
             }
 
             if (!_serialPort->open(QIODevice::ReadWrite)) {
-                throw new SerialIOError(QString("'%1': %2").arg(_serialPort->portName()).arg(_serialPort->errorString()));
+                QString errorString = QString("'%1': %2").arg(_serialPort->portName()).arg(_serialPort->errorString());
+                throw std::ios_base::failure(qPrintable(errorString));
             }
         }
 
@@ -229,8 +231,8 @@ namespace DS2PlusPlus {
             }
         }
 
-        qErr << "Could not find a DPP JSON directory in: " << jsonSearchPath.join(", ") << endl;
-        throw "Unable to find DPP JSON directory";
+        QString errorString = QString("Could not find a DPP JSON directory in: %1").arg(jsonSearchPath.join(", "));
+        throw std::ios_base::failure(qPrintable(errorString));
     }
 
     DS2PacketPtr Manager::query(DS2PacketPtr aPacket)
@@ -254,15 +256,16 @@ namespace DS2PlusPlus {
         waitForThisManyBytes(*_serialPort, 2);
         inputArray = _serialPort->read(2);
         if (inputArray.length() != 2) {
-            qDebug() << "Wanted length 2, got: " << inputArray.length();
-            throw "ugh";
+            QString errorString = QString("Wanted length 2, got: %1").arg(inputArray.length());
+            throw std::ios_base::failure(qPrintable(errorString));
         }
         ecuAddress = inputArray.at(0);
         ret->setAddress(ecuAddress);
         length = inputArray.at(1);
 
         if (length <= 2) {
-            throw new SerialIOError(QString("Ack. Got garbage data, length must be >= 2.  Got ECU: %1, LEN: %2").arg(QString::number(ecuAddress, 16)).arg(QString::number(length, 16)));
+            QString errorString = QString("Ack. Got garbage data, length must be >= 2.  Got ECU: %1, LEN: %2").arg(QString::number(ecuAddress, 16)).arg(QString::number(length, 16));
+            throw std::ios_base::failure(qPrintable(errorString));
         }
 
         waitForThisManyBytes(*_serialPort, length - 2);
@@ -496,8 +499,8 @@ namespace DS2PlusPlus {
         QString parent_id(ourOperation["parent"].toString());
 
         if (knownUuids.contains(uuid)) {
-            qErr << "Uh oh, UUID collision w/ operation " << uuid << " named: " << operationIt.key() << endl;
-            throw "we shouldn't be here, your data is corrupt";
+            QString errorString = QString("UUID collision w/ operation %1, your data is corrupt.").arg(operationIt.key());
+            throw std::invalid_argument(qPrintable(errorString));
         } else {
             knownUuids.insert(uuid);
         }
@@ -538,7 +541,7 @@ namespace DS2PlusPlus {
         QSharedPointer<QSqlTableModel> ourResultsModel(resultsTable());
         while (resultIt != ourResults.end()) {
             if (!parseResultJson(resultIt, ourOperation, ourResultsModel)) {
-                throw "Error parsing result JSON";
+                throw std::invalid_argument("Error parsing result JSON");
             }
             resultIt++;
             resultsCount++;
@@ -556,8 +559,8 @@ namespace DS2PlusPlus {
         QString uuid(ourResult["uuid"].toString());
 
         if (knownUuids.contains(uuid)) {
-            qErr << "Uh oh, UUID collision w/ result" << uuid << " named: " << aResultIterator.key() << endl;
-            throw "we shouldn't be here, your data is corrupt";
+            QString errorString = QString("UUID collision w/ result %1, named: %2, your data is corrupt.").arg(uuid).arg(aResultIterator.key());
+            throw std::invalid_argument(qPrintable(errorString));
         } else {
             knownUuids.insert(uuid);
         }
@@ -615,8 +618,8 @@ namespace DS2PlusPlus {
                     );
 
             if (!ret) {
-                qDebug() << "Problem creating the modules table: " << query.lastError().driverText();
-                throw "Problem creating the modules table";
+                QString errorString = QString("Problem creating the modules table: %1").arg(query.lastError().driverText());
+                throw std::runtime_error(qPrintable(errorString));
             }
         }
 
@@ -634,8 +637,8 @@ namespace DS2PlusPlus {
                                       ");"                                   \
                                  );
             if (!ret) {
-                qDebug() << query.lastError().driverText();
-                throw "Problem creating the modules table";
+                QString errorString = QString("Problem creating the operations table: %1").arg(query.lastError().driverText());
+                throw std::runtime_error(qPrintable(errorString));
             }
         }
 
@@ -659,8 +662,8 @@ namespace DS2PlusPlus {
                                       ");"                                      \
                                   );
             if (!ret) {
-                qDebug() << query.lastError().driverText();
-                throw "Problem creating the modules table";
+                QString errorString = QString("Problem creating the results table: %1").arg(query.lastError().driverText());
+                throw std::runtime_error(qPrintable(errorString));
             }
         }
 
@@ -677,8 +680,8 @@ namespace DS2PlusPlus {
                                       ");"                                                \
                                  );
             if (!ret) {
-                qDebug() << query.lastError().driverText();
-                throw "Problem creating the strings table";
+                QString errorString = QString("Problem creating the strings table: %1").arg(query.lastError().driverText());
+                throw std::runtime_error(qPrintable(errorString));
             }
         }
 
@@ -716,8 +719,8 @@ namespace DS2PlusPlus {
             QString uuid = jsonDoc.object()["uuid"].toString();
 
             if (knownUuids.contains(uuid)) {
-                qErr << "Uh oh, UUID collision w/ this file @ " << uuid << endl;
-                throw "we shouldn't be here, your data is corrupt";
+                QString errorString = QString("UUID collision w/ this file @ %1").arg(uuid);
+                throw std::runtime_error(qPrintable(errorString));
             } else {
                 knownUuids.insert(uuid);
             }
@@ -781,8 +784,8 @@ namespace DS2PlusPlus {
             }
 
             if (!ourModel->submitAll()) {
-                qDebug() << "Saving the string(" << uuid << " / "<< ourString << ourModel->lastError();
-                throw "Saving module failed";
+                QString exceptionString = QString("Saving the string table at UUID %1 failed: %2").arg(uuid).arg(ourModel->lastError().databaseText());
+                throw std::runtime_error(qPrintable(exceptionString));
             }
 
             stringIterator++;
@@ -823,8 +826,8 @@ namespace DS2PlusPlus {
             if (ok) {
                 moduleRecord.setValue(moduleRecord.indexOf("address"), ecuAddressNumber);
             } else {
-                qDebug() << "Error reading module JSON, invalid address " << ecuAddressString;
-                throw "Error reading module JSON, invalid address";
+                QString errorString = QString("Error reading module JSON, invalid address %1").arg(ecuAddressString);
+                throw std::runtime_error(qPrintable(errorString));
             }
         } else {
             moduleRecord.setValue(moduleRecord.indexOf("address"), "");
@@ -861,7 +864,7 @@ namespace DS2PlusPlus {
         QSharedPointer<QSqlTableModel> ourOperationsTable(operationsTable());
         while (operationIterator != ourOperations.end()) {
             if (!parseOperationJson(operationIterator, moduleJson, ourOperationsTable)) {
-                throw "Error parsing the operation";
+                throw std::invalid_argument("Error parsing the operation");
             }
             operationIterator++;
             operationsCount++;
@@ -873,8 +876,8 @@ namespace DS2PlusPlus {
         }
 
         if (!ourModel->submitAll()) {
-            qDebug() << "Saving the module(" << uuid << " " << ourModel->lastError();
-            throw "Saving module failed";
+            QString errorString = QString("Saving the module %1 failed: %2").arg(uuid).arg(ourModel->lastError().databaseText());
+            throw std::runtime_error(qPrintable(errorString));
         }
         qErr << endl;
     }

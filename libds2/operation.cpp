@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "controlunit.h"
 #include "operation.h"
 
@@ -12,8 +14,7 @@ namespace DS2PlusPlus {
             quint8 bigByte = byteString.toUInt(&ok, 16);
             if (!ok or (bigByte > UCHAR_MAX)) {
                 QString errorString = QString("We shouldn't be here, but we got an invalid command byte: '%1'").arg(byteString);
-                qDebug() << errorString;
-                throw errorString;
+                throw std::invalid_argument(qPrintable(errorString));
             }
             unsigned char byte = bigByte;
             _command.append(byte);

@@ -10,7 +10,6 @@
 #include <ds2packet.h>
 #include <manager.h>
 #include <controlunit.h>
-#include <exception.h>
 
 #include "ds2-dump.h"
 
@@ -121,7 +120,7 @@ void DataCollection::run()
                 qOut << "Couldn't find a match";
             }
         }
-    } catch (Exception *e) {
+    } catch (std::exception *e) {
         std::cerr << "Uncaught exception: " << e << std::endl;
     }
 

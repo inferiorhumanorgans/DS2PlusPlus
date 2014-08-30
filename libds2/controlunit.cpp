@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <QDebug>
 
 #include <QSqlQuery>
@@ -9,7 +11,6 @@
 #include "operation.h"
 #include "controlunit.h"
 #include "manager.h"
-#include "exception.h"
 
 namespace DS2PlusPlus {
     const int ControlUnit::ADDRESS_DDE   = 0x12;
@@ -51,7 +52,7 @@ namespace DS2PlusPlus {
             if (theRecord.isEmpty()) {
                 qDebug() << "Find parent failed: " << modulesTable->lastError();
                 delete modulesTable;
-                throw "Find parent failed";
+                throw std::runtime_error("Find parent failed");
             }
 
             if (aUuid == parent_id) {
@@ -76,9 +77,9 @@ namespace DS2PlusPlus {
                         _matches.insert(key, value.mid(2).toUInt());
                     } else {
                         QVariant ourMatchesVariant = theRecord.value("matches");
-                        qErr << "Invalid match string was: " << ourMatchesVariant.typeName() << " / " << ourMatchesVariant.toString();
                         delete modulesTable;
-                        throw "Invalid match string";
+                        QString errorString = QString("Invalid match string. String was: %1 / %2").arg(ourMatchesVariant.typeName()).arg(ourMatchesVariant.toString());
+                        throw std::invalid_argument(qPrintable(errorString));
                     }
                 }
             }
@@ -183,12 +184,12 @@ namespace DS2PlusPlus {
                 } else if (result.displayFormat() == "int") {
                     ret.insert(result.name(), QVariant(string.toULongLong()) );
                 } else {
-                    qErr << "Unknown display type for string type: " << result.displayFormat() << endl;
+                    QString errorString = QString("Unknown display type for string type: ").arg(result.displayFormat());
+                    throw std::invalid_argument(qPrintable(errorString));
                 }
             } else if (result.isType("boolean")) {
                 if (result.length() != 1) {
-                    qErr << "Incorrect length for boolean type encountered" << endl;
-                    throw "Incorrect length for boolean type encountered";
+                    throw std::invalid_argument("Incorrect length for boolean type encountered");
                 }
                 unsigned char byte = packet->data().at(result.startPosition());
                 bool condition = ((byte & result.mask()) > 0);
@@ -246,8 +247,7 @@ namespace DS2PlusPlus {
 
         if (aResult.length() != 1) {
             QString ourError = QObject::tr("Length is not one for a byte data type.  Length is %1").arg(aResult.length());
-            qDebug() << ourError;
-            throw ourError;
+            throw std::invalid_argument(qPrintable(ourError));
         }
 
         unsigned char byte = aPacket->data().at(aResult.startPosition());
@@ -279,8 +279,7 @@ namespace DS2PlusPlus {
             return QVariant(value);
         } else {
             QString ourError = QObject::tr("Unknown display format for byte type: %1").arg(aResult.displayFormat());
-            qDebug() << ourError << endl;
-            throw ourError;
+            throw std::invalid_argument(qPrintable(ourError));
         }
     }
 
@@ -303,8 +302,7 @@ namespace DS2PlusPlus {
             return QVariant(hex);
         } else {
             QString ourError = QObject::tr("Unknown display format for hex_string type: %1").arg(aResult.displayFormat());
-            qDebug() << ourError;
-            throw ourError;
+            throw std::runtime_error(qPrintable(ourError));
         }
     }
 }
