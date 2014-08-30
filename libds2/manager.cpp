@@ -53,7 +53,8 @@ namespace DS2PlusPlus {
         QObject(parent), _dppDir(QString::null), _serialPort(new QSerialPort), _cliParser(aParser)
     {
         if (!_cliParser.isNull()) {
-            QCommandLineOption targetDirectoryOption(QStringList() << "p" << "port",
+            // We should really check to see if the user has already defined this, and if so we should whine.
+            QCommandLineOption targetDirectoryOption(QStringList() << "f" << "port",
                       "Read from serial port <port>.",
                       "port");
             aParser->addOption(targetDirectoryOption);

@@ -2,7 +2,7 @@
 #include <QTimer>
 #include <QCommandLineParser>
 
-#include "datacollection.h"
+#include "ds2-dump.h"
 
 int main(int argc, char *argv[])
 {

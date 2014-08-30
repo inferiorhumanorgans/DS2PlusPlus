@@ -35,16 +35,16 @@ void DataCollection::run()
 
         ManagerPtr dbm(new Manager(parser));
 
-        QCommandLineOption setEcuOption(QStringList() << "ecu", "The ECU to operate on.", "ecu");
+        QCommandLineOption setEcuOption(QStringList() << "e" << "ecu", "The ECU to operate on.", "ecu");
         parser->addOption(setEcuOption);
 
-        QCommandLineOption detectEcuOption(QStringList() << "probe", "Probe an ECU for its identity.");
+        QCommandLineOption detectEcuOption(QStringList() << "p" << "probe", "Probe an ECU for its identity.");
         parser->addOption(detectEcuOption);
 
-        QCommandLineOption runJobOption(QStringList() << "run-job", "Probe an ECU at <address> for its identity.", "job");
+        QCommandLineOption runJobOption(QStringList() << "j" << "run-job", "Probe an ECU at <address> for its identity.", "job");
         parser->addOption(runJobOption);
 
-        QCommandLineOption iterateOption(QStringList() << "iterate", "Iterate <n> number of times over the job.", "n");
+        QCommandLineOption iterateOption(QStringList() << "n" << "iterate", "Iterate <n> number of times over the job.", "n");
         parser->addOption(iterateOption);
 
         parser->process(*QCoreApplication::instance());
