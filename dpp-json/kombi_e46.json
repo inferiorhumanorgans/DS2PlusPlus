@@ -1,7 +1,7 @@
 {
   "dpp_version":  1,
   "file_version": 1,
-  "file_mtime":   "Mon Aug 25 19:23:31 PDT 2014",
+  "file_mtime":   "Sat Aug 30 09:40:04 PDT 2014",
   "file_type":    "ecu",
   "uuid":         "D077EE50-034D-4DA7-B106-18D23AA9E6CB",
   "address":      "0x80",
@@ -14,5 +14,19 @@
     "coding_index":    "0x04"
   },
   "operations": {
+    "canbus_rpm":  {
+      "uuid":     "54E4BA86-D6B8-4460-B282-9995F0E134A3",
+      "command":  ["0x06", "0x0a", "0x00", "0x00", "0x92", "0x02"],
+      "results": {
+        "rpm": {
+          "uuid":       "36FDB3A3-A2B5-479F-90BA-4EFA0A01974A",
+          "type":       "short", /* 16 bits */
+          "display":    "int",
+          "start_pos":  1,
+          "length":     2,
+          "factor_a":   0.15625 /* 1/6.4 */
+        }
+      }
+    }
   }
 }

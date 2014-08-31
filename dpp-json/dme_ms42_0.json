@@ -170,6 +170,104 @@
           "factor_a":   0.10196
         }
       }
+    },
+    "precat_o2_bank1_voltage": {
+      "uuid":     "50280D84-17F0-4CED-8346-176861C62B9B",
+      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x01"],
+      "results": {
+        "precat_o2_bank1_voltage": {
+          "uuid":       "E053CAC5-1E86-48F5-A494-F1EF4B46F0F3",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "factor_a":   0.004887
+        }
+      }
+    },
+    "precat_o2_bank2_voltage": {
+      "uuid":     "3427A93E-FB8D-4FD7-B783-5E379B9C45FF",
+      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x02"],
+      "results": {
+        "precat_o2_bank2_voltage": {
+          "uuid":       "2A8DA40E-BE9C-445E-A225-00EE9433EFE9",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "factor_a":   0.004887
+        }
+      }
+    },
+    "postcat_o2_bank1_voltage": {
+      "uuid":     "A125D2BC-CD64-4EB1-9735-BB01379BEACD",
+      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x19"],
+      "results": {
+        "postcat_o2_bank1_voltage": {
+          "uuid":       "A4D1DF6B-069E-4351-AC79-0E8407E34E92",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "factor_a":   0.004887
+        }
+      }
+    },
+    "postcat_o2_bank2_voltage": {
+      "uuid":     "03AA98C9-072C-4AC6-8BCF-C19584B933C0",
+      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x1a"],
+      "results": {
+        "postcat_o2_bank2_voltage": {
+          "uuid":       "0B3F8335-002A-4B44-BA1A-253C97660A1A",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "factor_a":   0.004887
+        }
+      }
+    },
+    "amm_voltage": {
+      "uuid":     "CE7AA377-A1FF-4B40-8EFF-08BF2E51BF30",
+      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x06"],
+      "results": {
+        "amm_voltage": {
+          "uuid":       "C5C90257-9690-4921-A931-F7952610E962",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "factor_a":   0.004887
+        }
+      }
+    },
+    "mdk_pot1_voltage": {
+      "uuid":     "597CA152-A327-4F77-A0D6-2956F6E07477",
+      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x0a"],
+      "results": {
+        "mdk_pot1_voltage": {
+          "uuid":       "D05487C2-FB66-4F12-9EDD-A957A9D4DC18",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "factor_a":   0.004887
+        }
+      }
+    },
+    "mdk_pot2_voltage": {
+      "uuid":     "35BB3650-3381-4D03-9745-E7367A0B8EB1",
+      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x0b"],
+      "results": {
+        "mdk_pot2_voltage": {
+          "uuid":       "F2355E69-57B1-49D0-ABF3-3DE476DE78AD",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "factor_a":   0.004887
+        }
+      }
     }
   }
 }
