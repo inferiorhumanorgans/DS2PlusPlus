@@ -149,11 +149,20 @@ namespace DS2PlusPlus {
     DS2Response ControlUnit::parseOperation(const QString &name, const DS2PacketPtr packet)
     {
         const OperationPtr theOp = (_operations.value(name));
+
+        if (theOp.isNull()) {
+            throw std::invalid_argument(qPrintable(QString("Operation '%1' could not be found in ECU %2").arg(name).arg(_uuid)));
+        }
+
         return parseOperation(theOp, packet);
     }
 
     DS2Response ControlUnit::parseOperation(const OperationPtr theOp, const DS2PacketPtr packet)
     {
+        if (theOp.isNull()) {
+            throw std::invalid_argument(qPrintable(QString("parseOperation requires a valid operation...")));
+        }
+
         QTextStream qOut(stdout);
         QTextStream qErr(stderr);
 
