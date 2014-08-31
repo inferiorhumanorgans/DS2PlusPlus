@@ -177,6 +177,16 @@ namespace DS2PlusPlus {
             }
             if (result.isType("byte")) {
                 ret.insert(result.name(), resultByteToVariant(packet, result));
+            } else if (result.isType("short")) {
+                unsigned char bytes[2];
+                bytes[0] = packet->data().at(result.startPosition());
+                bytes[1] = packet->data().at(result.startPosition() + 1);
+                quint16 ourNumber = (bytes[1] << 8) | bytes[0];
+                if (result.factorA() != 0.0) {
+                    ourNumber *= result.factorA();
+                }
+
+                ret.insert(result.name(), QVariant(ourNumber + result.factorB()));
             } else if (result.isType("hex_string")) {
                 ret.insert(result.name(), resultHexStringToVariant(packet, result));
             } else if (result.isType("string")) {
