@@ -703,7 +703,8 @@ namespace DS2PlusPlus {
             Json::Reader jsReader;
             bool jsonParseSuccess = jsReader.parse(jsonFile.readAll().constData(), jsRoot, false);
             if (!jsonParseSuccess) {
-                qErr << endl << "\tError parsing " << it.fileName() << ": (jsoncpp)" << endl << endl;
+                qErr << endl << "\tError parsing " << it.fileName() << ": (jsoncpp)" << endl;
+                qErr << jsReader.getFormattedErrorMessages().c_str() << endl << endl;
                 continue;
             }
 
