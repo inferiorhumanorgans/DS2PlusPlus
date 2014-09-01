@@ -64,6 +64,12 @@ namespace DS2PlusPlus
     typedef QSharedPointer<DS2Packet> DS2PacketPtr;
 }
 
+namespace Json {
+    class Value;
+};
+const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse);
+const QString DS2ResponseToString(const DS2PlusPlus::DS2Response &aResponse);
+
 QDebug operator << (QDebug d, const DS2PlusPlus::DS2Packet &packet);
 
 #endif // DS2PACKET_H

@@ -1,3 +1,5 @@
+#include <json/json.h>
+
 #include "ds2packet.h"
 
 namespace DS2PlusPlus {
@@ -67,6 +69,42 @@ namespace DS2PlusPlus {
 
         return ret;
     }
+}
+
+const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse)
+{
+    using namespace DS2PlusPlus;
+
+    Json::Value root;
+    foreach (const QString &key, aResponse.keys()) {
+        QStringList ourHier = key.split(".");
+
+        Json::Value *curVal = &root;
+        for (int i=0; i < ourHier.length() - 1; i++) {
+            QString tree = ourHier.at(i);
+            if ((*curVal)[qPrintable(tree)].isNull()) {
+                (*curVal)[qPrintable(tree)] = Json::Value::Value();
+            }
+            curVal = &(*curVal)[qPrintable(tree)];
+        }
+        QVariant ourVal = aResponse.value(key);
+        if (ourVal.type() == QMetaType::QString) {
+            (*curVal)[qPrintable(ourHier.last())] = Json::Value::Value(qPrintable(ourVal.toString()));
+        } else if (ourVal.type() == QMetaType::Double) {
+            (*curVal)[qPrintable(ourHier.last())] = Json::Value::Value(ourVal.toDouble());
+        }
+    }
+
+
+    return new Json::Value(root);
+}
+
+const QString DS2ResponseToString(const DS2PlusPlus::DS2Response &aResponse)
+{
+    const Json::Value *ourJson = DS2ResponseToJson(aResponse);
+    std::string ourStr = ourJson->toStyledString();
+    delete ourJson;
+    return QString(ourStr.c_str());
 }
 
 QDebug operator << (QDebug d, const DS2PlusPlus::DS2Packet &packet)
