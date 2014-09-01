@@ -63,7 +63,7 @@
           "factor_a":   null,
           "factor_b":   null
         },
-        "mfr_week": {
+        "build_date.week": {
           "uuid":       "2616F91E-B025-48AA-9C6D-DB0BBB246926",
           "type":       "byte",
           "display":    "hex_int",
@@ -73,7 +73,7 @@
           "factor_a":   null,
           "factor_b":   null
         },
-        "mfr_year": {
+        "build_date.year": {
           "uuid":       "95AB7D6C-7049-4D96-92AD-9BD5A531888F",
           "type":       "byte",
           "display":    "hex_int",
