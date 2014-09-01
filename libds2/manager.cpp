@@ -587,7 +587,7 @@ namespace DS2PlusPlus {
         resultRecord.setValue(resultRecord.indexOf("factor_b"),     ourResult["factor_b"].toDouble());
 
         QJsonDocument ourValuesDoc(ourResult["levels"].toObject());
-        resultRecord.setValue(resultRecord.indexOf("levels"),       QString(ourValuesDoc.toJson()));
+        resultRecord.setValue(resultRecord.indexOf("levels"),       QString(ourValuesDoc.toJson(QJsonDocument::Compact)));
 
         if (!aResultsModel->insertRecord(-1, resultRecord)) {
             qDebug() << "insertResultRecord failed: " << aResultsModel->lastError() << endl;
