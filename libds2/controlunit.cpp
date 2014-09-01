@@ -49,7 +49,7 @@ namespace DS2PlusPlus {
         QSqlTableModel *modulesTable = _manager->modulesTable();
 
         QString parent_id = aUuid;
-        // Add a find root UUID method to dbm
+        // Add a "find root UUID" method to dbm
         while (!parent_id.isEmpty()) {
             QHash<QString, QVariant> theRecord = _manager->findModuleRecordByUuid(parent_id);
             if (theRecord.isEmpty()) {
