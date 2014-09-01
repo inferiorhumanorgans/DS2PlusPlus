@@ -1,9 +1,6 @@
-#include <iostream>
-
 #include <QDebug>
 #include <QCommandLineParser>
 #include <QSharedPointer>
-#include <QJsonDocument>
 
 #include <ds2packet.h>
 #include <manager.h>
@@ -58,7 +55,7 @@ void DataCollection::run()
             ecuAddress = ecuString.toUShort(&ok, 10);
         }
         if (!ok) {
-            std::cerr << "Please specify a valid positive integer for the ECU address." << std::endl;
+            qErr << "Please specify a valid positive integer for the ECU address." << endl;
             emit finished();
             return;
         }
@@ -103,14 +100,7 @@ void DataCollection::run()
         if (!autoDetect.isNull()) {
             qOut << QString("At 0x%1 we think we have: %2").arg(ecuAddress, 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
             DS2Response ourResponse = autoDetect->executeOperation("identify");
-            QVariantMap ughQt;
-            foreach (const QString &key, ourResponse.keys()) {
-                ughQt.insert(key, ourResponse.value(key));
-            }
-
-            QJsonObject ourObj = QJsonObject::fromVariantMap(ughQt);
-            QJsonDocument ourDoc(ourObj);
-            qOut << "Identity:" << endl << QString(ourDoc.toJson()) << endl;
+            qOut << "Identity:" << endl << DS2ResponseToString(ourResponse) << endl;
         } else {
             qOut << "Couldn't find a match";
         }
