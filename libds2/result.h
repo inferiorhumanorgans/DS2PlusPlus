@@ -38,13 +38,8 @@ namespace DS2PlusPlus {
         void setFactorB(double aFactor);
         double factorB() const;
 
-        void setYesValue(const QString &aString);
-        const QString yesValue() const;
-
-        void setNoValue(const QString &aString);
-        const QString noValue() const;
-
-        const QString stringForBoolean(bool aBoolean) const;
+        const QString stringForLevel(quint8 aLevel) const;
+        void setLevels(QHash<QString, QString> someLevels);
 
     protected:
         QString _uuid;
@@ -56,7 +51,7 @@ namespace DS2PlusPlus {
         int _mask;
         float _factorA;
         float _factorB;
-        QString _yesValue, _noValue;
+        QHash<QString, QString> _levels;
     };
 }
 

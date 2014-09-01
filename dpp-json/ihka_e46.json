@@ -25,8 +25,10 @@
           "start_pos":   2,
           "length":      1,
           "mask":       "0x10",
-          "yes_value":  "manual",
-          "no_value":   "auto"
+          "levels": {
+            "yes": "manual",
+            "no":  "auto"
+          }
         },
         "fan_speed": {
           "uuid":       "F06FD78E-3228-4DE6-8924-96608B77969F",
@@ -43,8 +45,10 @@
           "start_pos":   2,
           "length":      1,
           "mask":       "0x08",
-          "yes_value":  "on",
-          "no_value":   "off"
+          "levels": {
+            "yes": "on",
+            "no":  "off"
+          }
         },
         "air_conditioning": {
           "uuid":       "E5AEA135-01BE-4016-98BA-282A0D54E589",
@@ -53,8 +57,10 @@
           "start_pos":  1,
           "length":     1,
           "mask":       "0x80",
-          "yes_value":  "on",
-          "no_value":   "off"
+          "levels": {
+            "yes": "on",
+            "no":  "off"
+          }
         },
         "rear_defroster": {
           "uuid":       "E061817B-4C52-42EC-9FE8-37ABEE0A2B9F",
@@ -63,8 +69,10 @@
           "start_pos":   1,
           "length":      1,
           "mask":       "0x40",
-          "yes_value":  "on",
-          "no_value":   "off"
+          "levels": {
+            "yes": "on",
+            "no":  "off"
+          }
         },
         "temperature": {
           "uuid":       "CB9C34EE-0D24-456F-A2D0-D508D9F845C6",

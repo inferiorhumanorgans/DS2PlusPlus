@@ -8,6 +8,9 @@
 
 #include <QSerialPort>
 
+#include <QJsonDocument>
+#include <QJsonParseError>
+
 #include "operation.h"
 #include "controlunit.h"
 #include "manager.h"
@@ -121,8 +124,24 @@ namespace DS2PlusPlus {
                         result.setMask(resultRecord.value(resultRecord.indexOf("mask")).toString());
                         result.setFactorA(resultRecord.value(resultRecord.indexOf("factor_a")).toDouble());
                         result.setFactorB(resultRecord.value(resultRecord.indexOf("factor_b")).toDouble());
-                        result.setYesValue(resultRecord.value(resultRecord.indexOf("yes_value")).toString());
-                        result.setNoValue(resultRecord.value(resultRecord.indexOf("no_value")).toString());
+
+
+                        QJsonParseError jsonError;
+                        QHash<QString, QString> ourLevels;
+                        QByteArray jsonByteArray(qPrintable(resultRecord.value(resultRecord.indexOf("levels")).toString()));
+                        QJsonDocument levelsDoc = QJsonDocument::fromJson(jsonByteArray, &jsonError);
+                        QJsonObject ourLevelsJson = levelsDoc.object();
+
+                        QJsonObject::Iterator levelsIterator = ourLevelsJson.begin();
+                        while (levelsIterator != ourLevelsJson.end()) {
+                            QJsonValue level = levelsIterator.value();
+                            if (level.isString()) {
+                                ourLevels.insert(levelsIterator.key(), levelsIterator.value().toString());
+                            }
+                            levelsIterator++;
+                        }
+
+                        result.setLevels(ourLevels);
 
                         //qDebug() << "\t\tAdding result: " << result.name;
                         op->insertResult(result.name(), result);
@@ -213,7 +232,7 @@ namespace DS2PlusPlus {
                 unsigned char byte = packet->data().at(result.startPosition());
                 bool condition = ((byte & result.mask()) > 0);
                 if (result.displayFormat() == "string") {
-                    ret.insert(result.name(), QVariant(result.stringForBoolean(condition)));
+                    ret.insert(result.name(), QVariant(result.stringForLevel(condition)));
                 } else if (result.displayFormat() == "raw") {
                     ret.insert(result.name(), QVariant(condition));
                 }
@@ -296,6 +315,8 @@ namespace DS2PlusPlus {
         } else if (aResult.displayFormat() == "float") {
             double value = (byte * aResult.factorA()) + aResult.factorB();
             return QVariant(value);
+        } else if (aResult.displayFormat() == "enum") {
+            return QVariant(aResult.stringForLevel(byte));
         } else {
             QString ourError = QObject::tr("Unknown display format for byte type: %1").arg(aResult.displayFormat());
             throw std::invalid_argument(qPrintable(ourError));

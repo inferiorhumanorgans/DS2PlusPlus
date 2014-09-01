@@ -585,8 +585,9 @@ namespace DS2PlusPlus {
         resultRecord.setValue(resultRecord.indexOf("mask"),         ourResult["mask"].toString());
         resultRecord.setValue(resultRecord.indexOf("factor_a"),     ourResult["factor_a"].toDouble());
         resultRecord.setValue(resultRecord.indexOf("factor_b"),     ourResult["factor_b"].toDouble());
-        resultRecord.setValue(resultRecord.indexOf("yes_value"),    ourResult["yes_value"].toString());
-        resultRecord.setValue(resultRecord.indexOf("no_value"),     ourResult["no_value"].toString());
+
+        QJsonDocument ourValuesDoc(ourResult["levels"].toObject());
+        resultRecord.setValue(resultRecord.indexOf("levels"),       QString(ourValuesDoc.toJson()));
 
         if (!aResultsModel->insertRecord(-1, resultRecord)) {
             qDebug() << "insertResultRecord failed: " << aResultsModel->lastError() << endl;
@@ -658,8 +659,7 @@ namespace DS2PlusPlus {
                                       "mask         INTEGER,\n"                 \
                                       "factor_a     NUMERIC,\n"                 \
                                       "factor_b     NUMERIC,\n"                 \
-                                      "yes_value    VARCHAR,\n"                 \
-                                      "no_value     VARCHAR\n"                  \
+                                      "levels       VARCHAR\n"                 \
                                       ");"                                      \
                                   );
             if (!ret) {

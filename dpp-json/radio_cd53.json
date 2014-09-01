@@ -18,14 +18,16 @@
       "uuid":     "4EEDB33C-F8F6-4E17-B75D-7798A0BAC876",
       "command":  ["0x0b"],
       "results": {
-        "powered": { // This is bogus, ignore.
+        "radio_power": { // This is bogus, ignore.
           "uuid":       "7C3A04B6-9A2F-47A4-ACFF-B7490CF0C3E0",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  2,
           "length":     1,
-          "yes_value":  "powered on",
-          "no_value":   "turned off"
+          "levels": {
+            "yes": "powered on",
+            "no":  "turned off"
+          }
         }
       }
     }

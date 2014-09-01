@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <QDebug>
 
 #include "result.h"
@@ -106,28 +108,51 @@ namespace DS2PlusPlus {
         return _factorB;
     }
 
-    void Result::setYesValue(const QString &aString)
+    void Result::setLevels(QHash<QString, QString> someLevels)
     {
-        _yesValue = aString;
+        _levels = someLevels;
     }
 
-    const QString Result::yesValue() const
+    const QString Result::stringForLevel(quint8 aLevel) const
     {
-        return _yesValue;
-    }
+        // Boolean
+        if (_levels.contains("yes") and _levels.contains("no") and _levels.count() == 2) {
+                return (aLevel == true) ? _levels.value("yes") : _levels.value("no");
+        }
 
-    void Result::setNoValue(const QString &aString)
-    {
-        _noValue = aString;
-    }
+        qint32 ourLevelCount = 0;
+        QStringList ourLevels;
+        for (QHash<QString, QString>::const_iterator it = _levels.begin(); it != _levels.end(); ++it) {
+            if ((it.key() == "else") or (it.key() == "all")) {
+                continue;
+            }
 
-    const QString Result::noValue() const
-    {
-        return _noValue;
-    }
+            ourLevelCount++;
 
-    const QString Result::stringForBoolean(bool aBoolean) const
-    {
-        return aBoolean ? _yesValue : _noValue;
+            bool ok;
+            quint8 mask = it.key().toUShort(&ok, 16);
+
+            if (!ok) {
+                throw std::invalid_argument("Invalid mask found");
+            }
+
+            if ((aLevel & mask) > 0) {
+                ourLevels.append(it.value());
+            }
+        }
+
+        if ((ourLevels.isEmpty()) and (_levels.contains("else"))) {
+            return _levels.value("else");
+        }
+
+        if (ourLevels.isEmpty()) {
+            return QString::null;
+        }
+
+        if ((ourLevels.count() == ourLevelCount) and _levels.contains("all")) {
+            return _levels.value("all");
+        }
+
+        return ourLevels.join(",");
     }
 }
