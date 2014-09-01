@@ -629,12 +629,12 @@ namespace DS2PlusPlus {
             qDebug() << "Need to create operations table";
             QSqlQuery query(_db);
             bool ret = query.exec("" \
-                                  "CREATE TABLE operations (\n"              \
+                                  "CREATE TABLE operations (\n"                          \
                                       "uuid      VARCHAR UNIQUE NOT NULL PRIMARY KEY,\n" \
-                                      "module_id VARCHAR NOT NULL,\n"        \
-                                      "name      VARCHAR NOT NULL,\n"        \
-                                      "command   VARCHAR,\n"                 \
-                                      "parent_id VARCHAR,\n"                  \
+                                      "module_id VARCHAR NOT NULL,\n"                    \
+                                      "name      VARCHAR NOT NULL,\n"                    \
+                                      "command   VARCHAR,\n"                             \
+                                      "parent_id VARCHAR,\n"                             \
                                       "CHECK ((CASE WHEN command IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1)" \
                                       ");"                                   \
                                  );
@@ -659,7 +659,7 @@ namespace DS2PlusPlus {
                                       "mask         INTEGER,\n"                 \
                                       "factor_a     NUMERIC,\n"                 \
                                       "factor_b     NUMERIC,\n"                 \
-                                      "levels       VARCHAR\n"                 \
+                                      "levels       VARCHAR\n"                  \
                                       ");"                                      \
                                   );
             if (!ret) {
