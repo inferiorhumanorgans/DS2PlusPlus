@@ -80,21 +80,52 @@ const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse)
         QStringList ourHier = key.split(".");
 
         Json::Value *curVal = &root;
-        for (int i=0; i < ourHier.length() - 1; i++) {
-            QString tree = ourHier.at(i);
-            if ((*curVal)[qPrintable(tree)].isNull()) {
-                (*curVal)[qPrintable(tree)] = Json::Value::Value();
-            }
-            curVal = &(*curVal)[qPrintable(tree)];
-        }
-        QVariant ourVal = aResponse.value(key);
-        if (ourVal.type() == QMetaType::QString) {
-            (*curVal)[qPrintable(ourHier.last())] = Json::Value::Value(qPrintable(ourVal.toString()));
-        } else if (ourVal.type() == QMetaType::Double) {
-            (*curVal)[qPrintable(ourHier.last())] = Json::Value::Value(ourVal.toDouble());
-        }
-    }
 
+        for (int i=0; i < ourHier.length() - 1; i++) {
+            QString currentKey = ourHier.at(i);
+            QString nextKey;
+            bool currentType = false, nextType = false;
+            unsigned int curIdx = currentKey.toUInt(&currentType);
+            unsigned int nxtIdx = -1;
+
+            if (i < (ourHier.length() - 2)) {
+                nextKey = ourHier.at(i+1);
+                nxtIdx = nextKey.toUInt(&nextType);
+            }
+
+            if ((*curVal).isArray()) {
+                bool isNull = ((*curVal)[curIdx].isNull());
+                if (isNull) {
+                    (*curVal)[curIdx] = nextType ? Json::Value(Json::arrayValue) : Json::Value(Json::objectValue);
+                }
+                curVal = &(*curVal)[curIdx];
+            } else {
+                bool isNull = ((*curVal)[qPrintable(currentKey)].isNull());
+                if (isNull) {
+                    (*curVal)[qPrintable(currentKey)] = nextType ? Json::Value(Json::arrayValue) : Json::Value(Json::objectValue);
+                }
+                curVal = &(*curVal)[qPrintable(currentKey)];
+            }
+        }
+
+        Json::Value jsonValue;
+        QVariant variantValue = aResponse.value(key);
+
+        if (variantValue.type() == QMetaType::QString) {
+            QString ourString = variantValue.toString();
+
+            if (ourString.isEmpty()) {
+                jsonValue = Json::nullValue;
+            } else {
+                jsonValue = Json::Value::Value(qPrintable(variantValue.toString()));
+            }
+        } else if (variantValue.type() == QMetaType::Double) {
+            jsonValue  = Json::Value::Value(variantValue.toDouble());
+        }
+
+        (*curVal)[qPrintable(ourHier.last())] = jsonValue;
+
+    }
 
     return new Json::Value(root);
 }
