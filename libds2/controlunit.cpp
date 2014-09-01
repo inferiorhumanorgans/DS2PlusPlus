@@ -11,6 +11,8 @@
 #include <QJsonDocument>
 #include <QJsonParseError>
 
+#include <QtEndian>
+
 #include "operation.h"
 #include "controlunit.h"
 #include "manager.h"
@@ -197,10 +199,10 @@ namespace DS2PlusPlus {
             if (result.isType("byte")) {
                 ret.insert(result.name(), resultByteToVariant(packet, result));
             } else if (result.isType("short")) {
-                unsigned char bytes[2];
-                bytes[0] = packet->data().at(result.startPosition());
-                bytes[1] = packet->data().at(result.startPosition() + 1);
-                quint16 ourNumber = (bytes[1] << 8) | bytes[0];
+                quint16 ourNumber;
+                memcpy(&ourNumber, packet->data().mid(result.startPosition(), result.length()), qMin((size_t)result.length(), sizeof(quint16)));
+                ourNumber = qFromLittleEndian(ourNumber);
+
                 if (result.factorA() != 0.0) {
                     ourNumber *= result.factorA();
                 }
