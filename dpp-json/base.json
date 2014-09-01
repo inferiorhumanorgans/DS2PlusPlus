@@ -4,10 +4,8 @@
   "file_mtime":   "Sun Aug 24 22:42:59 PDT 2014",
   "file_type":    "ecu",
   "uuid":         "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
-  "address":      null,
-  "family":       null,
   "name":         "Basic module functionality",
-  "parent_id":    null,
+  "parent_id":     null,
   "operations": {
     "identify":  {
       "uuid":     "023A31A5-AEA7-48D5-955D-40096C55C1C5",
@@ -18,90 +16,63 @@
           "type":       "hex_string",
           "display":    "int",
           "start_pos":  1,
-          "length":     4,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     4
         },
         "hardware_number": {
           "uuid":       "F44D4D7F-D65D-4F40-8549-278A8B20DC31",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  5,
-          "length":     1,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     1
         },
         "coding_index": {
           "uuid":       "83B702FA-CC6B-4EFB-9DAA-D876BDB68E3B",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  6,
-          "length":     1,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     1
         },
         "diag_index": {
           "uuid":       "AF92EF29-0562-49CB-81AD-EE3A86EDD8DC",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  7,
-          "length":     1,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     1
         },
         "bus_index": {
           "uuid":       "7F076DC4-92E1-4153-A229-8264B0592FFD",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  8,
-          "length":     1,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     1
         },
         "build_date.week": {
           "uuid":       "2616F91E-B025-48AA-9C6D-DB0BBB246926",
           "type":       "byte",
           "display":    "hex_int",
           "start_pos":  9,
-          "length":     1,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     1
         },
         "build_date.year": {
           "uuid":       "95AB7D6C-7049-4D96-92AD-9BD5A531888F",
           "type":       "byte",
           "display":    "hex_int",
           "start_pos":  10,
-          "length":     1,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     1
         },
         "supplier": {
           "uuid":       "6CE02228-6E6C-4002-8E5C-66FB6F795138",
           "type":       "byte",
           "display":    "string_table:6D084F33-7265-43E6-84F4-28F40D5A27A6",
           "start_pos":  11,
-          "length":     1,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     1
         },
         "software_number": {
           "uuid":       "056ECDA3-02C5-47B0-B374-E815704FA70A",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  12,
-          "length":     1,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     1
         }
       }
     }

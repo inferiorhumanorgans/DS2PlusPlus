@@ -24,91 +24,63 @@
           "type":       "string",
           "display":    "int",
           "start_pos":  1,
-          "length":     7,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     7
         },
         "hardware_number": {
           "uuid":       "E6B05454-6ECE-418C-9A33-6CFB00BFF239",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  8,
-          "length":     2,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     2
         },
         "coding_index": {
           "uuid":       "FABDC1F7-5645-40B8-9D71-0F536F4DA97A",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  10,
-          "length":     2,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     2
         },
         "diag_index": {
           "uuid":       "B7809A77-7BE5-4B52-968A-F7831FCA9E19",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  12,
-          "length":     2,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     2
         },
         "bus_index": {
           "uuid":       "A2E55EC3-F12B-4606-9315-0900943C75B1",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  14,
-          "length":     2,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     2
         },
         "build_date.week": {
           "uuid":       "665C0F3F-50BA-43B8-9826-BF68836456E4",
           "type":       "string",
           "display":    "int",
           "start_pos":  16,
-          "length":     2,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     2
         },
         "build_date.year": {
           "uuid":       "0E0B6392-CF6E-4777-9D07-59E2971A10E8",
           "type":       "string",
           "display":    "int",
           "start_pos":  12,
-          "length":     2,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     2
         },
         "supplier": {
           "uuid":       "E08EBE54-80FF-42F5-847E-A4EDF5A76A93",
           "type":       "string",
           "display":    "string",
           "start_pos":  20,
-          "length":     6,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null,
-          "lookup":     "ecu_suppliers"
+          "length":     6
         },
         "software_number": {
           "uuid":       "FBDFE1BC-4F5C-4C07-BFB2-01ABBBF57400",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  26,
-          "length":     2,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     2
         }
       }
     },

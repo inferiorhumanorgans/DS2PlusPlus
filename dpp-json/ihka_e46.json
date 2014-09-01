@@ -35,8 +35,7 @@
           "type":        "byte",
           "display":     "raw",
           "start_pos":   4,
-          "length":      1,
-          "mask":        null
+          "length":      1
         },
         "mode.front_defrost": {
           "uuid":       "E640C8C9-3B42-483D-9BA1-13B52BF639E3",

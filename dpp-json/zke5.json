@@ -23,10 +23,7 @@
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  5,
-          "length":     1,
-          "mask":       null,
-          "factor_a":   null,
-          "factor_b":   null
+          "length":     1
         }
       }
     },
