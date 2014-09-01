@@ -10,6 +10,7 @@
 
 #include <QJsonDocument>
 #include <QJsonParseError>
+#include <QJsonObject>
 
 #include <QtEndian>
 

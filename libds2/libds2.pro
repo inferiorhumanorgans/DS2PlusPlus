@@ -18,14 +18,16 @@ SOURCES += \
            controlunit.cpp \
            operation.cpp \
            result.cpp \
-           manager.cpp
+           manager.cpp \
+    dpp_v1_parser.cpp
 
 HEADERS +=\
            ds2packet.h \
            operation.h \
            result.h \
            controlunit.h \
-           manager.h
+           manager.h \
+    dpp_v1_parser.h
 
 unix {
     target.path = /usr/lib

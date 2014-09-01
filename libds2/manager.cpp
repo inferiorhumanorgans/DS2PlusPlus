@@ -15,16 +15,11 @@
 #include <QSqlRecord>
 #include <QSqlError>
 
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonParseError>
-
 #include <QSerialPort>
 
-#include <json/json.h>
-
 #include "manager.h"
+
+#include "dpp_v1_parser.h"
 
 void waitForThisManyBytes(QSerialPort &aPort, qint64 someNumberOfBytes)
 {
@@ -486,119 +481,12 @@ namespace DS2PlusPlus {
         return false;
     }
 
-    bool Manager::parseOperationJson(const QJsonObject::ConstIterator &operationIt, QJsonObject moduleJSON, QSharedPointer<QSqlTableModel> &operationsModel)
+    bool Manager::removeStringTableByUuid(const QString &aUuid)
     {
-        QJsonObject ourOperation = operationIt.value().toObject();
-        QSqlRecord operationRecord = operationsModel->record();
-
-        QString uuid(ourOperation["uuid"].toString());
-        QString module_id(moduleJSON["uuid"].toString());
-        QString parent_id(ourOperation["parent"].toString());
-
-        if (knownUuids.contains(uuid)) {
-            QString errorString = QString("UUID collision w/ operation %1, your data is corrupt.").arg(operationIt.key());
-            throw std::invalid_argument(qPrintable(errorString));
-        } else {
-            knownUuids.insert(uuid);
-        }
-
-        QHash<QString, QVariant> oldOperation = findOperationByUuid(uuid);
-        if (!oldOperation.isEmpty()) {
-            if (getenv("DPP_TRACE")) {
-                qDebug() << "Operation exists, overwriting " << uuid;
-            }
-            removeOperationByUuid(uuid);
-        }
-
-        operationRecord.setValue(operationRecord.indexOf("uuid"), uuid);
-        operationRecord.setValue(operationRecord.indexOf("module_id"), module_id);
-        operationRecord.setValue(operationRecord.indexOf("name"), operationIt.key());
-        operationRecord.setValue(operationRecord.indexOf("parent_id"), parent_id);
-
-        QStringList commandByteList;
-        foreach (const QJsonValue &value, ourOperation["command"].toArray()) {
-            commandByteList.append(value.toString());
-        }
-
-        operationRecord.setValue(operationRecord.indexOf("command"), QVariant(commandByteList.join(",")));
-
-        QSharedPointer<QSqlTableModel> ourModel(operationsTable());
-        if (!ourModel->insertRecord(-1, operationRecord)) {
-            qDebug() << "insertOpsRecord failed: " << ourModel->lastError() << endl;
-            return false;
-        }
-        if (!ourModel->submitAll()) {
-            qDebug() << "submitOpsRecords Failed: " << ourModel->lastError() << endl;
-            return false;
-        }
-
-        quint64 resultsCount = 0;
-        QJsonObject ourResults = ourOperation["results"].toObject();
-        QJsonObject::ConstIterator resultIt = ourResults.begin();
-        QSharedPointer<QSqlTableModel> ourResultsModel(resultsTable());
-        while (resultIt != ourResults.end()) {
-            if (!parseResultJson(resultIt, ourOperation, ourResultsModel)) {
-                throw std::invalid_argument("Error parsing result JSON");
-            }
-            resultIt++;
-            resultsCount++;
-        }
-
-        qErr << "\tAdded operation '" << operationIt.key() << "'";
-        if (!parent_id.isEmpty()) {
-            qErr << ", inherits from: " << parent_id;
-        }
-        qErr << ", returns " << resultsCount << ((parent_id.isEmpty()) ? "" : " additional") << ((resultsCount == 1) ? " result" : " results") << endl;
-        return true;
-    }
-
-    bool Manager::parseResultJson(const QJsonObject::ConstIterator &aResultIterator, QJsonObject operationJSON, QSharedPointer<QSqlTableModel> &aResultsModel)
-    {
-        QJsonObject ourResult = aResultIterator.value().toObject();
-        QSqlRecord resultRecord = aResultsModel->record();
-
-        QString uuid(ourResult["uuid"].toString());
-
-        if (knownUuids.contains(uuid)) {
-            QString errorString = QString("UUID collision w/ result %1, named: %2, your data is corrupt.").arg(uuid).arg(aResultIterator.key());
-            throw std::invalid_argument(qPrintable(errorString));
-        } else {
-            knownUuids.insert(uuid);
-        }
-
-
-        QHash<QString, QVariant> oldResult = findResultByUuid(uuid);
-        if (!oldResult.isEmpty()) {
-            if (getenv("DPP_TRACE")) {
-                qDebug() << "Result exists, overwriting " << uuid;
-            }
-            removeResultByUuid(uuid);
-        }
-
-        resultRecord.setValue(resultRecord.indexOf("uuid"),         uuid);
-        resultRecord.setValue(resultRecord.indexOf("operation_id"), operationJSON["uuid"].toString());
-        resultRecord.setValue(resultRecord.indexOf("name"),         aResultIterator.key());
-        resultRecord.setValue(resultRecord.indexOf("type"),         ourResult["type"].toString());
-        resultRecord.setValue(resultRecord.indexOf("display"),      ourResult["display"].toString());
-        resultRecord.setValue(resultRecord.indexOf("start_pos"),    ourResult["start_pos"].toInt());
-        resultRecord.setValue(resultRecord.indexOf("length"),       ourResult["length"].toInt());
-        resultRecord.setValue(resultRecord.indexOf("mask"),         ourResult["mask"].toString());
-        resultRecord.setValue(resultRecord.indexOf("factor_a"),     ourResult["factor_a"].toDouble());
-        resultRecord.setValue(resultRecord.indexOf("factor_b"),     ourResult["factor_b"].toDouble());
-
-        QJsonDocument ourValuesDoc(ourResult["levels"].toObject());
-        resultRecord.setValue(resultRecord.indexOf("levels"),       QString(ourValuesDoc.toJson(QJsonDocument::Compact)));
-
-        if (!aResultsModel->insertRecord(-1, resultRecord)) {
-            qDebug() << "insertResultRecord failed: " << aResultsModel->lastError() << endl;
-            return false;
-        }
-        if (!aResultsModel->submitAll()) {
-            qDebug() << "submitResultRecords Failed: " << aResultsModel->lastError() << endl;
-            return false;
-        }
-
-        return true;
+        QSqlQuery removeThisStringTableQuery(_db);
+        removeThisStringTableQuery.prepare("DELETE FROM strings WHERE table_uuid = :uuid");
+        removeThisStringTableQuery.bindValue(":uuid", aUuid);
+        return removeThisStringTableQuery.exec();
     }
 
     void Manager::initializeDatabase()
@@ -688,54 +576,18 @@ namespace DS2PlusPlus {
 
         QStringList jsonGlob("*.json");
         QDirIterator it(jsonDir(), jsonGlob, QDir::Files | QDir::Readable | QDir::NoDotAndDotDot, QDirIterator::Subdirectories | QDirIterator::FollowSymlinks);
-        knownUuids.clear();
+
+        DPP_V1_Parser *parser = new DPP_V1_Parser(this);
         while (it.hasNext()) {
-            QJsonDocument jsonDoc;
             QFile jsonFile;
             QString path = it.next();
-            QJsonParseError jsonError;
 
-            qErr << "Parsing: " << it.fileName();
             jsonFile.setFileName(path);
             jsonFile.open(QIODevice::ReadOnly | QIODevice::Text);
-
-            Json::Value jsRoot;
-            Json::Reader jsReader;
-            bool jsonParseSuccess = jsReader.parse(jsonFile.readAll().constData(), jsRoot, false);
-            if (!jsonParseSuccess) {
-                qErr << endl << "\tError parsing " << it.fileName() << ": (jsoncpp)" << endl;
-                qErr << jsReader.getFormattedErrorMessages().c_str() << endl << endl;
-                continue;
-            }
-
-            // This is gross and we should migrate to jsoncpp wholly
-            jsonDoc = QJsonDocument::fromJson(jsRoot.toStyledString().c_str(), &jsonError);
+            parser->parseFile(it.fileName(), &jsonFile);
             jsonFile.close();
-
-            if (jsonError.error != QJsonParseError::NoError) {
-                qErr << endl << "\tError parsing " << it.fileName() << ": " <<jsonError.errorString() << endl << endl;
-                continue;
-            }
-
-            QString fileType = jsonDoc.object()["file_type"].toString();
-            QString uuid = jsonDoc.object()["uuid"].toString();
-
-            if (knownUuids.contains(uuid)) {
-                QString errorString = QString("UUID collision w/ this file @ %1").arg(uuid);
-                throw std::runtime_error(qPrintable(errorString));
-            } else {
-                knownUuids.insert(uuid);
-            }
-
-            qErr << " (" << uuid << ")" << endl;
-            if (fileType == "string_table") {
-                parseStringTableFile(jsonDoc.object());
-            } else if (fileType == "ecu") {
-                parseEcuFile(jsonDoc.object());
-            }
         }
-
-        knownUuids.clear();
+        delete parser;
     }
 
     QString Manager::findStringByTableAndNumber(const QString &aStringTable, int aNumber)
@@ -749,138 +601,5 @@ namespace DS2PlusPlus {
            return ourRecord.value(ourRecord.indexOf("string")).toString();
         }
         return QString::null;
-    }
-
-    void Manager::parseStringTableFile(const QJsonObject &aJsonObject)
-    {
-        QSharedPointer<QSqlTableModel> ourModel(stringTable());
-        QJsonObject stringJson = aJsonObject;
-
-        QString uuid(stringJson["uuid"].toString());
-        QString tableName(stringJson["table_name"].toString());
-
-        qErr << "\tFound table: '" << tableName << "'" << endl;
-
-        QSqlQuery removeThisStringTableQuery(_db);
-        removeThisStringTableQuery.prepare("DELETE FROM strings WHERE table_uuid = :uuid");
-        removeThisStringTableQuery.bindValue(":uuid", uuid);
-        removeThisStringTableQuery.exec();
-
-        QJsonObject ourStrings = stringJson["strings"].toObject();
-        QJsonObject::Iterator stringIterator = ourStrings.begin();
-
-        quint64 stringCount = 0;
-        while (stringIterator != ourStrings.end()) {
-            QJsonValue ourString = stringIterator.value();
-            QSqlRecord stringRecord = ourModel->record();
-            bool ok;
-            quint8 stringNumber = stringIterator.key().toUInt(&ok, 16);
-
-            stringRecord.setValue(stringRecord.indexOf("table_uuid"), uuid);
-            stringRecord.setValue(stringRecord.indexOf("table_name"), tableName);
-            stringRecord.setValue(stringRecord.indexOf("number"), stringNumber);
-            stringRecord.setValue(stringRecord.indexOf("string"), ourString.toString());
-
-            if (!ourModel->insertRecord(-1, stringRecord)) {
-                qDebug() << "insertRecord failed: " << ourModel->lastError();
-            }
-
-            if (!ourModel->submitAll()) {
-                QString exceptionString = QString("Saving the string table at UUID %1 failed: %2").arg(uuid).arg(ourModel->lastError().databaseText());
-                throw std::runtime_error(qPrintable(exceptionString));
-            }
-
-            stringIterator++;
-            stringCount++;
-        }
-        qErr << "\tTotal: " << stringCount << ((stringCount == 1) ? " string" : " strings") << endl << endl;
-    }
-
-    void Manager::parseEcuFile(const QJsonObject &aJsonObject)
-    {
-        QSharedPointer<QSqlTableModel> ourModel(modulesTable());
-        QJsonObject moduleJson = aJsonObject;
-
-        QString uuid(moduleJson["uuid"].toString());
-        QString name(moduleJson["name"].toString());
-        QString parent_id(moduleJson["parent_id"].toString());
-
-        QHash<QString, QVariant> oldModule = findModuleRecordByUuid(uuid);
-        if (!oldModule.isEmpty()) {
-            if (getenv("DPP_TRACE")) {
-                qDebug() << "\tModule exists, overwriting " << uuid;
-            }
-            removeModuleByUuid(uuid);
-        }
-
-        QSqlRecord moduleRecord = ourModel->record();
-        moduleRecord.setValue(moduleRecord.indexOf("uuid"), uuid);
-        moduleRecord.setValue(moduleRecord.indexOf("parent_id"), parent_id);
-        moduleRecord.setValue(moduleRecord.indexOf("file_version"), moduleJson["file_version"].toInt());
-        moduleRecord.setValue(moduleRecord.indexOf("dpp_version"), moduleJson["dpp_version"].toInt());
-        moduleRecord.setValue(moduleRecord.indexOf("name"), name);
-        moduleRecord.setValue(moduleRecord.indexOf("family"), moduleJson["family"].toString());
-
-        QString ecuAddressString = moduleJson["address"].toString();
-        if (!ecuAddressString.isEmpty()) {
-            bool ok;
-            quint8 ecuAddressNumber = ecuAddressString.toInt(&ok, 16);
-            if (ok) {
-                moduleRecord.setValue(moduleRecord.indexOf("address"), ecuAddressNumber);
-            } else {
-                QString errorString = QString("Error reading module JSON, invalid address %1").arg(ecuAddressString);
-                throw std::runtime_error(qPrintable(errorString));
-            }
-        } else {
-            moduleRecord.setValue(moduleRecord.indexOf("address"), "");
-        }
-
-        qErr << "\tFound module definition: " << name;
-        if (!ecuAddressString.isEmpty()) {
-            qErr << " at " << ecuAddressString;
-        }
-        qErr << endl;
-        if (!parent_id.isEmpty()) {
-            qErr << "\tInherits: " << parent_id << endl;
-        }
-
-        QJsonObject ourMatches = moduleJson["matches"].toObject();
-        QJsonObject::Iterator matchIterator = ourMatches.begin();
-        QStringList matchStringList;
-        QString matchString;
-        while (matchIterator != ourMatches.end()) {
-            QJsonValue match = matchIterator.value();
-            if (match.isString()) {
-                matchStringList.append(QString("%1=s:%2").arg(matchIterator.key()).arg(matchIterator.value().toString()));
-            } else {
-                matchStringList.append(QString("%1=i:%2").arg(matchIterator.key()).arg(matchIterator.value().toInt()));
-            }
-            matchIterator++;
-        }
-        matchString = matchStringList.join(";");
-        moduleRecord.setValue(moduleRecord.indexOf("matches"), matchString);
-
-        quint64 operationsCount = 0;
-        QJsonObject ourOperations = moduleJson["operations"].toObject();
-        QJsonObject::Iterator operationIterator = ourOperations.begin();
-        QSharedPointer<QSqlTableModel> ourOperationsTable(operationsTable());
-        while (operationIterator != ourOperations.end()) {
-            if (!parseOperationJson(operationIterator, moduleJson, ourOperationsTable)) {
-                throw std::invalid_argument("Error parsing the operation");
-            }
-            operationIterator++;
-            operationsCount++;
-        }
-        qErr << "\tTotal: " << operationsCount << " operations" << endl;
-
-        if (!ourModel->insertRecord(-1, moduleRecord)) {
-            qDebug() << "insertRecord failed: " << ourModel->lastError();
-        }
-
-        if (!ourModel->submitAll()) {
-            QString errorString = QString("Saving the module %1 failed: %2").arg(uuid).arg(ourModel->lastError().databaseText());
-            throw std::runtime_error(qPrintable(errorString));
-        }
-        qErr << endl;
     }
 }

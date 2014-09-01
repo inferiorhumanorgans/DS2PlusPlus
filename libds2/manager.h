@@ -8,10 +8,6 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 
-#include <QJsonObject>
-
-#include <QSet>
-
 #include "controlunit.h"
 
 class QSerialPort;
@@ -120,30 +116,14 @@ namespace DS2PlusPlus
          */
         bool removeResultByUuid(const QString &aUuid);
 
-        /*!
-         * \brief parseEcuFile
-         * \param aJsonObject
-         */
-        void parseEcuFile(const QJsonObject &aJsonObject);
-
-        /*!
-         * \brief parseStringTableFile
-         * \param aJsonObject
-         */
-        void parseStringTableFile(const QJsonObject &aJsonObject);
+        bool removeStringTableByUuid(const QString &aUuid);
 
     protected:
-        bool parseResultJson(const QJsonObject::ConstIterator &aResultIterator, QJsonObject operationJSON, QSharedPointer<QSqlTableModel> &aResultsModel);
-        bool parseOperationJson(const QJsonObject::ConstIterator &anOperationIterator, QJsonObject moduleJSON, QSharedPointer<QSqlTableModel> &anOperationsModel);
-
         QSqlDatabase _db;
         QString _dppDir;
         QString _serialPortPath;
         QSerialPort *_serialPort;
         QSharedPointer<QCommandLineParser> _cliParser;
-
-    private:
-        QSet<QString> knownUuids;
     };
 
     typedef QSharedPointer<Manager> ManagerPtr;
