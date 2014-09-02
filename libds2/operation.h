@@ -12,7 +12,7 @@ namespace DS2PlusPlus {
     class Operation
     {
     public:
-        Operation (const QString &aUuid, quint8 aControlUnitAddress, const QString &aName, const QString &aCommand);
+        Operation (const QString &aUuid, quint8 aControlUnitAddress, const QString &aName, const QByteArray &aCommand);
 
         const QString uuid() const;
         const QString moduleId() const;

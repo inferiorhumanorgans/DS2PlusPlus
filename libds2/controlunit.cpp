@@ -84,7 +84,7 @@ namespace DS2PlusPlus {
                 QString opName = opRecord.value(opRecord.indexOf("name")).toString();
                 QString opUuid = opRecord.value(opRecord.indexOf("uuid")).toString();
                 QString opModule = opRecord.value(opRecord.indexOf("module_id")).toString();
-                QString opCommand = opRecord.value(opRecord.indexOf("command")).toString();
+                QByteArray opCommand = opRecord.value(opRecord.indexOf("command")).toByteArray();
 
                 if (_operations.contains(opName)) {
                     if (getenv("DPP_TRACE")) {

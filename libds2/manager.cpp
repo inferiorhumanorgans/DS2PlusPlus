@@ -533,7 +533,7 @@ namespace DS2PlusPlus {
                                       "uuid      VARCHAR UNIQUE NOT NULL PRIMARY KEY,\n" \
                                       "module_id VARCHAR NOT NULL,\n"                    \
                                       "name      VARCHAR NOT NULL,\n"                    \
-                                      "command   VARCHAR,\n"                             \
+                                      "command   BLOB,\n"                                \
                                       "parent_id VARCHAR,\n"                             \
                                       "CHECK ((CASE WHEN command IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1)" \
                                       ");"                                   \

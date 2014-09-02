@@ -240,12 +240,18 @@ namespace DS2PlusPlus {
         operationRecord.setValue(operationRecord.indexOf("name"), operationIt.key().asCString());
         operationRecord.setValue(operationRecord.indexOf("parent_id"), parent_id);
 
-        QStringList commandByteList;
+        QByteArray commandByteList;
         for (Json::ArrayIndex i=0; i < ourOperation["command"].size(); i++) {
-            commandByteList.append(getQStringFromJson(ourOperation["command"][i]));
+            QString byteString(getQStringFromJson(ourOperation["command"][i]));
+            bool ok;
+            quint32 byte = byteString.toUShort(&ok, 16);
+            if (!ok or (byte > UCHAR_MAX)) {
+                throw std::invalid_argument("Invalid command byte");
+            }
+            commandByteList.append(static_cast<quint8>(byte));
         }
 
-        operationRecord.setValue(operationRecord.indexOf("command"), QVariant(commandByteList.join(",")));
+        operationRecord.setValue(operationRecord.indexOf("command"), QVariant(commandByteList));
 
         QSharedPointer<QSqlTableModel> ourModel(_manager->operationsTable());
         if (!ourModel->insertRecord(-1, operationRecord)) {
