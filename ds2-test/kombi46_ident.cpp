@@ -54,13 +54,13 @@ void KOMBI46_Ident::busIndex()
 void KOMBI46_Ident::mfrWeek()
 {
     QVariant expectedValue((quint8)25);
-    QCOMPARE(results.value("mfr_week"), expectedValue);
+    QCOMPARE(results.value("build_date.week"), expectedValue);
 }
 
 void KOMBI46_Ident::mfrYear()
 {
     QVariant expectedValue((quint8)0);
-    QCOMPARE(results.value("mfr_year"), expectedValue);
+    QCOMPARE(results.value("build_date.year"), expectedValue);
 }
 
 void KOMBI46_Ident::supplier()

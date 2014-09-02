@@ -44,14 +44,14 @@ void DME_MS420_Ident::busIndex()
 
 void DME_MS420_Ident::mfrWeek()
 {
-    QVariant expectedValue((quint8)27);
-    QCOMPARE(results.value("mfr_week"), expectedValue);
+    QVariant expectedValue(static_cast<quint8>(27));
+    QCOMPARE(results.value("build_date.week"), expectedValue);
 }
 
 void DME_MS420_Ident::mfrYear()
 {
-    QVariant expectedValue((quint8)0);
-    QCOMPARE(results.value("mfr_year"), expectedValue);
+    QVariant expectedValue(static_cast<quint8>(0));
+    QCOMPARE(results.value("build_date.year"), expectedValue);
 }
 
 void DME_MS420_Ident::supplier()

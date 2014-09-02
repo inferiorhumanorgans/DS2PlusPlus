@@ -14,28 +14,28 @@ DME_MS420_Status::DME_MS420_Status()
 void DME_MS420_Status::oilTemp()
 {
     QString expectedValue = QString::number(42.755400);
-    QString value = QString::number(results.value("oil_temp").toDouble());
+    QString value = QString::number(results.value("temp.motor_oil").toDouble());
     QCOMPARE(value, expectedValue);
 }
 
 void DME_MS420_Status::coolantTemp()
 {
     QString expectedValue = QString::number(45.0);
-    QString value = QString::number(results.value("coolant_temp").toDouble());
+    QString value = QString::number(results.value("temp.coolant").toDouble());
     QCOMPARE(value, expectedValue);
 }
 
 void DME_MS420_Status::intakeTemp()
 {
     QString expectedValue = QString::number(45.75);
-    QString value = QString::number(results.value("intake_temp").toDouble());
+    QString value = QString::number(results.value("temp.intake_air").toDouble());
     QCOMPARE(value, expectedValue);
 }
 
 void DME_MS420_Status::coolantOutletTemp()
 {
     QString expectedValue = QString::number(33.0);
-    QString value = QString::number(results.value("coolant_outlet_temp").toDouble());
+    QString value = QString::number(results.value("temp.coolant_outlet").toDouble());
     QCOMPARE(value, expectedValue);
 }
 
@@ -49,6 +49,6 @@ void DME_MS420_Status::ignitionAdvance()
 void DME_MS420_Status::batteryVoltage()
 {
     QString expectedValue = QString::number(11.92932);
-    QString value = QString::number(results.value("battery_voltage").toDouble());
+    QString value = QString::number(results.value("voltage.battery").toDouble());
     QCOMPARE(value, expectedValue);
 }
