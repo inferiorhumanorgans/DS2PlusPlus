@@ -102,7 +102,7 @@ namespace DS2PlusPlus {
                 throw std::runtime_error(qPrintable(errorString));
             }
         } else {
-            moduleRecord.setValue(moduleRecord.indexOf("address"), "");
+            moduleRecord.setValue(moduleRecord.indexOf("address"), QVariant(QString::null));
         }
 
         qErr << "\tFound module definition: " << name;
@@ -321,7 +321,11 @@ namespace DS2PlusPlus {
 
         Json::FastWriter writer;
         std::string levelsString = writer.write(ourResult["levels"]);
-        resultRecord.setValue(resultRecord.indexOf("levels"),       QString(levelsString.c_str()));
+        QString levelsQString = QString(levelsString.c_str()).trimmed();
+        if (levelsQString == "null") {
+            levelsQString = QString::null;
+        }
+        resultRecord.setValue(resultRecord.indexOf("levels"),       levelsQString);
 
         if (!aResultsModel->insertRecord(-1, resultRecord)) {
             qDebug() << "insertResultRecord failed: " << aResultsModel->lastError() << endl;
