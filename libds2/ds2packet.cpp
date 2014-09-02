@@ -16,7 +16,7 @@ namespace DS2PlusPlus {
 
     float DS2Packet::fetchFloat(quint16 aPosition, float aMultiplicativeFactor, int anAdditiveFactor) const
     {
-        return ((quint8)_data.at(aPosition) * aMultiplicativeFactor) + anAdditiveFactor;
+        return (static_cast<quint8>(_data.at(aPosition)) * aMultiplicativeFactor) + anAdditiveFactor;
     }
 
     QString DS2Packet::fetchString(quint16 aPosition, quint16 aLength) const
@@ -36,7 +36,7 @@ namespace DS2PlusPlus {
 
         unsigned char ourChecksum = 0;
         for (int i=0; i < ourData.length(); i++) {
-            ourChecksum ^= (unsigned char)ourData.at(i);
+            ourChecksum ^= static_cast<quint8>(ourData.at(i));
         }
 
         return ourChecksum;
@@ -111,7 +111,7 @@ const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse)
         Json::Value jsonValue;
         QVariant variantValue = aResponse.value(key);
 
-        if (variantValue.type() == QMetaType::QString) {
+        if (variantValue.type() == static_cast<QVariant::Type>(QMetaType::QString)) {
             QString ourString = variantValue.toString();
 
             if (ourString.isEmpty()) {
@@ -119,7 +119,7 @@ const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse)
             } else {
                 jsonValue = Json::Value::Value(qPrintable(variantValue.toString()));
             }
-        } else if (variantValue.type() == QMetaType::Double) {
+        } else if (variantValue.type() == static_cast<QVariant::Type>(QMetaType::Double)) {
             jsonValue  = Json::Value::Value(variantValue.toDouble());
         }
 
@@ -147,7 +147,7 @@ QDebug operator << (QDebug d, const DS2PlusPlus::DS2Packet &packet)
     QByteArray data = packet.data();
     QStringList dataStringList;
     for (int i=0; i < data.length(); i++) {
-        dataStringList.append(QString("0x%1").arg((unsigned char)data.at(i), 2, 16, zeroPadding));
+        dataStringList.append(QString("0x%1").arg(static_cast<quint8>(data.at(i)), 2, 16, zeroPadding));
     }
 
     QString checksumString = QString("0x%1").arg(packet.checksum(), 2, 16, zeroPadding);
