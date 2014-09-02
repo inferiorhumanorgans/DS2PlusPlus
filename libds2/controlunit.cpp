@@ -49,15 +49,12 @@ namespace DS2PlusPlus {
 
         _operations.clear();
 
-        QSqlTableModel *modulesTable = _manager->modulesTable();
-
         QString parent_id = aUuid;
         // Add a "find root UUID" method to dbm
         while (!parent_id.isEmpty()) {
             QHash<QString, QVariant> theRecord = _manager->findModuleRecordByUuid(parent_id);
             if (theRecord.isEmpty()) {
-                qDebug() << "Find parent failed: " << modulesTable->lastError();
-                delete modulesTable;
+                qDebug() << "Find parent failed";
                 throw std::runtime_error("Find parent failed");
             }
 
@@ -68,26 +65,10 @@ namespace DS2PlusPlus {
                 _address = theRecord.value("address").toChar().toLatin1();
                 _family = theRecord.value("family").toString();
                 _name = theRecord.value("name").toString();
-
-                QStringList matchList = theRecord.value("matches").toString().split(";");
-                foreach(const QString &match, matchList) {
-                    if (match.isEmpty()) {
-                        continue;
-                    }
-                    QStringList subMatches = match.split("=");
-                    QString key(subMatches.at(0));
-                    QString value(subMatches.at(1));
-                    if (value.startsWith("s:")) {
-                        _matches.insert(key, value.mid(2));
-                    } else if (value.startsWith("i:")) {
-                        _matches.insert(key, value.mid(2).toUInt());
-                    } else {
-                        QVariant ourMatchesVariant = theRecord.value("matches");
-                        delete modulesTable;
-                        QString errorString = QString("Invalid match string. String was: %1 / %2").arg(ourMatchesVariant.typeName()).arg(ourMatchesVariant.toString());
-                        throw std::invalid_argument(qPrintable(errorString));
-                    }
-                }
+                _part_number = theRecord.value("part_number").toULongLong();
+                _hardware_number = theRecord.value("hardware_num").toULongLong();
+                _software_number = theRecord.value("software_num").toULongLong();
+                _coding_index = theRecord.value("coding_index").toULongLong();
             }
 
             if (getenv("DPP_TRACE")) {
@@ -155,8 +136,6 @@ namespace DS2PlusPlus {
             }
             parent_id = theRecord.value("parent_id").toString();
         }
-
-        delete modulesTable;
     }
 
     DS2Response ControlUnit::executeOperation(const QString &name)
@@ -277,9 +256,20 @@ namespace DS2PlusPlus {
         return _operations;
     }
 
-    const QHash<QString, QVariant> ControlUnit::matchCriteria() const
-    {
-        return _matches;
+    quint64 ControlUnit::partNumber() const {
+        return _part_number;
+    }
+
+    quint64 ControlUnit::hardwareNumber() const {
+        return _hardware_number;
+    }
+
+    quint64 ControlUnit::softwareNumber() const {
+        return _software_number;
+    }
+
+    quint64 ControlUnit::codingIndex() const {
+        return _coding_index;
     }
 
     QVariant ControlUnit::resultByteToVariant(const DS2PacketPtr aPacket, const Result &aResult)

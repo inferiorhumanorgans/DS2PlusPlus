@@ -114,21 +114,33 @@ namespace DS2PlusPlus {
             qErr << "\tInherits: " << parent_id << endl;
         }
 
-        Json::Value ourMatches = moduleJson["matches"];
-        Json::ValueIterator matchIterator = ourMatches.begin();
-        QStringList matchStringList;
-        QString matchString;
-        while (matchIterator != ourMatches.end()) {
-            Json::Value match = *matchIterator;
-            if (match.isString()) {
-                matchStringList.append(QString("%1=s:%2").arg(matchIterator.key().asCString()).arg(getQStringFromJson(*matchIterator)));
-            } else {
-                matchStringList.append(QString("%1=i:%2").arg(matchIterator.key().asCString()).arg((*matchIterator).asInt()));
-            }
-            matchIterator++;
+        bool ok;
+
+        if (!moduleJson["part_number"].isNull()) {
+            quint64 part_number = moduleJson["part_number"].asUInt64();
+            moduleRecord.setValue(moduleRecord.indexOf("part_number"), part_number);
         }
-        matchString = matchStringList.join(";");
-        moduleRecord.setValue(moduleRecord.indexOf("matches"), matchString);
+
+        if (!moduleJson["hardware_number"].isNull()) {
+            quint64 hardware_number = QString(moduleJson["hardware_number"].asCString()).toULongLong(&ok, 16);
+            if (ok) {
+                moduleRecord.setValue(moduleRecord.indexOf("hardware_num"), hardware_number);
+            }
+        }
+
+        if (!moduleJson["software_number"].isNull()) {
+            quint64 software_number = QString(moduleJson["software_number"].asCString()).toULongLong(&ok, 16);
+            if (ok) {
+                moduleRecord.setValue(moduleRecord.indexOf("software_num"), software_number);
+            }
+        }
+
+        if (!moduleJson["coding_index"].isNull()) {
+            quint64 coding_index = QString(moduleJson["coding_index"].asCString()).toULongLong(&ok, 16);
+            if (ok) {
+                moduleRecord.setValue(moduleRecord.indexOf("coding_index"), coding_index);
+            }
+        }
 
         quint64 operationsCount = 0;
         Json::Value ourOperations = moduleJson["operations"];

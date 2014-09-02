@@ -8,11 +8,9 @@
   "family":       "RADIO",
   "name":         "BMW Business Radio CD53",
   "parent_id":    "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
-  "matches": {
-    "hardware_number": "0x44",
-    "software_number": "0x43",
-    "coding_index":    "0x01"
-  },
+  "hardware_number": "0x44",
+  "software_number": "0x43",
+  "coding_index":    "0x01",
   "operations": {
     "status":  {
       "uuid":     "4EEDB33C-F8F6-4E17-B75D-7798A0BAC876",

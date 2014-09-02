@@ -294,13 +294,15 @@ namespace DS2PlusPlus {
         ControlUnitPtr ret;
         QHash<QString, ControlUnitPtr > modules;
         QHash<QString, ControlUnitPtr >::Iterator moduleIt;
+        bool fullMatch = false;
+        QString ourKey;
 
         // TODO: use findAllModulesByAddress instead
         modules = findAllModules();
         for (moduleIt = modules.begin(); moduleIt != modules.end(); ++moduleIt) {
             ControlUnitPtr ecu(moduleIt.value());
 
-            if (ecu->matchCriteria().empty()) {
+            if (ecu->partNumber() == 0) {
                 continue;
             }
 
@@ -309,26 +311,33 @@ namespace DS2PlusPlus {
                 qDebug() << "Checking " << ecu->name();
             }
 
-            int success = 0;
-            QHash<QString, QVariant>::ConstIterator matchIt;
-            for (matchIt = ecu->matchCriteria().begin(); matchIt != ecu->matchCriteria().end(); ++matchIt) {
-                QVariant a = matchIt.value();
-                QVariant b = response.value(matchIt.key());
-                if (getenv("DPP_TRACE")) {
-                    qDebug() << "Comparing KEY: " << matchIt.key() << "A: " << a << " b: " << b;
-                }
-                success += (a == b) ? 1 : -1;
-            }
-            if (getenv("DPP_TRACE")) {
-                qDebug() << "\tFound:" << moduleIt.key()  << ": " << ecu->name() << " success: " << success << " matches: " << ecu->matchCriteria().count();
-            }
-            if (success == ecu->matchCriteria().count()) {
+            if (response.value("part_number").toULongLong() == ecu->partNumber()) {
+                fullMatch = true;
                 ret = ecu;
-                modules.remove(moduleIt.key());
-                break;
+                ourKey = moduleIt.key();
+
+                if (response.value("software_number").toULongLong() != ecu->softwareNumber()) {
+                    fullMatch = false;
+                    qDebug() << "Found a possible match, but sw !=";
+                }
+
+                if (response.value("hardware_number").toULongLong() != ecu->hardwareNumber()) {
+                    fullMatch = false;
+                    qDebug() << "Found a possible match, but hw !=";
+                }
+
+                if (response.value("coding_index").toULongLong() != ecu->codingIndex()) {
+                    fullMatch = false;
+                    qDebug() << "Found a possible match, but ci !=";
+                }
+
+                if (fullMatch == true) {
+                    break;
+                }
             }
         }
 
+        modules.remove(ourKey);
         modules.clear();
 
         return ret;
@@ -503,7 +512,10 @@ namespace DS2PlusPlus {
                                       "family       VARCHAR,\n"                 \
                                       "name         VARCHAR NOT NULL,\n"        \
                                       "parent_id    VARCHAR,\n"                 \
-                                      "matches      VARCHAR\n"                  \
+                                      "part_number  INTEGER,\n"                 \
+                                      "hardware_num INTEGER,\n"                 \
+                                      "software_num INTEGER,\n"                 \
+                                      "coding_index INTEGER\n"                  \
                                   ");"                                          \
                     );
 

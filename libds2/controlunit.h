@@ -97,11 +97,17 @@ namespace DS2PlusPlus {
 
         QHash<QString, OperationPtr> operations() const;
 
-        /*!
-         * \brief matches
-         * \return Returns a list of match criteria for this ECU
-         */
-        const QHash<QString, QVariant> matchCriteria() const;
+        quint64 partNumber() const;
+        Q_PROPERTY(quint64 partNumber MEMBER _part_number READ partNumber)
+
+        quint64 hardwareNumber() const;
+        Q_PROPERTY(quint64 hardwareNumber MEMBER _hardware_number READ hardwareNumber)
+
+        quint64 softwareNumber() const;
+        Q_PROPERTY(quint64 softwareNumber MEMBER _software_number READ softwareNumber)
+
+        quint64 codingIndex() const;
+        Q_PROPERTY(quint64 codingIndex MEMBER _coding_index READ codingIndex)
 
     protected:
         /*!
@@ -123,7 +129,7 @@ namespace DS2PlusPlus {
         QString _family;
         QString _name;
         QHash<QString, OperationPtr> _operations;
-        QHash<QString, QVariant> _matches;
+        quint64 _part_number, _hardware_number, _software_number, _coding_index;
 
         Manager *_manager;
     };

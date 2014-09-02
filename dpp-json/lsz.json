@@ -8,12 +8,10 @@
   "family":       "LSZ",
   "name":         "E46 LSZ",
   "parent_id":    "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
-  "matches": {
-    "hardware_number": "0x10",
-    "software_number": "0x20",
-    "coding_index":    "0x29",
-    "part_number":     6907950
-  },
+  "hardware_number": "0x10",
+  "software_number": "0x20",
+  "coding_index":    "0x29",
+  "part_number":     6907950,
   "operations": {
     "status":  {
       "uuid":     "CCF25AA6-D919-4632-83C8-81E0BDA2DD03",

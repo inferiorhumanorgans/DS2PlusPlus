@@ -8,12 +8,10 @@
   "family":       "DME",
   "name":         "MS 42.0",
   "parent_id":    "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
-  "matches": {
-    "part_number":      7500255,
-    "hardware_number": "0x15",
-    /*"software_number": "0xE3",*/ // This doesn't work on my car?
-    "coding_index":    "0x00"
-  },
+  "part_number":     7500255,
+  "hardware_number": "0x15",
+  "software_number": "0xE3", // This doesn't work on my car?
+  "coding_index":    "0x00",
   "operations": {
     "identify":  {
       "uuid":     "B8D66536-17F0-4494-91C5-B1817C548454",
