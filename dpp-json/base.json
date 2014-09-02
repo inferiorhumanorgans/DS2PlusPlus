@@ -1,15 +1,15 @@
 {
-  "dpp_version":  1,
-  "file_version": 1,
-  "file_mtime":   "Sun Aug 24 22:42:59 PDT 2014",
-  "file_type":    "ecu",
-  "uuid":         "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
-  "name":         "Basic module functionality",
-  "parent_id":     null,
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "Sun Aug 24 22:42:59 PDT 2014",
+  "file_type":          "ecu",
+  "uuid":               "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "name":               "Basic module functionality",
+  "parent_id":          null,
   "operations": {
     "identify":  {
-      "uuid":     "023A31A5-AEA7-48D5-955D-40096C55C1C5",
-      "command":  ["0x00"],
+      "uuid":           "023A31A5-AEA7-48D5-955D-40096C55C1C5",
+      "command":        ["0x00"],
       "results": {
         "part_number": {
           "uuid":       "606D848D-1559-421E-ABB3-4D647A5AF66F",

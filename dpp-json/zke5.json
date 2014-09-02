@@ -1,20 +1,20 @@
 {
-  "dpp_version":  1,
-  "file_version": 1,
-  "file_mtime":   "Thu Aug 28 21:43:39 PDT 2014",
-  "file_type":    "ecu",
-  "uuid":         "67FEBF5E-0109-42B9-83C8-2B68D2CAE2FD",
-  "address":      "0x00",
-  "family":       "ZKE",
-  "name":         "Central Body Electronics",
-  "parent_id":    "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
-  "hardware_number": "0x11",
-  "software_number": "0x16",
-  "coding_index":    "0x02",
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "Thu Aug 28 21:43:39 PDT 2014",
+  "file_type":          "ecu",
+  "uuid":               "67FEBF5E-0109-42B9-83C8-2B68D2CAE2FD",
+  "address":            "0x00",
+  "family":             "ZKE",
+  "name":               "Central Body Electronics",
+  "parent_id":          "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "hardware_number":    "0x11",
+  "software_number":    "0x16",
+  "coding_index":       "0x02",
   "operations": {
     "identify":  {
-      "uuid":     "887E29A3-D2B9-4466-BE43-12665AF6E55A",
-      "parent":   "023A31A5-AEA7-48D5-955D-40096C55C1C5",
+      "uuid":           "887E29A3-D2B9-4466-BE43-12665AF6E55A",
+      "parent":         "023A31A5-AEA7-48D5-955D-40096C55C1C5",
       "results": {
         "variant": { /*This is bogus */
           "uuid":       "76AB946C-6FFD-4DD8-BA5E-168F1840396B",
@@ -26,8 +26,8 @@
       }
     },
     "digital_status":  {
-      "uuid":     "E717960A-A916-4A21-A99E-4793A233ECF8",
-      "command":  ["0x0b"],
+      "uuid":           "E717960A-A916-4A21-A99E-4793A233ECF8",
+      "command":        ["0x0b"],
       "results": {
         "contact.tailgate": {
           "uuid":       "E70BD9FD-0623-43A1-8320-A77ACA54505E",
@@ -37,8 +37,8 @@
           "length":     1,
           "mask":       "0x40",
           "levels": {
-            "yes": "open",
-            "no":  "closed"
+            "yes":      "open",
+            "no":       "closed"
           }
         },
         "contact.door.front.driver": {
@@ -49,8 +49,8 @@
           "length":     1,
           "mask":       "0x01",
           "levels": {
-            "yes": "open",
-            "no":  "closed"
+            "yes":      "open",
+            "no":       "closed"
           }
         },
         "contact.door.front.passenger": {
@@ -61,8 +61,8 @@
           "length":     1,
           "mask":       "0x02",
           "levels": {
-            "yes": "open",
-            "no":  "closed"
+            "yes":      "open",
+            "no":       "closed"
           }
         },
         "contact.door.rear.driver": {
@@ -73,8 +73,8 @@
           "length":     1,
           "mask":       "0x04",
           "levels": {
-            "yes": "open",
-            "no":  "closed"
+            "yes":      "open",
+            "no":       "closed"
           }
         },
         "contact.door.rear.passenger": {
@@ -85,8 +85,8 @@
           "length":     1,
           "mask":       "0x08",
           "levels": {
-            "yes": "open",
-            "no":  "closed"
+            "yes":      "open",
+            "no":       "closed"
           }
         },
         "radio.keys.0.battery_level": {
@@ -97,8 +97,8 @@
           "length":     1,
           "mask":       "0x01",
           "levels": {
-            "yes": "low",
-            "no":  "normal"
+            "yes":      "low",
+            "no":       "normal"
           }
         },
         "radio.keys.1.battery_level1": {
@@ -109,8 +109,8 @@
           "length":     1,
           "mask":       "0x02",
           "levels": {
-            "yes": "low",
-            "no":  "normal"
+            "yes":      "low",
+            "no":       "normal"
           }
         },
         "radio.keys.2.battery_level2": {
@@ -121,8 +121,8 @@
           "length":     1,
           "mask":       "0x04",
           "levels": {
-            "yes": "low",
-            "no":  "normal"
+            "yes":      "low",
+            "no":       "normal"
           }
         },
         "radio.keys.3.battery_level3": {
@@ -133,8 +133,8 @@
           "length":     1,
           "mask":       "0x08",
           "levels": {
-            "yes": "low",
-            "no":  "normal"
+            "yes":      "low",
+            "no":       "normal"
           }
         }
       }

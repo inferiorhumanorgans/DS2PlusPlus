@@ -1,21 +1,21 @@
 {
-  "dpp_version":  1,
-  "file_version": 1,
-  "file_mtime":   "Sun Aug 24 22:42:59 PDT 2014",
-  "file_type":    "ecu",
-  "uuid":         "F5C34396-809C-44C0-868E-49500414BEAA",
-  "address":      "0x12",
-  "family":       "DME",
-  "name":         "MS 42.0",
-  "parent_id":    "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
-  "part_number":     7500255,
-  "hardware_number": "0x15",
-  "software_number": "0xE3", // This doesn't work on my car?
-  "coding_index":    "0x00",
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "Sun Aug 24 22:42:59 PDT 2014",
+  "file_type":          "ecu",
+  "uuid":               "F5C34396-809C-44C0-868E-49500414BEAA",
+  "address":            "0x12",
+  "family":             "DME",
+  "name":               "MS 42.0",
+  "parent_id":          "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "part_number":        7500255,
+  "hardware_number":    "0x15",
+  "software_number":    "0xE3", // This doesn't work on my car?
+  "coding_index":       "0x00",
   "operations": {
     "identify":  {
-      "uuid":     "B8D66536-17F0-4494-91C5-B1817C548454",
-      "command":  ["0x00"],
+      "uuid":           "B8D66536-17F0-4494-91C5-B1817C548454",
+      "command":        ["0x00"],
       "results": {
         "part_number": {
           "uuid":       "00AD6856-1C38-4EAE-9E87-C319CFD4071E",
@@ -83,8 +83,8 @@
       }
     },
     "status":  {
-      "uuid":     "0830569F-964E-440F-8145-344929B790FE",
-      "command":  ["0x0b", "0x03"],
+      "uuid":           "0830569F-964E-440F-8145-344929B790FE",
+      "command":        ["0x0b", "0x03"],
       "results": {
         "temp.intake_air": {
           "uuid":       "D40F37F8-2D48-4D2D-9487-C6457695A4B2",
@@ -142,8 +142,8 @@
       }
     },
     "precat_o2_bank1_voltage": {
-      "uuid":     "50280D84-17F0-4CED-8346-176861C62B9B",
-      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x01"],
+      "uuid":           "50280D84-17F0-4CED-8346-176861C62B9B",
+      "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x01"],
       "results": {
         "voltage.precat_o2.bank1": {
           "uuid":       "E053CAC5-1E86-48F5-A494-F1EF4B46F0F3",
@@ -156,8 +156,8 @@
       }
     },
     "precat_o2_bank2_voltage": {
-      "uuid":     "3427A93E-FB8D-4FD7-B783-5E379B9C45FF",
-      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x02"],
+      "uuid":           "3427A93E-FB8D-4FD7-B783-5E379B9C45FF",
+      "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x02"],
       "results": {
         "voltage.precat_o2.bank2": {
           "uuid":       "2A8DA40E-BE9C-445E-A225-00EE9433EFE9",
@@ -170,8 +170,8 @@
       }
     },
     "postcat_o2_bank1_voltage": {
-      "uuid":     "A125D2BC-CD64-4EB1-9735-BB01379BEACD",
-      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x19"],
+      "uuid":           "A125D2BC-CD64-4EB1-9735-BB01379BEACD",
+      "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x19"],
       "results": {
         "voltage.postcat_o2.bank1": {
           "uuid":       "A4D1DF6B-069E-4351-AC79-0E8407E34E92",
@@ -184,8 +184,8 @@
       }
     },
     "postcat_o2_bank2_voltage": {
-      "uuid":     "03AA98C9-072C-4AC6-8BCF-C19584B933C0",
-      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x1a"],
+      "uuid":           "03AA98C9-072C-4AC6-8BCF-C19584B933C0",
+      "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x1a"],
       "results": {
         "voltage.postcat_o2.bank2": {
           "uuid":       "0B3F8335-002A-4B44-BA1A-253C97660A1A",
@@ -198,8 +198,8 @@
       }
     },
     "amm_voltage": {
-      "uuid":     "CE7AA377-A1FF-4B40-8EFF-08BF2E51BF30",
-      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x06"],
+      "uuid":           "CE7AA377-A1FF-4B40-8EFF-08BF2E51BF30",
+      "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x06"],
       "results": {
         "voltage.air_mass_meter": {
           "uuid":       "C5C90257-9690-4921-A931-F7952610E962",
@@ -212,8 +212,8 @@
       }
     },
     "mdk_pot1_voltage": {
-      "uuid":     "597CA152-A327-4F77-A0D6-2956F6E07477",
-      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x0a"],
+      "uuid":           "597CA152-A327-4F77-A0D6-2956F6E07477",
+      "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x0a"],
       "results": {
         "voltage.mdk.pot1": {
           "uuid":       "D05487C2-FB66-4F12-9EDD-A957A9D4DC18",
@@ -226,8 +226,8 @@
       }
     },
     "mdk_pot2_voltage": {
-      "uuid":     "35BB3650-3381-4D03-9745-E7367A0B8EB1",
-      "command":  ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x0b"],
+      "uuid":           "35BB3650-3381-4D03-9745-E7367A0B8EB1",
+      "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x0b"],
       "results": {
         "voltage.mdk.pot2": {
           "uuid":       "F2355E69-57B1-49D0-ABF3-3DE476DE78AD",

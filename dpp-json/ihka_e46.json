@@ -1,50 +1,50 @@
 {
-  "dpp_version":  1,
-  "file_version": 1,
-  "file_mtime":    "Mon Aug 25 19:23:31 PDT 2014",
-  "file_type":    "ecu",
-  "uuid":         "3CD3AE6B-7826-4884-AC6A-A88FCF682B85",
-  "address":       "0x5B",
-  "family":       "IHKA",
-  "name":         "E46 Auto Climate Control",
-  "parent_id":    "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
-  "hardware_number": "0x22",
-  "software_number": "0x05",
-  "coding_index":    "0x03",
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "Mon Aug 25 19:23:31 PDT 2014",
+  "file_type":          "ecu",
+  "uuid":               "3CD3AE6B-7826-4884-AC6A-A88FCF682B85",
+  "address":            "0x5B",
+  "family":             "IHKA",
+  "name":               "E46 Auto Climate Control",
+  "parent_id":          "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "hardware_number":    "0x22",
+  "software_number":    "0x05",
+  "coding_index":       "0x03",
   "operations": {
     "status":  {
-      "uuid":     "43CE7889-9A3E-4779-BD50-AC687C286046",
-      "command":  ["0x0B", "0x03"],
+      "uuid":           "43CE7889-9A3E-4779-BD50-AC687C286046",
+      "command":        ["0x0B", "0x03"],
       "results": {
         "fan.mode": {
           "uuid":       "965E012A-0477-4475-9739-3DD6D22830DA",
-          "type":        "boolean",
-          "display":     "string",
-          "start_pos":   2,
-          "length":      1,
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
           "mask":       "0x10",
           "levels": {
-            "yes": "manual",
-            "no":  "auto"
+            "yes":      "manual",
+            "no":       "auto"
           }
         },
         "fan.speed": {
           "uuid":       "F06FD78E-3228-4DE6-8924-96608B77969F",
-          "type":        "byte",
-          "display":     "raw",
-          "start_pos":   4,
-          "length":      1
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  4,
+          "length":     1
         },
         "mode.front_defrost": {
           "uuid":       "E640C8C9-3B42-483D-9BA1-13B52BF639E3",
-          "type":        "boolean",
-          "display":     "string",
-          "start_pos":   2,
-          "length":      1,
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
           "mask":       "0x08",
           "levels": {
-            "yes": "on",
-            "no":  "off"
+            "yes":      "on",
+            "no":       "off"
           }
         },
         "mode.air_conditioning": {
@@ -55,20 +55,20 @@
           "length":     1,
           "mask":       "0x80",
           "levels": {
-            "yes": "on",
-            "no":  "off"
+            "yes":      "on",
+            "no":       "off"
           }
         },
         "mode.rear_defroster": {
           "uuid":       "E061817B-4C52-42EC-9FE8-37ABEE0A2B9F",
-          "type":        "boolean",
-          "display":     "string",
-          "start_pos":   1,
-          "length":      1,
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
           "mask":       "0x40",
           "levels": {
-            "yes": "on",
-            "no":  "off"
+            "yes":      "on",
+            "no":       "off"
           }
         },
         "selected_temperature": {
