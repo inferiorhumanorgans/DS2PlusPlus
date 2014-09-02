@@ -126,24 +126,17 @@
         "family": {
           "type": "string"
         },
-        "matches": {
-          "type": "object",
-          "properties": {
-            "hardware_number": {
-              "type": "string"
-            },
-            "software_number": {
-              "type": "string"
-            },
-            "part_number": {
-              "type": "integer"
-            },
-            "coding_index": {
-              "type": "string"
-            }
-          },
-          "required": ["hardware_number", "coding_index"],
-          "additionalProperties": false
+        "hardware_number": {
+          "type": "string"
+        },
+        "software_number": {
+          "type": "string"
+        },
+        "part_number": {
+          "type": "integer"
+        },
+        "coding_index": {
+          "type": "string"
         },
         "parent_id": {
           "type": ["string", "null"]
@@ -172,7 +165,7 @@
               "$ref": "#/definitions/uuid"
             }
           },
-          "required": ["address", "family", "parent_id", "matches"]
+          "required": ["address", "family", "parent_id", "part_number", "coding_index", "hardware_number", "software_number"]
         }
       ]
     },
