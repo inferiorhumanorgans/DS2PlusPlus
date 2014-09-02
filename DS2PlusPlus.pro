@@ -3,7 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS += \
     libds2 \
     ds2-dump \
-    ds2-test \
+    tests \
     jsoncpp
 
 # https://vilimpoc.org/blog/2014/02/21/qmake-subdirs-project-automatic-dependencies/
