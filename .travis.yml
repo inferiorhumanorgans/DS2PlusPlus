@@ -5,10 +5,13 @@ compiler:
   - gcc
 
 install:
+  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+  - sudo add-apt-repository --yes ppa:canonical-qt5-edgers/qt5-beta-proper
   - sudo apt-get update
-  - sudo apt-get install libqt5-dev qt5-qmake
+  - sudo apt-get install qt5-qmake qtbase5-dev libqt5sql5-sqlite libqt5sql5 qt5-default
 
 script:
-  - qmake -project
-  - qmake DS2PlusPlus.pro
+  - mkdir $TRAVIS_BUILD_DIR/build
+  - cd $TRAVIS_BUILD_DIR/build
+  - qmake -qt=qt5 $TRAVIS_BUILD_DIR/DS2PlusPlus/DS2PlusPlus.pro
   - make
