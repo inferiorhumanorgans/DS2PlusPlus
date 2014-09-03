@@ -316,19 +316,31 @@ namespace DS2PlusPlus {
                 ret = ecu;
                 ourKey = moduleIt.key();
 
-                if (response.value("software_number").toULongLong() != ecu->softwareNumber()) {
+                quint64 actualSW = response.value("software_number").toString().toULongLong(NULL, 16);
+                if (actualSW != ecu->softwareNumber()) {
                     fullMatch = false;
-                    qDebug() << "Found a possible match, but sw !=";
+                    QString matchString = QString("SW version mismatch %1 != expected 0x%2")
+                                            .arg(response.value("software_number").toString())
+                                            .arg(ecu->softwareNumber(), 2, 16, QChar('0'));
+                    qDebug() << matchString;
                 }
 
-                if (response.value("hardware_number").toULongLong() != ecu->hardwareNumber()) {
+                quint64 actualHW = response.value("hardware_number").toString().toULongLong(NULL, 16);
+                if (actualHW != ecu->hardwareNumber()) {
                     fullMatch = false;
-                    qDebug() << "Found a possible match, but hw !=";
+                    QString matchString = QString("HW version mismatch %1 != expected 0x%2")
+                                            .arg(response.value("hardware_number").toString())
+                                            .arg(ecu->hardwareNumber(), 2, 16, QChar('0'));
+                    qDebug() << matchString;
                 }
 
-                if (response.value("coding_index").toULongLong() != ecu->codingIndex()) {
+                quint64 actualCI = response.value("coding_index").toString().toULongLong(NULL, 16);
+                if (actualCI != ecu->codingIndex()) {
                     fullMatch = false;
-                    qDebug() << "Found a possible match, but ci !=";
+                    QString matchString = QString("CI mismatch %1 != expected 0x%2")
+                                            .arg(response.value("coding_index").toString())
+                                            .arg(ecu->codingIndex(), 2, 16, QChar('0'));
+                    qDebug() << matchString;
                 }
 
                 if (fullMatch == true) {
