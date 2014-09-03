@@ -119,8 +119,16 @@ const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse)
             } else {
                 jsonValue = Json::Value::Value(qPrintable(variantValue.toString()));
             }
-        } else if (variantValue.type() == static_cast<QVariant::Type>(QMetaType::Double)) {
+        } else if (
+                   (variantValue.type() == static_cast<QVariant::Type>(QMetaType::UInt)) ||
+                   (variantValue.type() == static_cast<QVariant::Type>(QMetaType::ULong)) ||
+                   (variantValue.type() == static_cast<QVariant::Type>(QMetaType::ULongLong))
+                  ) {
+            jsonValue  = Json::Value::Value(variantValue.toULongLong());
+        } else if ((variantValue.type() == static_cast<QVariant::Type>(QMetaType::Double)) || (variantValue.type() == static_cast<QVariant::Type>(QMetaType::Float))) {
             jsonValue  = Json::Value::Value(variantValue.toDouble());
+        } else {
+            qDebug() << "Uknown variant type: " << variantValue.typeName();
         }
 
         (*curVal)[qPrintable(ourHier.last())] = jsonValue;
