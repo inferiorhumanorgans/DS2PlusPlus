@@ -102,7 +102,7 @@
             "no":       "normal"
           }
         },
-        "radio.keys.1.battery_level1": {
+        "radio.keys.1.battery_level": {
           "uuid":       "901704AB-6AE9-4C2E-8542-014BB94C4415",
           "type":       "boolean",
           "display":    "string",
@@ -114,7 +114,7 @@
             "no":       "normal"
           }
         },
-        "radio.keys.2.battery_level2": {
+        "radio.keys.2.battery_level": {
           "uuid":       "4BB0A906-91C0-4F71-9C7D-85CF7009F1E8",
           "type":       "boolean",
           "display":    "string",
@@ -126,7 +126,7 @@
             "no":       "normal"
           }
         },
-        "radio.keys.3.battery_level3": {
+        "radio.keys.3.battery_level": {
           "uuid":       "1C5168E4-6013-4784-9776-620579AD3409",
           "type":       "boolean",
           "display":    "string",
