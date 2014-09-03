@@ -86,7 +86,7 @@ void DataCollection::run()
 
             for (quint64 i=0; i < iterations; i++) {
                 DS2Response ourResponse = autoDetect->executeOperation(ourJob);
-                qDebug() << ourJob << ": " << ourResponse;
+                qDebug() << ourJob << ": " << DS2ResponseToString(ourResponse);
                 if ((i < iterations - 1) and (iterations > 1)) {
                     sleep(1);
                 }
