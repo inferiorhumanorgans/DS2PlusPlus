@@ -120,6 +120,8 @@ namespace DS2PlusPlus {
          */
         QVariant resultByteToVariant(const DS2PacketPtr aPacket, const Result &aResult);
         QVariant resultHexStringToVariant(const DS2PacketPtr aPacket, const Result &aResult);
+        char getCharFrom6BitInt(quint8 n);
+        char decode_vin_char(int start, const QByteArray &bytes);
 
     protected:
         quint32 _dppVersion;

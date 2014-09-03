@@ -207,6 +207,20 @@ namespace DS2PlusPlus {
                     QString errorString = QString("Unknown display type for string type: ").arg(result.displayFormat());
                     throw std::invalid_argument(qPrintable(errorString));
                 }
+            } else if (result.isType("6bit-string")) {
+                QByteArray encodedString = packet->data().mid(result.startPosition(), result.length());
+
+                quint16 numBits = result.length() * 8;
+                quint16 maxLen = (numBits / 6) + 1;
+                QString decodedString;
+
+                for (int i=0; i < (numBits / 6); i++) {
+                  int j = ((result.length()* 8) - (6*(i+1))) - 1;
+                  char foo = decode_vin_char(j, encodedString);
+                  decodedString.prepend(QChar(foo));
+                }
+                ret.insert(result.name(), QVariant(decodedString));
+
             } else if (result.isType("boolean")) {
                 if (result.length() != 1) {
                     throw std::invalid_argument("Incorrect length for boolean type encountered");
@@ -270,6 +284,39 @@ namespace DS2PlusPlus {
 
     quint64 ControlUnit::codingIndex() const {
         return _coding_index;
+    }
+
+    char ControlUnit::decode_vin_char(int start, const QByteArray &bytes)
+    {
+      uint8_t finish = start + 6;
+      uint8_t start_byte = start / 8;
+      uint8_t start_bit = (start % 8);
+      uint8_t finish_byte = finish / 8;
+      uint8_t finish_bit = finish % 8;
+
+      if (start_byte == finish_byte) {
+        uint8_t mask = (1 << (finish_bit - start_bit)) - 1;
+        return getCharFrom6BitInt(bytes[start_byte] & mask);
+      } else {
+        start_bit++;
+
+        uint8_t high_nibble = bytes[start_byte] & (0xff >> start_bit);
+        uint8_t low_nibble = bytes[finish_byte] & (0xff << (7 - finish_bit));
+        uint8_t finish = (high_nibble << (6 - (8 - start_bit))) | (low_nibble >> (7 - finish_bit));
+
+        return getCharFrom6BitInt(finish);
+      }
+      return -1;
+    }
+
+    char ControlUnit::getCharFrom6BitInt(quint8 n)
+    {
+      if (n >= 0 && n <= 9) {
+        return '0' + n;
+      } else if (n >= 10 && n <= 35) {
+        return 'A' + (n - 10);
+      }
+      return '!';
     }
 
     QVariant ControlUnit::resultByteToVariant(const DS2PacketPtr aPacket, const Result &aResult)

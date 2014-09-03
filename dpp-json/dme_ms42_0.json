@@ -1,16 +1,16 @@
 {
   "dpp_version":        1,
-  "file_version":       1,
+  "file_version":       2,
   "file_mtime":         "Sun Aug 24 22:42:59 PDT 2014",
   "file_type":          "ecu",
   "uuid":               "F5C34396-809C-44C0-868E-49500414BEAA",
   "address":            "0x12",
   "family":             "DME",
-  "name":               "MS 42.0",
+  "name":               "Siemens MS 42.0",
   "parent_id":          "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
   "part_number":        7500255,
   "hardware_number":    "0x15",
-  "software_number":    "0xE3", // This doesn't work on my car?
+  "software_number":    "0xE3",
   "coding_index":       "0x00",
   "operations": {
     "identify":  {
@@ -238,6 +238,19 @@
           "factor_a":   0.004887
         }
       }
+    },
+    "vehicle_id": {
+      "uuid":           "A58351D0-1978-48F6-9F20-3D50EF1998DD",
+      "command":        ["0x06", "0x00", "0x00", "0x3c", "0x4a", "0x2e"],
+      "results": {
+        "vin": {
+          "uuid":       "5F6564C6-03E7-4580-BA8C-49D1C81DDD39",
+          "type":       "6bit-string",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     13
+        }
+      }      
     }
   }
 }
