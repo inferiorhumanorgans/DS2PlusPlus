@@ -102,7 +102,9 @@ void DataCollection::run()
             DS2Response ourResponse = autoDetect->executeOperation("identify");
             qOut << "Identity:" << endl << DS2ResponseToString(ourResponse) << endl;
         } else {
-            qOut << "Couldn't find a match";
+            DS2PacketPtr anIdentPacket(new DS2Packet(ecuAddress, QByteArray(1, 0)));
+            DS2PacketPtr aResponsePacket = dbm->query(anIdentPacket);
+            qDebug() << "Couldn't find a match, got this response: " << endl << *aResponsePacket << endl;
         }
     }
 
