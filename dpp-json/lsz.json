@@ -124,8 +124,8 @@
           "length":     1,
           "mask":       "0x20",
           "levels": {
-            "yes":      "on",
-            "no":       "off"
+            "yes":      "down",
+            "no":       "up"
           }
         },
         "switch.headlight": {
@@ -223,7 +223,7 @@
             "0x40":   "right"
           }          
         },
-        "output.headlight.high_beam": {
+        "output.headlight.low_beam": {
           "uuid":       "66C124CA-BEC1-4131-B189-88AD24D3B5B0",
           "type":       "byte",
           "display":    "enum",
@@ -234,7 +234,7 @@
             "0x20":     "right"
           }
         },
-        "output.headlight.low_beam": {
+        "output.headlight.high_beam": {
           "uuid":       "C8148576-2D30-4ED1-9CFF-834E73361D89",
           "type":       "byte",
           "display":    "enum",
