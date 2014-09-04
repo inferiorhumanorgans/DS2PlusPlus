@@ -29,10 +29,8 @@ namespace DS2PlusPlus {
     const int ControlUnit::ADDRESS_ZKE   = 0x00;
 
     ControlUnit::ControlUnit(const QString &aUuid, Manager *aParent) :
-        QObject(aParent)
+        QObject(aParent), _manager(aParent)
     {
-        _manager = aParent;
-
         if (_manager == NULL) {
             _manager = new Manager();
         }
