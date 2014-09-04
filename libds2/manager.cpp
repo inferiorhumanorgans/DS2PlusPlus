@@ -527,7 +527,8 @@ namespace DS2PlusPlus {
                                       "part_number  INTEGER,\n"                 \
                                       "hardware_num INTEGER,\n"                 \
                                       "software_num INTEGER,\n"                 \
-                                      "coding_index INTEGER\n"                  \
+                                      "coding_index INTEGER,\n"                 \
+                                      "big_endian   INTEGER\n"                  \
                                   ");"                                          \
                     );
 

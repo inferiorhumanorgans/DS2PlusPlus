@@ -69,6 +69,7 @@ namespace DS2PlusPlus {
                 _hardware_number = theRecord.value("hardware_num").toULongLong();
                 _software_number = theRecord.value("software_num").toULongLong();
                 _coding_index = theRecord.value("coding_index").toULongLong();
+                _bigEndian = (theRecord.value("big_endian").toULongLong() == 1) ? true : false;
             }
 
             if (getenv("DPP_TRACE")) {
@@ -181,7 +182,11 @@ namespace DS2PlusPlus {
             } else if (result.isType("short")) {
                 quint16 ourNumber;
                 memcpy(&ourNumber, packet->data().mid(result.startPosition(), result.length()), qMin((size_t)result.length(), sizeof(quint16)));
+                if (_bigEndian) {
+                    ourNumber = qFromBigEndian(ourNumber);
+                } else {
                 ourNumber = qFromLittleEndian(ourNumber);
+                }
 
                 if (result.factorA() != 0.0) {
                     ourNumber *= result.factorA();
@@ -284,6 +289,10 @@ namespace DS2PlusPlus {
 
     quint64 ControlUnit::codingIndex() const {
         return _coding_index;
+    }
+
+    bool ControlUnit::bigEndian() const {
+        return _bigEndian;
     }
 
     char ControlUnit::decode_vin_char(int start, const QByteArray &bytes)

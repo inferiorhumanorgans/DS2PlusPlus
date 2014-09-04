@@ -109,6 +109,8 @@ namespace DS2PlusPlus {
         quint64 codingIndex() const;
         Q_PROPERTY(quint64 codingIndex MEMBER _coding_index READ codingIndex)
 
+        bool bigEndian() const;
+        Q_PROPERTY(bool bigEndian MEMBER _bigEndian READ bigEndian)
     protected:
         /*!
          * \brief resultByteToVariant handles parsing any byte sized data type
@@ -132,6 +134,7 @@ namespace DS2PlusPlus {
         QString _name;
         QHash<QString, OperationPtr> _operations;
         quint64 _part_number, _hardware_number, _software_number, _coding_index;
+        bool _bigEndian;
 
         Manager *_manager;
     };

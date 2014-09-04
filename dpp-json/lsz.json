@@ -12,6 +12,7 @@
   "software_number":    "0x20",
   "coding_index":       "0x29",
   "part_number":        6907950,
+  "endian":             "little",
   "operations": {
     "status":  {
       "uuid":           "CCF25AA6-D919-4632-83C8-81E0BDA2DD03",

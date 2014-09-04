@@ -12,6 +12,7 @@
   "hardware_number":    "0x11",
   "software_number":    "0x16",
   "coding_index":       "0x02",
+  "endian":             "little",
   "operations": {
     "identify":  {
       "uuid":           "887E29A3-D2B9-4466-BE43-12665AF6E55A",

@@ -12,6 +12,7 @@
   "hardware_number":    "0x44",
   "software_number":    "0x43",
   "coding_index":       "0x01",
+  "endian":             "little",
   "operations": {
     "status":  {
       "uuid":           "4EEDB33C-F8F6-4E17-B75D-7798A0BAC876",

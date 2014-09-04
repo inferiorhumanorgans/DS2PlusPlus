@@ -12,6 +12,7 @@
   "hardware_number":    "0x15",
   "software_number":    "0xE3",
   "coding_index":       "0x00",
+  "endian":             "big",
   "operations": {
     "identify":  {
       "uuid":           "B8D66536-17F0-4494-91C5-B1817C548454",

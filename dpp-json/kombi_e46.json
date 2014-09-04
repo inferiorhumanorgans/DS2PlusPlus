@@ -12,6 +12,7 @@
   "hardware_number":    "0x10",
   "software_number":    "0x20",
   "coding_index":       "0x04",
+  "endian":             "little",
   "operations": {
     "canbus_rpm":  {
       "uuid":           "54E4BA86-D6B8-4460-B282-9995F0E134A3",

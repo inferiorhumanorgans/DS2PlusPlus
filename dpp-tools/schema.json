@@ -13,7 +13,8 @@
           "string",
           "byte",
           "hex_string",
-          "short"
+          "short",
+          "6bit-string"
         ]
     },
     "display_type": {
@@ -138,6 +139,12 @@
         "coding_index": {
           "type": "string"
         },
+        "endian": {
+          "enum": [
+            "big",
+            "little"
+          ]
+        },
         "parent_id": {
           "type": ["string", "null"]
         },
@@ -165,7 +172,7 @@
               "$ref": "#/definitions/uuid"
             }
           },
-          "required": ["address", "family", "parent_id", "part_number", "coding_index", "hardware_number", "software_number"]
+          "required": ["address", "family", "parent_id", "part_number", "coding_index", "hardware_number", "software_number", "endian"]
         }
       ]
     },

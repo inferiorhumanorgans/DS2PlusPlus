@@ -12,6 +12,7 @@
   "hardware_number":    "0x22",
   "software_number":    "0x05",
   "coding_index":       "0x03",
+  "endian":             "little",
   "operations": {
     "status":  {
       "uuid":           "43CE7889-9A3E-4779-BD50-AC687C286046",

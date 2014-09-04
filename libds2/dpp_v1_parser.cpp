@@ -142,6 +142,13 @@ namespace DS2PlusPlus {
             }
         }
 
+        if (moduleJson["endian"].isNull()) {
+            moduleRecord.setValue(moduleRecord.indexOf("big_endian"), QVariant(QString::null));
+        } else {
+            QString endianness = moduleJson["endian"].asCString();
+            moduleRecord.setValue(moduleRecord.indexOf("big_endian"), (endianness == "big") ? 1 : 0);
+        }
+
         quint64 operationsCount = 0;
         Json::Value ourOperations = moduleJson["operations"];
         Json::ValueIterator operationIterator = ourOperations.begin();
