@@ -25,8 +25,8 @@ namespace DS2PlusPlus {
     quint8 ControlUnit::addressForFamily(const QString &aFamily)
     {
         if (_familyDictionary.isEmpty()) {
-            _familyDictionary.insert("DDE",     0x12);
             _familyDictionary.insert("DME",     0x12);
+            _familyDictionary.insert("DDE",     0x12);
             _familyDictionary.insert("EWS",     -99);
             _familyDictionary.insert("IHKA",    0x5b);
             _familyDictionary.insert("KOMBI",   0x80);
@@ -46,6 +46,25 @@ namespace DS2PlusPlus {
     {
         addressForFamily("");
         return _familyDictionary.keys();
+    }
+
+    const QString ControlUnit::familyForAddress(quint8 anAddress)
+    {
+        QStringList ret;
+        addressForFamily("");
+        QHashIterator<QString, quint8> i(_familyDictionary);
+         while (i.hasNext()) {
+             i.next();
+             if (i.value() == anAddress) {
+                 ret.append(i.key());
+             }
+         }
+         if (ret.isEmpty()) {
+            return QString::null;
+         } else {
+             ret.sort();
+             return ret.join(", ");
+         }
     }
 
     ControlUnit::ControlUnit(const QString &aUuid, Manager *aParent) :

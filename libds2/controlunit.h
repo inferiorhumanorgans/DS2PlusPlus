@@ -22,6 +22,7 @@ namespace DS2PlusPlus {
         ControlUnit(const QString &aUuid = QString::null, Manager *aParent = 0);
 
         static quint8 addressForFamily(const QString &aFamily);
+        static const QString familyForAddress(quint8 anAddress);
         static const QStringList knownFamilies();
 
 
