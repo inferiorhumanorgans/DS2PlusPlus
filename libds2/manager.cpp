@@ -229,6 +229,11 @@ namespace DS2PlusPlus {
 
     DS2PacketPtr Manager::query(DS2PacketPtr aPacket)
     {
+        if (!_serialPort->isOpen()) {
+            QString errorString("Serial port at '%1' is not open.");
+            throw std::ios_base::failure(qPrintable(errorString.arg(_serialPortPath)));
+        }
+
         DS2PacketPtr ret(new DS2Packet);
 
         _serialPort->setRequestToSend(true);
@@ -378,7 +383,7 @@ namespace DS2PlusPlus {
         return ret;
     }
 
-    QHash<QString, ControlUnitPtr > Manager::findAllModulesByFamily(const QString &aFamily)
+    QHash<QString, ControlUnitPtr> Manager::findAllModulesByFamily(const QString &aFamily)
     {
         QHash<QString, ControlUnitPtr > ret;
         QSqlTableModel *ourModel = modulesTable();
