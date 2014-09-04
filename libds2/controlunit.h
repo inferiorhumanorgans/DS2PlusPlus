@@ -22,6 +22,8 @@ namespace DS2PlusPlus {
         ControlUnit(const QString &aUuid = QString::null, Manager *aParent = 0);
 
         static quint8 addressForFamily(const QString &aFamily);
+        static const QStringList knownFamilies();
+
 
         /*!
          * \brief loadByUuid fetches functional info from the SQL database using the UUID as the key.

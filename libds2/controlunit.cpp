@@ -42,6 +42,12 @@ namespace DS2PlusPlus {
         return -99;
     }
 
+    const QStringList ControlUnit::knownFamilies()
+    {
+        addressForFamily("");
+        return _familyDictionary.keys();
+    }
+
     ControlUnit::ControlUnit(const QString &aUuid, Manager *aParent) :
         QObject(aParent), _manager(aParent)
     {
