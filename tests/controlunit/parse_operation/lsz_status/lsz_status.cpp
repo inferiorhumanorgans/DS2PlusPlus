@@ -13,8 +13,8 @@ namespace Test_ControlUnit {
         LSZ_Status::LSZ_Status()
         {
             using namespace DS2PlusPlus;
-            packet1 = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::ADDRESS_LSZ, lsz_status1));
-            packet2 = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::ADDRESS_LSZ, lsz_status2));
+            packet1 = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("LSZ"), lsz_status1));
+            packet2 = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("LSZ"), lsz_status2));
             ecu = ControlUnitPtr(new DS2PlusPlus::ControlUnit);
             ecu->loadByUuid("14CF43EA-B17C-4308-A71D-84C81B4E37FE");
             results1 = ecu->parseOperation("status", packet1);

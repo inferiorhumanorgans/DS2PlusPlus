@@ -21,15 +21,7 @@ namespace DS2PlusPlus {
     public:
         ControlUnit(const QString &aUuid = QString::null, Manager *aParent = 0);
 
-        // Typical ECU addresses
-        static const int ADDRESS_DDE;
-        static const int ADDRESS_DME;
-        static const int ADDRESS_EWS;
-        static const int ADDRESS_IHKA;
-        static const int ADDRESS_KOMBI;
-        static const int ADDRESS_LSZ;
-        static const int ADDRESS_RADIO;
-        static const int ADDRESS_ZKE;
+        static quint8 addressForFamily(const QString &aFamily);
 
         /*!
          * \brief loadByUuid fetches functional info from the SQL database using the UUID as the key.
@@ -137,6 +129,7 @@ namespace DS2PlusPlus {
         bool _bigEndian;
 
         Manager *_manager;
+        static QHash<QString, quint8> _familyDictionary;
     };
 
     typedef QSharedPointer<ControlUnit> ControlUnitPtr;

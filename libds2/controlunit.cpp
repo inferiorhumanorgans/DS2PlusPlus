@@ -19,14 +19,28 @@
 #include "manager.h"
 
 namespace DS2PlusPlus {
-    const int ControlUnit::ADDRESS_DDE   = 0x12;
-    const int ControlUnit::ADDRESS_DME   = 0x12;
-    const int ControlUnit::ADDRESS_EWS   = -99;
-    const int ControlUnit::ADDRESS_IHKA  = 0x5b;
-    const int ControlUnit::ADDRESS_KOMBI = 0x80;
-    const int ControlUnit::ADDRESS_LSZ   = 0xd0;
-    const int ControlUnit::ADDRESS_RADIO = 0x68;
-    const int ControlUnit::ADDRESS_ZKE   = 0x00;
+
+    QHash<QString, quint8> ControlUnit::_familyDictionary;
+
+    quint8 ControlUnit::addressForFamily(const QString &aFamily)
+    {
+        if (_familyDictionary.isEmpty()) {
+            _familyDictionary.insert("DDE",     0x12);
+            _familyDictionary.insert("DME",     0x12);
+            _familyDictionary.insert("EWS",     -99);
+            _familyDictionary.insert("IHKA",    0x5b);
+            _familyDictionary.insert("KOMBI",   0x80);
+            _familyDictionary.insert("LSZ",     0xd0);
+            _familyDictionary.insert("RADIO",   0x68);
+            _familyDictionary.insert("ZKE",     0x00);
+        }
+
+        if (_familyDictionary.contains(aFamily)) {
+            return _familyDictionary.value(aFamily);
+        }
+
+        return -99;
+    }
 
     ControlUnit::ControlUnit(const QString &aUuid, Manager *aParent) :
         QObject(aParent), _manager(aParent)
@@ -214,7 +228,6 @@ namespace DS2PlusPlus {
                 QByteArray encodedString = packet->data().mid(result.startPosition(), result.length());
 
                 quint16 numBits = result.length() * 8;
-                quint16 maxLen = (numBits / 6) + 1;
                 QString decodedString;
 
                 for (int i=0; i < (numBits / 6); i++) {

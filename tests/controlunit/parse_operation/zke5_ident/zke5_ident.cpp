@@ -9,7 +9,7 @@ namespace Test_ControlUnit {
 
         ZKE5_Ident::ZKE5_Ident()
         {
-            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::ADDRESS_ZKE, zke_ident));
+            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("ZKE"), zke_ident));
             ecu = ControlUnitPtr(new ControlUnit);
             ecu->loadByUuid("B9D20D07-B7DA-4207-B8E1-2142AD938AD2");
             results = ecu->parseOperation("identify", packet);

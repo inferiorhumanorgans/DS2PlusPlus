@@ -30,6 +30,9 @@ void DataCollection::run()
     QCommandLineOption setEcuOption(QStringList() << "e" << "ecu", "The ECU to operate on.", "ecu");
     parser->addOption(setEcuOption);
 
+    QCommandLineOption listEcuOption("list-families", "The known ECU families.");
+    parser->addOption(listEcuOption);
+
     QCommandLineOption detectEcuOption(QStringList() << "p" << "probe", "Probe an ECU for its identity.");
     parser->addOption(detectEcuOption);
 
@@ -39,13 +42,28 @@ void DataCollection::run()
     QCommandLineOption iterateOption(QStringList() << "n" << "iterate", "Iterate <n> number of times over the job.", "n");
     parser->addOption(iterateOption);
 
+    QCommandLineOption datalogOption(QStringList() << "d" << "data-log", "Create a CSV log, write until interrupted.");
+    parser->addOption(datalogOption);
+
     parser->process(*QCoreApplication::instance());
     dbm->initializeManager();
 
     // This will rescan all the JSON files, we should be smarter about doing this.
     dbm->initializeDatabase();
 
-    quint8 ecuAddress;
+    if (parser->isSet("list-families")) {
+        // Gross but this will initialize the hash for us.
+        ControlUnit::addressForFamily("");
+
+        QStringList families = ControlUnit::knownFamilies();
+        families.sort();
+        qOut << "Known ECU families: " << families.join(", ") << endl;
+
+        emit finished();
+        return;
+    }
+
+    quint8 ecuAddress = 0;
     if (parser->isSet("ecu")) {
         QString ecuString = parser->value("ecu");
         bool ok;
@@ -55,11 +73,15 @@ void DataCollection::run()
             ecuAddress = ecuString.toUShort(&ok, 10);
         }
         if (!ok) {
-            qErr << "Please specify a valid positive integer for the ECU address." << endl;
-            emit finished();
-            return;
+            ecuAddress = ControlUnit::addressForFamily(ecuString.toUpper());
+            if (ecuAddress == static_cast<quint8>(-99)) {
+                qErr << "Please specify a valid positive integer or an ECU family name for the ECU address." << endl;
+                emit finished();
+                return;
+            }
         }
     } else {
+        qErr << "A valid ECU family or address is required to proceed further." << endl;
         emit finished();
         return;
     }
