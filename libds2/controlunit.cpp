@@ -308,21 +308,21 @@ namespace DS2PlusPlus {
 
     char ControlUnit::decode_vin_char(int start, const QByteArray &bytes)
     {
-      uint8_t finish = start + 6;
-      uint8_t start_byte = start / 8;
-      uint8_t start_bit = (start % 8);
-      uint8_t finish_byte = finish / 8;
-      uint8_t finish_bit = finish % 8;
+      quint8 finish = start + 6;
+      quint8 start_byte = start / 8;
+      quint8 start_bit = (start % 8);
+      quint8 finish_byte = finish / 8;
+      quint8 finish_bit = finish % 8;
 
       if (start_byte == finish_byte) {
-        uint8_t mask = (1 << (finish_bit - start_bit)) - 1;
+        quint8 mask = (1 << (finish_bit - start_bit)) - 1;
         return getCharFrom6BitInt(bytes[start_byte] & mask);
       } else {
         start_bit++;
 
-        uint8_t high_nibble = bytes[start_byte] & (0xff >> start_bit);
-        uint8_t low_nibble = bytes[finish_byte] & (0xff << (7 - finish_bit));
-        uint8_t finish = (high_nibble << (6 - (8 - start_bit))) | (low_nibble >> (7 - finish_bit));
+        quint8 high_nibble = bytes[start_byte] & (0xff >> start_bit);
+        quint8 low_nibble = bytes[finish_byte] & (0xff << (7 - finish_bit));
+        quint8 finish = (high_nibble << (6 - (8 - start_bit))) | (low_nibble >> (7 - finish_bit));
 
         return getCharFrom6BitInt(finish);
       }

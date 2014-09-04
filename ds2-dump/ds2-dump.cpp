@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include <QDebug>
 #include <QCommandLineParser>
 #include <QSharedPointer>
