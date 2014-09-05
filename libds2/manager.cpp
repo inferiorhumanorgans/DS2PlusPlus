@@ -533,7 +533,8 @@ namespace DS2PlusPlus {
                                       "hardware_num INTEGER,\n"                 \
                                       "software_num INTEGER,\n"                 \
                                       "coding_index INTEGER,\n"                 \
-                                      "big_endian   INTEGER\n"                  \
+                                      "big_endian   INTEGER\n,"                 \
+                                      "CHECK (uuid <> '')\n"                    \
                                   ");"                                          \
                     );
 
@@ -553,8 +554,9 @@ namespace DS2PlusPlus {
                                       "name      VARCHAR NOT NULL,\n"                    \
                                       "command   BLOB,\n"                                \
                                       "parent_id VARCHAR,\n"                             \
-                                      "CHECK ((CASE WHEN command IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1)" \
-                                      ");"                                   \
+                                      "CHECK ((CASE WHEN command IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1)," \
+                                      "CHECK (uuid <> '')\n"                             \
+                                      ");"                                               \
                                  );
             if (!ret) {
                 QString errorString = QString("Problem creating the operations table: %1").arg(query.lastError().driverText());
@@ -577,7 +579,8 @@ namespace DS2PlusPlus {
                                       "mask         INTEGER,\n"                 \
                                       "factor_a     NUMERIC,\n"                 \
                                       "factor_b     NUMERIC,\n"                 \
-                                      "levels       VARCHAR\n"                  \
+                                      "levels       VARCHAR\n,"                 \
+                                      "CHECK (uuid <> '')\n"                    \
                                       ");"                                      \
                                   );
             if (!ret) {
