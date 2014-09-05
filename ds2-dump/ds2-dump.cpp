@@ -52,6 +52,9 @@ void DataCollection::run()
     QCommandLineOption datalogOption(QStringList() << "d" << "data-log", "Create a CSV log, write until interrupted.", "ecu-jobs-and-results");
     parser->addOption(datalogOption);
 
+    QCommandLineOption textPacketOption(QStringList() << "i" << "input-packet", "packet", "input-packet");
+    parser->addOption(textPacketOption);
+
     QCommandLineOption listFamiliesOption("list-families", "Print the known ECU families.");
     parser->addOption(listFamiliesOption);
 
@@ -185,7 +188,30 @@ void DataCollection::run()
     }
 
     if (parser->isSet("run-job")) {
-        DS2PlusPlus::ControlUnitPtr autoDetect(dbm->findModuleAtAddress(ecuAddress));
+        if (parser->isSet("input-packet"))
+            qOut << "Reading from packet specified on command line." << endl << endl;
+
+        DS2PlusPlus::ControlUnitPtr autoDetect;
+        DS2PacketPtr ourPacket;
+
+        if (ecuUuid.isEmpty()) {
+            autoDetect = (dbm->findModuleAtAddress(ecuAddress));
+        } else {
+            autoDetect = ControlUnitPtr(new ControlUnit(ecuUuid));
+            ecuAddress = autoDetect->address();
+
+            QStringList ourArguments = parser->value("input-packet").split(" ");
+
+            quint8 ourAddress = ourArguments.takeFirst().toUShort(NULL, 16);
+            ourArguments.takeFirst(); // ignore length for now
+
+            QByteArray ourData;
+            for (int i=0; i < ourArguments.length(); i++) {
+                ourData.append(ourArguments.at(i).toUShort(NULL, 16));
+            }
+            ourPacket = DS2PacketPtr(new DS2Packet(ourAddress, ourData));
+        }
+
         if (!autoDetect.isNull()) {
             QString ourJob = parser->value("run-job");
             qOut << QString("At 0x%1 we think we have: %2").arg(ecuAddress, 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
@@ -204,7 +230,12 @@ void DataCollection::run()
             }
 
             for (quint64 i=0; i < iterations; i++) {
-                DS2Response ourResponse = autoDetect->executeOperation(ourJob);
+                DS2Response ourResponse;
+                if (!ourPacket.isNull()) {
+                    ourResponse = autoDetect->parseOperation(ourJob, ourPacket);
+                } else {
+                    ourResponse = autoDetect->executeOperation(ourJob);
+                }
                 qDebug() << ourJob << ": " << DS2ResponseToString(ourResponse);
                 if ((i < iterations - 1) and (iterations > 1)) {
                     sleep(1);
