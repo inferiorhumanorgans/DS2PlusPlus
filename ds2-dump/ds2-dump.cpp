@@ -320,6 +320,7 @@ void DataCollection::run()
 
                 foreach (const QString &jobName, ourJobs.keys()) {
                     QStringList ourResults = ourJobs[jobName];
+
                     DS2Response ourResponse = ourEcu->executeOperation(jobName);
 
                     foreach (const QString &resultName, ourResults) {
@@ -350,7 +351,7 @@ void DataCollection::run()
             gettimeofday(&tv, NULL);
             double curTime = tv.tv_sec + (0.000001 * tv.tv_usec);
             out << curTime  << "\t" << outValues.join("\t") << endl;
-            usleep(250000); // Quarter sec sleep
+            usleep(62500000); // 1/16th sec sleep
         }
         file.close();
     }
