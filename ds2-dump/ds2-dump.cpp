@@ -153,21 +153,27 @@ void DataCollection::run()
         return;
     }
 
+    QString ecuUuid;
     quint8 ecuAddress = 0;
     if (parser->isSet("ecu")) {
         QString ecuString = parser->value("ecu");
-        bool ok;
-        if (ecuString.startsWith("0x")) {
-            ecuAddress = ecuString.toUShort(&ok, 16);
+
+        if (ecuString.length() == 36) {
+            ecuUuid = ecuString;
         } else {
-            ecuAddress = ecuString.toUShort(&ok, 10);
-        }
-        if (!ok) {
-            ecuAddress = ControlUnit::addressForFamily(ecuString.toUpper());
-            if (ecuAddress == static_cast<quint8>(-99)) {
-                qErr << "Please specify a valid positive integer or an ECU family name for the ECU address." << endl;
-                emit finished();
-                return;
+            bool ok;
+            if (ecuString.startsWith("0x")) {
+                ecuAddress = ecuString.toUShort(&ok, 16);
+            } else {
+                ecuAddress = ecuString.toUShort(&ok, 10);
+            }
+            if (!ok) {
+                ecuAddress = ControlUnit::addressForFamily(ecuString.toUpper());
+                if (ecuAddress == static_cast<quint8>(-99)) {
+                    qErr << "Please specify a valid positive integer or an ECU family name for the ECU address." << endl;
+                    emit finished();
+                    return;
+                }
             }
         }
     } else if (!parser->isSet("data-log")) {
