@@ -1,5 +1,7 @@
 #include <json/json.h>
 
+#include <stdexcept>
+
 #include "ds2packet.h"
 
 namespace DS2PlusPlus {
@@ -12,6 +14,38 @@ namespace DS2PlusPlus {
         QObject(parent), _address(anEcuAddress), _data(someData)
     {
 
+    }
+
+    DS2Packet::DS2Packet(const QString &aPacketString)
+    {
+        QStringList ourArguments = aPacketString.split(" ");
+
+        quint8 ourAddress = ourArguments.takeFirst().toUShort(NULL, 16);
+        quint8 ourLength = ourArguments.takeFirst().toUShort(NULL, 16) - 2;
+
+        QByteArray ourData;
+        for (int i=0; i < ourArguments.length(); i++) {
+            ourData.append(ourArguments.at(i).toUShort(NULL, 16));
+        }
+
+        _address = ourAddress;
+        _data = ourData;
+
+        if ((ourLength - 1) == ourData.length()) {
+
+        } else if (ourLength == ourData.length()) {
+            // There was a checksum
+            quint8 ourChecksum = _data.at(_data.length() - 1);
+            _data.remove(_data.length() - 1, 1);
+
+            if (ourChecksum != checksum()) {
+                QString errorString = QString("Corrupt packet, checksum mismatch got 0x%1, expected: 0x%2").arg(ourChecksum, 2, 16, QChar('0')).arg(checksum(), 2, 16, QChar('0'));
+                throw std::invalid_argument(qPrintable(errorString));
+            }
+        } else {
+            QString errorString = QString("Corrupt packet, string specifies amount of data.  It said %1, but came with %2 bytes.").arg(QString::number(ourLength)).arg(ourData.length());
+            throw std::invalid_argument(qPrintable(errorString));
+        }
     }
 
     float DS2Packet::fetchFloat(quint16 aPosition, float aMultiplicativeFactor, int anAdditiveFactor) const

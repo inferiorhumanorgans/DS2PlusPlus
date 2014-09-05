@@ -200,16 +200,7 @@ void DataCollection::run()
             autoDetect = ControlUnitPtr(new ControlUnit(ecuUuid));
             ecuAddress = autoDetect->address();
 
-            QStringList ourArguments = parser->value("input-packet").split(" ");
-
-            quint8 ourAddress = ourArguments.takeFirst().toUShort(NULL, 16);
-            ourArguments.takeFirst(); // ignore length for now
-
-            QByteArray ourData;
-            for (int i=0; i < ourArguments.length(); i++) {
-                ourData.append(ourArguments.at(i).toUShort(NULL, 16));
-            }
-            ourPacket = DS2PacketPtr(new DS2Packet(ourAddress, ourData));
+            ourPacket = DS2PacketPtr(new DS2Packet(parser->value("input-packet")));
         }
 
         if (!autoDetect.isNull()) {

@@ -37,6 +37,8 @@ namespace DS2PlusPlus
          */
         DS2Packet(quint8 anAddress, const QByteArray &someData, QObject *aParent = 0);
 
+        DS2Packet(const QString &aPacketString);
+
         quint8 address() const;
         void setAddress(quint8 anAddress);
         Q_PROPERTY(quint8 address MEMBER _address READ address WRITE setAddress)
