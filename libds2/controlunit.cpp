@@ -222,14 +222,24 @@ namespace DS2PlusPlus {
                 if (_bigEndian) {
                     ourNumber = qFromBigEndian(ourNumber);
                 } else {
-                ourNumber = qFromLittleEndian(ourNumber);
+                    ourNumber = qFromLittleEndian(ourNumber);
                 }
 
-                if (result.factorA() != 0.0) {
-                    ourNumber *= result.factorA();
-                }
+                if (result.displayFormat() == "int") {
+                    if (result.factorA() != 0.0) {
+                        ourNumber *= result.factorA();
+                    }
+                    ret.insert(result.name(), QVariant(ourNumber + result.factorB()));
+                } else if (result.displayFormat() == "float") {
+                    double ourFloat = ourNumber;
 
-                ret.insert(result.name(), QVariant(ourNumber + result.factorB()));
+                    if (result.factorA() != 0.0) {
+                        ourFloat*= result.factorA();
+                    }
+                    ret.insert(result.name(), QVariant(ourFloat + result.factorB()));
+                } else {
+                    throw std::invalid_argument("Invalid display type for short specified.");
+                }
             } else if (result.isType("hex_string")) {
                 ret.insert(result.name(), resultHexStringToVariant(packet, result));
             } else if (result.isType("string")) {
