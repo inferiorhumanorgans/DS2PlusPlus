@@ -227,7 +227,7 @@ void DataCollection::run()
                 } else {
                     ourResponse = autoDetect->executeOperation(ourJob);
                 }
-                qDebug() << ourJob << ": " << DS2ResponseToString(ourResponse);
+                qOut << "\"" << ourJob << "\"" << ": " << DS2ResponseToString(ourResponse) << endl;
                 if ((i < iterations - 1) and (iterations > 1)) {
                     sleep(1);
                 }
