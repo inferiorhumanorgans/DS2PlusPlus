@@ -9,11 +9,12 @@ namespace DS2PlusPlus {
     public:
         Result () {}
 
+        void setName(const QString &aName);
+        const QString name() const;
+
         void setUuid(const QString &aUuid);
         const QString uuid() const;
 
-        void setName(const QString &aName);
-        const QString name() const;
 
         void setType(const QString &aType);
         const QString type() const;

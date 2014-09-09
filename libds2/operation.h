@@ -16,6 +16,7 @@ namespace DS2PlusPlus {
 
         const QString uuid() const;
         const QString moduleId() const;
+
         const QString name() const;
         const QStringList command() const;
         void setCommand(const QStringList &aCommand);

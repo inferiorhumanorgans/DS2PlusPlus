@@ -2,6 +2,7 @@
 #define CONTROLUNIT_H
 
 #include <QObject>
+#include <QDateTime>
 #include <QHash>
 #include <QVariant>
 #include <QSharedPointer>
@@ -69,6 +70,9 @@ namespace DS2PlusPlus {
         quint32 fileVersion() const;
         Q_PROPERTY(quint32 fileVersion MEMBER _fileVersion READ fileVersion)
 
+        QDateTime fileLastModified() const;
+        Q_PROPERTY(QDateTime fileLastModified MEMBER _fileLastModified READ fileLastModified)
+
         /*!
          * \brief uuid
          * \return Returns the UUID of the JSON definition file used to initialize this object.
@@ -90,8 +94,6 @@ namespace DS2PlusPlus {
         const QString name() const;
         Q_PROPERTY(const QString name MEMBER _name READ name)
 
-        QHash<QString, OperationPtr> operations() const;
-
         quint64 partNumber() const;
         Q_PROPERTY(quint64 partNumber MEMBER _part_number READ partNumber)
 
@@ -106,6 +108,9 @@ namespace DS2PlusPlus {
 
         bool bigEndian() const;
         Q_PROPERTY(bool bigEndian MEMBER _bigEndian READ bigEndian)
+
+        QHash<QString, OperationPtr> operations() const;
+
     protected:
         /*!
          * \brief resultByteToVariant handles parsing any byte sized data type
@@ -123,6 +128,7 @@ namespace DS2PlusPlus {
     protected:
         quint32 _dppVersion;
         quint32 _fileVersion;
+        QDateTime _fileLastModified;
         QString _uuid;
         quint8 _address;
         QString _family;

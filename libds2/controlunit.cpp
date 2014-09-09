@@ -6,8 +6,6 @@
 #include <QSqlRecord>
 #include <QSqlError>
 
-#include <QSerialPort>
-
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
@@ -107,6 +105,9 @@ namespace DS2PlusPlus {
                 _software_number = theRecord.value("software_num").toULongLong();
                 _coding_index = theRecord.value("coding_index").toULongLong();
                 _bigEndian = (theRecord.value("big_endian").toULongLong() == 1) ? true : false;
+                time_t mtimeInt = theRecord.value("mtime").toULongLong();
+                _fileLastModified.setTime_t(mtimeInt);
+
             }
 
             if (getenv("DPP_TRACE")) {
@@ -146,7 +147,6 @@ namespace DS2PlusPlus {
                         result.setMask(resultRecord.value(resultRecord.indexOf("mask")).toString());
                         result.setFactorA(resultRecord.value(resultRecord.indexOf("factor_a")).toDouble());
                         result.setFactorB(resultRecord.value(resultRecord.indexOf("factor_b")).toDouble());
-
 
                         QJsonParseError jsonError;
                         QHash<QString, QString> ourLevels;
@@ -304,6 +304,11 @@ namespace DS2PlusPlus {
     quint32 ControlUnit::fileVersion() const
     {
         return _fileVersion;
+    }
+
+    QDateTime ControlUnit::fileLastModified() const
+    {
+        return _fileLastModified;
     }
 
     const QString ControlUnit::uuid() const

@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       1,
-  "file_mtime":         "Sun Aug 24 22:42:59 PDT 2014",
+  "file_version":       2,
+  "file_mtime":         "2014-09-09T14:26:51.0Z",
   "file_type":          "ecu",
   "uuid":               "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
   "name":               "Basic module functionality",

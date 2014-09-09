@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       1,
-  "file_mtime":         "Mon Aug 25 19:23:31 PDT 2014",
+  "file_version":       2,
+  "file_mtime":         "2014-09-09T14:26:51.0Z",
   "file_type":          "ecu",
   "uuid":               "3CD3AE6B-7826-4884-AC6A-A88FCF682B85",
   "address":            "0x5B",

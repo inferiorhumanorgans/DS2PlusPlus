@@ -528,6 +528,7 @@ namespace DS2PlusPlus {
                                       "address      INTEGER,\n"                 \
                                       "family       VARCHAR,\n"                 \
                                       "name         VARCHAR NOT NULL,\n"        \
+                                      "mtime        INTEGER NOT NULL,\n"        \
                                       "parent_id    VARCHAR,\n"                 \
                                       "part_number  INTEGER,\n"                 \
                                       "hardware_num INTEGER,\n"                 \

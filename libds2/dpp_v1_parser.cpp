@@ -6,6 +6,8 @@
 
 #include <QDebug>
 
+#include <QDateTime>
+
 #include <QSqlError>
 #include <QSqlRecord>
 
@@ -147,6 +149,12 @@ namespace DS2PlusPlus {
         } else {
             QString endianness = moduleJson["endian"].asCString();
             moduleRecord.setValue(moduleRecord.indexOf("big_endian"), (endianness == "big") ? 1 : 0);
+        }
+
+        if (!moduleJson["file_mtime"].isNull()) {
+            QString mtimeString = moduleJson["file_mtime"].asCString();
+            QDateTime mtime = QDateTime::fromString(mtimeString, Qt::ISODate);
+            moduleRecord.setValue(moduleRecord.indexOf("mtime"), mtime.toTime_t());
         }
 
         quint64 operationsCount = 0;

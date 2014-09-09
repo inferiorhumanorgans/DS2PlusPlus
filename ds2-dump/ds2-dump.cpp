@@ -95,10 +95,11 @@ void DataCollection::run()
             ourEcus = dbm->findAllModulesByFamily(aFamily);
         }
 
-        int totalLen = 38+40+9;
+        int totalLen = 38+40+9+21;
         qOut << qSetFieldWidth(38) << left << "UUID";
         qOut << qSetFieldWidth(40) << left << "Name";
         qOut << qSetFieldWidth(9)  << left << "Version";
+        qOut << qSetFieldWidth(21)  << left << "Last Modified";
 
         if (aFamily == "ALL") {
             qOut << qSetFieldWidth(8) << left << "Family";
@@ -114,6 +115,7 @@ void DataCollection::run()
             qOut << qSetFieldWidth(38) << left << ourEcu->uuid();
             qOut << qSetFieldWidth(40) << left << ourEcu->name();
             qOut << qSetFieldWidth(9)  << left << ourEcu->fileVersion();
+            qOut << qSetFieldWidth(21)  << left << ourEcu->fileLastModified().toString(Qt::ISODate);
             if (aFamily == "ALL") {
                 qOut << qSetFieldWidth(8) << left << ControlUnit::familyForAddress(ourEcu->address());
             }
