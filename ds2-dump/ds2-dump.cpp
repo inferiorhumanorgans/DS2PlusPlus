@@ -61,7 +61,7 @@ void DataCollection::run()
     QCommandLineOption listEcuOption("list-ecus", "Print the known ECUs for a given family.", "family");
     parser->addOption(listEcuOption);
 
-    QCommandLineOption listOperationsOption("list-operations", "Print the known operations for a given ECU.", "uuid");
+    QCommandLineOption listOperationsOption("list-operations", "Print the known operations for a given ECU.");
     parser->addOption(listOperationsOption);
 
     parser->process(*QCoreApplication::instance());
@@ -127,8 +127,39 @@ void DataCollection::run()
         return;
     }
 
+    QString ecuUuid;
+    quint8 ecuAddress = 0;
+    if (parser->isSet("ecu")) {
+        QString ecuString = parser->value("ecu");
+
+        if (ecuString.length() == 36) {
+            ecuUuid = ecuString;
+        } else {
+            bool ok;
+            if (ecuString.startsWith("0x")) {
+                ecuAddress = ecuString.toUShort(&ok, 16);
+            } else {
+                ecuAddress = ecuString.toUShort(&ok, 10);
+            }
+            if (!ok) {
+                ecuAddress = ControlUnit::addressForFamily(ecuString.toUpper());
+                if (ecuAddress == static_cast<quint8>(-99)) {
+                    qErr << "Please specify a valid positive integer or an ECU family name for the ECU address." << endl;
+                    emit finished();
+                    return;
+                }
+            }
+        }
+    }
+
     if (parser->isSet("list-operations")) {
-        ControlUnitPtr ourEcu(new ControlUnit(parser->value("list-operations")));
+        if  (ecuUuid.isEmpty()) {
+            qErr << "A valid ECU UUID is required to proceed further." << endl;
+            emit finished();
+            return;
+        }
+
+        ControlUnitPtr ourEcu(new ControlUnit(ecuUuid));
         QHash<QString, OperationPtr> ourOperations = ourEcu->operations();
         qOut << "Operations for: " << ourEcu->name() << " (" << ourEcu->uuid() << ")" << endl << endl;
 
@@ -158,30 +189,7 @@ void DataCollection::run()
         return;
     }
 
-    QString ecuUuid;
-    quint8 ecuAddress = 0;
-    if (parser->isSet("ecu")) {
-        QString ecuString = parser->value("ecu");
-
-        if (ecuString.length() == 36) {
-            ecuUuid = ecuString;
-        } else {
-            bool ok;
-            if (ecuString.startsWith("0x")) {
-                ecuAddress = ecuString.toUShort(&ok, 16);
-            } else {
-                ecuAddress = ecuString.toUShort(&ok, 10);
-            }
-            if (!ok) {
-                ecuAddress = ControlUnit::addressForFamily(ecuString.toUpper());
-                if (ecuAddress == static_cast<quint8>(-99)) {
-                    qErr << "Please specify a valid positive integer or an ECU family name for the ECU address." << endl;
-                    emit finished();
-                    return;
-                }
-            }
-        }
-    } else if (!parser->isSet("data-log")) {
+    if (!parser->isSet("ecu") && !parser->isSet("data-log")) {
         if (!parser->isSet("reload")) {
             qErr << "A valid ECU family or address is required to proceed further." << endl;
         }
