@@ -23,6 +23,7 @@
 
 #include <fcntl.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include <iostream>
 #include <stdexcept>
