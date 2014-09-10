@@ -177,6 +177,12 @@ const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse)
                 jsonValue = Json::Value(qPrintable(variantValue.toString()));
             }
         } else if (
+                   (variantValue.type() == static_cast<QVariant::Type>(QMetaType::Int)) ||
+                   (variantValue.type() == static_cast<QVariant::Type>(QMetaType::Long)) ||
+                   (variantValue.type() == static_cast<QVariant::Type>(QMetaType::LongLong))
+                   ) {
+            jsonValue  = Json::Value(variantValue.toLongLong());
+        } else if (
                    (variantValue.type() == static_cast<QVariant::Type>(QMetaType::UInt)) ||
                    (variantValue.type() == static_cast<QVariant::Type>(QMetaType::ULong)) ||
                    (variantValue.type() == static_cast<QVariant::Type>(QMetaType::ULongLong))

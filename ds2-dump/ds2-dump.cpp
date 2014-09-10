@@ -357,6 +357,12 @@ void DataCollection::run()
                     foreach (const QString &resultName, ourResults) {
                         QVariant ourResult = ourResponse.value(resultName);
                         switch (ourResult.type()) {
+                        case QMetaType::Short:
+                        case QMetaType::Int:
+                        case QMetaType::Long:
+                        case QMetaType::LongLong:
+                            outValues << QString::number(ourResult.toLongLong());
+                            break;
                         case QMetaType::UShort:
                         case QMetaType::UInt:
                         case QMetaType::ULong:
