@@ -252,6 +252,26 @@
           "length":     13
         }
       }      
+    },
+    "engine_status": {
+      "uuid":           "0F4A2B94-CA41-4684-8412-DC7F6004E74D",
+      "command":        ["0x0b", "0x03"],
+      "results": {
+        "engine.current_rpm": {
+          "uuid":       "E54E7F8D-A887-4320-A72F-8ABFC9B14758",
+          "type":       "short",
+          "display":    "int",
+          "start_pos":  1,
+          "length":     2
+        },
+        "vehicle.current_speed": {
+          "uuid":       "D60BCE9B-5520-48D4-8D4A-2040992214C5",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  3,
+          "length":     1
+        }
+      }
     }
   }
 }
