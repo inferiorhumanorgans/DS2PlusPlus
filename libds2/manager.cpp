@@ -566,6 +566,7 @@ namespace DS2PlusPlus {
                                       "name      VARCHAR NOT NULL,\n"                    \
                                       "command   BLOB,\n"                                \
                                       "parent_id VARCHAR,\n"                             \
+                                      "UNIQUE (module_id, name),\n"                      \
                                       "CHECK ((CASE WHEN command IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1)," \
                                       "CHECK (uuid <> '')\n"                             \
                                       ");"                                               \
@@ -591,7 +592,8 @@ namespace DS2PlusPlus {
                                       "mask         INTEGER,\n"                 \
                                       "factor_a     NUMERIC,\n"                 \
                                       "factor_b     NUMERIC,\n"                 \
-                                      "levels       VARCHAR\n,"                 \
+                                      "levels       VARCHAR,\n"                 \
+                                      "UNIQUE (operation_id, name),\n" \
                                       "CHECK (uuid <> '')\n"                    \
                                       ");"                                      \
                                   );
