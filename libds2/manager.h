@@ -144,7 +144,7 @@ namespace DS2PlusPlus
 
     protected:
         QSqlDatabase _db;
-        QString _dppDir;
+        QString _dppDir, _dppSourceDir;
         int  _fd;
         QSharedPointer<QCommandLineParser> _cliParser;
     };

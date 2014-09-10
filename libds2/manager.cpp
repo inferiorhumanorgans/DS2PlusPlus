@@ -82,8 +82,10 @@ namespace DS2PlusPlus {
                       "port");
             aParser->addOption(targetDirectoryOption);
 
-            qDebug() << "Adding android option";
-            QCommandLineOption androidHack("dpp-dir", "Specify location of DPP-JSON files", "dpp-dir");
+            QCommandLineOption jsonDirOption("dpp-source-dir", "Specify location of DPP-JSON files", "dpp-source-dir");
+            aParser->addOption(jsonDirOption);
+
+            QCommandLineOption androidHack("dpp-dir", "Specify location of DPP database", "dpp-dir");
             aParser->addOption(androidHack);
 
             QCommandLineOption androidHack2("android-native", "Fix Android", "android-native");
@@ -111,9 +113,12 @@ namespace DS2PlusPlus {
             _db = QSqlDatabase::addDatabase("QSQLITE", connName);
         }
 
-
         if (_cliParser->isSet("dpp-dir")) {
             this->_dppDir = _cliParser->value("dpp-dir");
+        }
+
+        if (_cliParser->isSet("dpp-source-dir")) {
+            this->_dppSourceDir = _cliParser->value("dpp-source-dir");
         }
 
         QString dppDbPath = QString("%1%2%3").arg(dppDir()).arg(QDir::separator()).arg(DPP_DB_PATH);
@@ -220,10 +225,14 @@ namespace DS2PlusPlus {
     QString Manager::jsonDir()
     {
         QStringList jsonSearchPath;
-        jsonSearchPath.append(QString("%1%2%3").arg(QDir::currentPath()).arg(QDir::separator()).arg(DPP_JSON_PATH));
-        jsonSearchPath.append(expandTilde(QString("~%1dpp%2%3").arg(QDir::separator()).arg(QDir::separator()).arg("json")));
-        jsonSearchPath.append(QString("%1%2%3").arg(dppDir()).arg(QDir::separator()).arg(DPP_JSON_PATH));
-        jsonSearchPath.append(expandTilde(QString("~%1ds2%2%3").arg(QDir::separator()).arg(QDir::separator()).arg("json")));
+        if (!_dppSourceDir.isEmpty()) {
+            jsonSearchPath.append(expandTilde(_dppSourceDir));
+        } else {
+            jsonSearchPath.append(QString("%1%2%3").arg(QDir::currentPath()).arg(QDir::separator()).arg(DPP_JSON_PATH));
+            jsonSearchPath.append(expandTilde(QString("~%1dpp%2%3").arg(QDir::separator()).arg(QDir::separator()).arg("json")));
+            jsonSearchPath.append(QString("%1%2%3").arg(dppDir()).arg(QDir::separator()).arg(DPP_JSON_PATH));
+            jsonSearchPath.append(expandTilde(QString("~%1ds2%2%3").arg(QDir::separator()).arg(QDir::separator()).arg("json")));
+        }
 
         const char *jsonEnv = getenv("DPP_JSON_DIR");
         if (jsonEnv) {
