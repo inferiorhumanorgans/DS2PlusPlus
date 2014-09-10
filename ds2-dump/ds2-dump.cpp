@@ -381,6 +381,7 @@ void DataCollection::run()
                             break;
                         }
                     }
+                    usleep(200000); // 1/5th sec sleep
                 }
             }
 
@@ -388,7 +389,7 @@ void DataCollection::run()
             gettimeofday(&tv, NULL);
             double curTime = tv.tv_sec + (0.000001 * tv.tv_usec);
             out << curTime  << "\t" << outValues.join("\t") << endl;
-            usleep(62500000); // 1/16th sec sleep
+            usleep(750000); // 3/4th sec sleep
         }
         file.close();
     }
