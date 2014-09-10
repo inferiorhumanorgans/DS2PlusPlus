@@ -1,7 +1,7 @@
 CONFIG += testcase
 
 QT       -= gui
-QT       += serialport testlib sql
+QT       += testlib sql
 
 TARGET = tst_lsz_status
 CONFIG   += console
