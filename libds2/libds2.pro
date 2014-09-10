@@ -5,11 +5,10 @@
 #-------------------------------------------------
 
 QT -= gui
-QT += serialport sql
+QT += sql
 
 TARGET = ds2
 TEMPLATE = lib
-CONFIG += serialport
 
 DEFINES += LIBDS2_LIBRARY
 

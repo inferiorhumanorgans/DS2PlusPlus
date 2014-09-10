@@ -26,7 +26,7 @@ namespace DS2PlusPlus
          * \param aParser A QSharedPointer to a QCommandLineParser.  This is used to add additional switches.  If this is specified, Manager::initializeManager() must be called before this object can be used.
          * \param aParent
          */
-        explicit Manager(QSharedPointer<QCommandLineParser> aParser=QSharedPointer<QCommandLineParser>(), QObject *aParent = 0);
+        explicit Manager(QSharedPointer<QCommandLineParser> aParser=QSharedPointer<QCommandLineParser>(), int fd = -1, QObject *aParent = 0);
         virtual ~Manager();
 
         /*!
@@ -63,7 +63,8 @@ namespace DS2PlusPlus
 
         QString dppDir();
         QString jsonDir();
-        QString serialPortPath() const {return _serialPortPath;}
+        void setFd(int aFd);
+        int fd() const;
 
         DS2PacketPtr query(DS2PacketPtr aPacket);
 
@@ -121,8 +122,7 @@ namespace DS2PlusPlus
     protected:
         QSqlDatabase _db;
         QString _dppDir;
-        QString _serialPortPath;
-        QSerialPort *_serialPort;
+        int  _fd;
         QSharedPointer<QCommandLineParser> _cliParser;
     };
 

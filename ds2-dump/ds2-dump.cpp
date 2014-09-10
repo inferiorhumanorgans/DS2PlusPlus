@@ -1,6 +1,7 @@
-#include <sys/time.h>
-#include <unistd.h>
 
+
+#include <sys/time.h>
+#include <iostream>
 #include <stdexcept>
 
 #include <QDebug>
@@ -32,7 +33,7 @@ void DataCollection::run()
     parser->addHelpOption();
     parser->addVersionOption();
 
-    ManagerPtr dbm(new Manager(parser));
+    dbm = ManagerPtr(new Manager(parser));
 
     QCommandLineOption reloadJsonOption(QStringList() << "r" << "reload" << "load", "Load JSON data into SQL db");
     parser->addOption(reloadJsonOption);
@@ -65,6 +66,12 @@ void DataCollection::run()
     parser->addOption(listOperationsOption);
 
     parser->process(*QCoreApplication::instance());
+
+    if (!parser->isSet("reload") && !parser->isSet("list-families") && !parser->isSet("list-ecus") && !parser->isSet("list-operations")) {
+        if (!parser->isSet("input-packet")) {
+            this->serialSetup(parser);
+        }
+    }
 
     dbm->initializeManager();
 

@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
-QT       += core serialport sql
+QT       += core sql
 
 TARGET = ds2-dump
 CONFIG   += console
@@ -17,9 +17,11 @@ LIBPATH += ../libds2
 
 TEMPLATE = app
 
-
 SOURCES += main.cpp \
     ds2-dump.cpp
 
 HEADERS += \
     ds2-dump.h
+
+win32: SOURCES += ds2-serial-win32.cpp
+else:unix: SOURCES += ds2-serial-unix.cpp

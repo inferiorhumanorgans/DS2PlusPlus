@@ -1,3 +1,6 @@
+#include <fcntl.h>
+#include <errno.h>
+
 #include <iostream>
 #include <stdexcept>
 
@@ -15,17 +18,13 @@
 #include <QSqlRecord>
 #include <QSqlError>
 
-#include <QSerialPort>
-
 #include "manager.h"
 
 #include "dpp_v1_parser.h"
 
-void waitForThisManyBytes(QSerialPort &aPort, qint64 someNumberOfBytes)
+bool fd_is_valid(int fd)
 {
-    while ((!aPort.waitForReadyRead(250)) or (aPort.bytesAvailable() < someNumberOfBytes)) {
-        //qDebug() << "Bytes available: " << aPort.bytesAvailable() << " / Ready to read: " << aPort.waitForReadyRead(250);
-    }
+    return fcntl(fd, F_GETFD) != -1 || errno != EBADF;
 }
 
 namespace DS2PlusPlus {
@@ -46,8 +45,8 @@ namespace DS2PlusPlus {
         return ret;
     }
 
-    Manager::Manager(QSharedPointer<QCommandLineParser> aParser, QObject *parent) :
-        QObject(parent), _dppDir(QString::null), _serialPort(new QSerialPort), _cliParser(aParser)
+    Manager::Manager(QSharedPointer<QCommandLineParser> aParser, int fd, QObject *parent) :
+        QObject(parent), _dppDir(QString::null), _fd(fd), _cliParser(aParser)
     {
         if (!_cliParser.isNull()) {
             // We should really check to see if the user has already defined this, and if so we should whine.
@@ -62,25 +61,6 @@ namespace DS2PlusPlus {
 
     void Manager::initializeManager()
     {
-        if (_serialPortPath.isEmpty()) {
-            _serialPortPath = getenv("DPP_PORT");
-        }
-
-        if (!_cliParser.isNull() and _serialPortPath.isEmpty()) {
-            _serialPortPath = _cliParser->value("port");
-        }
-
-        // Path of last resort.
-        if (_serialPortPath == "auto") {
-#ifdef __APPLE__
-            _serialPortPath = "/dev/tty.usbserial";
-#elif _WIN32
-            _serialPortPath = "COM3:";
-#else
-            _serialPortPath = "/dev/tty.usbserial";
-#endif
-        }
-
         // Check to make sure our directory
         // So we can have multiple connections...
         QString connName(QUuid::createUuid().toString());
@@ -93,28 +73,16 @@ namespace DS2PlusPlus {
             QString errorString = QString("Couldn't open the database: %1").arg(_db.lastError().databaseText());
             throw std::runtime_error(qPrintable(errorString));
         }
+    }
 
-        // Determine serial port -- platform specific
-        if (!_serialPortPath.isEmpty()) {
-            _serialPort->setPortName(_serialPortPath);
+    void Manager::setFd(int aFd)
+    {
+        _fd = aFd;
+    }
 
-            // Configure it
-            _serialPort->setBaudRate(QSerialPort::Baud9600);
-            _serialPort->setDataBits(QSerialPort::Data8);
-            _serialPort->setParity(QSerialPort::EvenParity);
-            _serialPort->setStopBits(QSerialPort::OneStop);
-
-            // Open it
-            if (_serialPort->isOpen()) {
-                _serialPort->close();
-            }
-
-            if (!_serialPort->open(QIODevice::ReadWrite)) {
-                QString errorString = QString("'%1': %2").arg(_serialPort->portName()).arg(_serialPort->errorString());
-                throw std::ios_base::failure(qPrintable(errorString));
-            }
-        }
-
+    int Manager::fd() const
+    {
+        return _fd;
     }
 
     QSqlTableModel *Manager::modulesTable() {
@@ -171,10 +139,6 @@ namespace DS2PlusPlus {
         if (_db.isOpen()) {
             _db.close();
         }
-
-        if (_serialPort) {
-            delete _serialPort;
-        }
     }
 
     QString Manager::dppDir()
@@ -229,20 +193,39 @@ namespace DS2PlusPlus {
 
     DS2PacketPtr Manager::query(DS2PacketPtr aPacket)
     {
-        if (!_serialPort->isOpen()) {
-            QString errorString("Serial port at '%1' is not open.");
-            throw std::ios_base::failure(qPrintable(errorString.arg(_serialPortPath)));
+        qDebug() << "FD: " << _fd;
+        if (fd_is_valid(_fd)) {
+            //throw std::ios_base::failure("Serial port is not open.");
         }
 
         DS2PacketPtr ret(new DS2Packet);
 
-        _serialPort->setRequestToSend(true);
+        //_serialPort->setRequestToSend(true);
         // Send query to the ECU
-        _serialPort->write((QByteArray)*aPacket);
+        QByteArray ourBA = static_cast<QByteArray>(*aPacket);
+        int written = write(_fd, ourBA.data(), ourBA.size());
+        if (written != ourBA.size()) {
+            qDebug() << "Didn't write all";
+        } else {
+            qDebug() << "WRote: " << written;
+        }
+        qDebug() << "Done writing";
 
         // Read the echo back.  We should check to see if it matches, maybe...
-        waitForThisManyBytes(*_serialPort, aPacket->data().length() + 3);
-        _serialPort->read(aPacket->data().length() + 3);
+        char *tmpBuf = static_cast<char *>(malloc(ourBA.size()));
+        int totalRead = 0;
+        while (totalRead < ourBA.size()) {
+            qDebug() << "Reading byte " << totalRead;
+            int ret = read(_fd, tmpBuf + totalRead, 1);
+            if (ret != 1) {
+                qDebug() << "Errno: " << errno;
+                usleep(100000);
+            } else {
+                totalRead++;
+            }
+        }
+        free(tmpBuf);
+        qDebug() << "Read echo";
 
         // Read the result, save to thePacket
         quint8 ecuAddress;
@@ -250,8 +233,22 @@ namespace DS2PlusPlus {
 
         QByteArray inputArray;
 
-        waitForThisManyBytes(*_serialPort, 2);
-        inputArray = _serialPort->read(2);
+        tmpBuf = static_cast<char *>(malloc(2));
+        tmpBuf[0] = tmpBuf[1] = 5;
+        totalRead = 0;
+        while (totalRead < 2) {
+            qDebug() << "Reading byte " << totalRead;
+            int ret = read(_fd, tmpBuf + totalRead, 1);
+            if (ret != 1) {
+                qDebug() << "Errno: " << errno;
+                usleep(100000);
+            } else {
+                totalRead++;
+            }
+        }
+        inputArray = QByteArray(tmpBuf, 2);
+        free(tmpBuf);
+
         if (inputArray.length() != 2) {
             QString errorString = QString("Wanted length 2, got: %1").arg(inputArray.length());
             throw std::ios_base::failure(qPrintable(errorString));
@@ -260,13 +257,27 @@ namespace DS2PlusPlus {
         ret->setAddress(ecuAddress);
         length = inputArray.at(1);
 
-        if (length <= 2) {
-            QString errorString = QString("Ack. Got garbage data, length must be >= 2.  Got ECU: %1, LEN: %2").arg(QString::number(ecuAddress, 16)).arg(QString::number(length, 16));
+        if (length <= 4) {
+            QString errorString = QString("Ack. Got garbage data, length must be >= 4.  Got ECU: %1, LEN: %2").arg(QString::number(ecuAddress, 16)).arg(QString::number(length, 16));
             throw std::ios_base::failure(qPrintable(errorString));
         }
 
-        waitForThisManyBytes(*_serialPort, length - 2);
-        inputArray = _serialPort->read(length - 2);
+        tmpBuf = static_cast<char *>(malloc(length - 2));
+        totalRead = 0;
+        while (totalRead < (length - 2)) {
+            int ret = read(_fd, tmpBuf + totalRead, 1);
+            if (ret != 1) {
+                qDebug() << "Errno: " << errno;
+                usleep(100000);
+            } else {
+                totalRead++;
+            }
+        }
+        inputArray = QByteArray();
+        for (int i=0; i < (length -2); i++) {
+            inputArray.append((unsigned char)tmpBuf[i]);
+        }
+        free(tmpBuf);
         if (inputArray.length() != (length - 2)) {
             qDebug() << "RUH ROH";
         }
