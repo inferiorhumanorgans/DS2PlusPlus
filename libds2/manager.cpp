@@ -33,6 +33,9 @@
 #include <QCommandLineParser>
 #include <QUuid>
 
+#include <QPluginLoader>
+#include <QSqlDriverPlugin>
+
 #include <QDir>
 #include <QDirIterator>
 
@@ -77,6 +80,13 @@ namespace DS2PlusPlus {
                       "Read from serial port <port>.",
                       "port");
             aParser->addOption(targetDirectoryOption);
+
+            qDebug() << "Adding android option";
+            QCommandLineOption androidHack("dpp-dir", "Specify location of DPP-JSON files", "dpp-dir");
+            aParser->addOption(androidHack);
+
+            QCommandLineOption androidHack2("android-native", "Fix Android", "android-native");
+            aParser->addOption(androidHack2);
         } else {
             initializeManager();
         }
@@ -87,7 +97,23 @@ namespace DS2PlusPlus {
         // Check to make sure our directory
         // So we can have multiple connections...
         QString connName(QUuid::createUuid().toString());
-        _db = QSqlDatabase::addDatabase("QSQLITE", connName);
+
+        if (_cliParser->isSet("android-native")) {
+            qDebug() << "Driver dir is: " << _cliParser->value("android-native");
+            QPluginLoader plug(_cliParser->value("android-native") + "/libqsqlite.so");
+            plug.load();
+
+            QSqlDriverPlugin *sqlPlugin = qobject_cast<QSqlDriverPlugin *>(plug.instance());
+
+            _db = QSqlDatabase::addDatabase(sqlPlugin->create("QSQLITE"), connName);
+        } else {
+            _db = QSqlDatabase::addDatabase("QSQLITE", connName);
+        }
+
+
+        if (_cliParser->isSet("dpp-dir")) {
+            this->_dppDir = _cliParser->value("dpp-dir");
+        }
 
         QString dppDbPath = QString("%1%2%3").arg(dppDir()).arg(QDir::separator()).arg(DPP_DB_PATH);
         _db.setDatabaseName(expandTilde(dppDbPath));
