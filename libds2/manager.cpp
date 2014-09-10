@@ -101,7 +101,7 @@ namespace DS2PlusPlus {
         // So we can have multiple connections...
         QString connName(QUuid::createUuid().toString());
 
-        if (_cliParser->isSet("android-native")) {
+        if (!_cliParser.isNull() and _cliParser->isSet("android-native")) {
             qDebug() << "Driver dir is: " << _cliParser->value("android-native");
             QPluginLoader plug(_cliParser->value("android-native") + "/libqsqlite.so");
             plug.load();
@@ -113,11 +113,11 @@ namespace DS2PlusPlus {
             _db = QSqlDatabase::addDatabase("QSQLITE", connName);
         }
 
-        if (_cliParser->isSet("dpp-dir")) {
+        if (!_cliParser.isNull() and _cliParser->isSet("dpp-dir")) {
             this->_dppDir = _cliParser->value("dpp-dir");
         }
 
-        if (_cliParser->isSet("dpp-source-dir")) {
+        if (!_cliParser.isNull() and _cliParser->isSet("dpp-source-dir")) {
             this->_dppSourceDir = _cliParser->value("dpp-source-dir");
         }
 
