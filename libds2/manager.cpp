@@ -252,7 +252,6 @@ namespace DS2PlusPlus {
 
     DS2PacketPtr Manager::query(DS2PacketPtr aPacket)
     {
-        qDebug() << "FD: " << _fd;
         if (fd_is_valid(_fd)) {
             //throw std::ios_base::failure("Serial port is not open.");
         }
@@ -265,26 +264,20 @@ namespace DS2PlusPlus {
         int written = write(_fd, ourBA.data(), ourBA.size());
         if (written != ourBA.size()) {
             qDebug() << "Didn't write all";
-        } else {
-            qDebug() << "WRote: " << written;
         }
-        qDebug() << "Done writing";
 
         // Read the echo back.  We should check to see if it matches, maybe...
         char *tmpBuf = static_cast<char *>(malloc(ourBA.size()));
         int totalRead = 0;
         while (totalRead < ourBA.size()) {
-            qDebug() << "Reading byte " << totalRead;
             int ret = read(_fd, tmpBuf + totalRead, 1);
             if (ret != 1) {
                 qDebug() << "Errno: " << errno;
-                usleep(100000);
             } else {
                 totalRead++;
             }
         }
         free(tmpBuf);
-        qDebug() << "Read echo";
 
         // Read the result, save to thePacket
         quint8 ecuAddress;
@@ -296,11 +289,9 @@ namespace DS2PlusPlus {
         tmpBuf[0] = tmpBuf[1] = 5;
         totalRead = 0;
         while (totalRead < 2) {
-            qDebug() << "Reading byte " << totalRead;
             int ret = read(_fd, tmpBuf + totalRead, 1);
             if (ret != 1) {
                 qDebug() << "Errno: " << errno;
-                usleep(100000);
             } else {
                 totalRead++;
             }
@@ -316,7 +307,7 @@ namespace DS2PlusPlus {
         ret->setAddress(ecuAddress);
         length = inputArray.at(1);
 
-        if (length <= 4) {
+        if (length < 4) {
             QString errorString = QString("Ack. Got garbage data, length must be >= 4.  Got ECU: %1, LEN: %2").arg(QString::number(ecuAddress, 16)).arg(QString::number(length, 16));
             throw std::ios_base::failure(qPrintable(errorString));
         }
@@ -326,12 +317,12 @@ namespace DS2PlusPlus {
         while (totalRead < (length - 2)) {
             int ret = read(_fd, tmpBuf + totalRead, 1);
             if (ret != 1) {
-                qDebug() << "Errno: " << errno;
-                usleep(100000);
+                qDebug() << "Error: " << strerror(errno);
             } else {
                 totalRead++;
             }
         }
+
         inputArray = QByteArray();
         for (int i=0; i < (length -2); i++) {
             inputArray.append((unsigned char)tmpBuf[i]);
