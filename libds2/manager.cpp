@@ -21,6 +21,10 @@
  * Or see <http://www.gnu.org/licenses/>.
  */
 
+#include <sys/select.h>
+#include <sys/time.h>
+#include <sys/types.h>
+
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
@@ -48,6 +52,42 @@
 #include "manager.h"
 
 #include "dpp_v1_parser.h"
+
+QByteArray readBytes(int fd, int length)
+{
+    QByteArray ret;
+    fd_set fds;
+    FD_ZERO(&fds);
+    FD_SET(fd, &fds);
+
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 500000;
+
+    while (ret.length() < length) {
+        switch(select(fd+1, &fds, NULL, NULL, &tv)) {
+        case 0:
+            // timeout
+            break;
+        case -1:
+            // error
+            qDebug() << "Error from select: " << strerror(errno);
+            return ret;
+        case 1:
+        default:
+            unsigned char byte = 0;
+            int bytesRead = read(fd, &byte, 1);
+            if (bytesRead != 1) {
+                qDebug() << "Didn't read the byte we were expecting.  Error: " << strerror(errno);
+                return ret;
+            }
+            ret.append(byte);
+            break;
+        }
+
+    }
+    return ret;
+}
 
 bool fd_is_valid(int fd)
 {
@@ -263,41 +303,20 @@ namespace DS2PlusPlus {
         QByteArray ourBA = static_cast<QByteArray>(*aPacket);
         int written = write(_fd, ourBA.data(), ourBA.size());
         if (written != ourBA.size()) {
-            qDebug() << "Didn't write all";
+            qDebug() << "Didn't write all " << written << " vs " << ourBA.size();
         }
 
         // Read the echo back.  We should check to see if it matches, maybe...
-        char *tmpBuf = static_cast<char *>(malloc(ourBA.size()));
-        int totalRead = 0;
-        while (totalRead < ourBA.size()) {
-            int ret = read(_fd, tmpBuf + totalRead, 1);
-            if (ret != 1) {
-                qDebug() << "Errno: " << errno;
-            } else {
-                totalRead++;
-            }
-        }
-        free(tmpBuf);
+        readBytes(_fd, ourBA.size());
+        usleep(15000);
 
-        // Read the result, save to thePacket
+        // Read the initial header
         quint8 ecuAddress;
         quint8 length;
 
         QByteArray inputArray;
-
-        tmpBuf = static_cast<char *>(malloc(2));
-        tmpBuf[0] = tmpBuf[1] = 5;
-        totalRead = 0;
-        while (totalRead < 2) {
-            int ret = read(_fd, tmpBuf + totalRead, 1);
-            if (ret != 1) {
-                qDebug() << "Errno: " << errno;
-            } else {
-                totalRead++;
-            }
-        }
-        inputArray = QByteArray(tmpBuf, 2);
-        free(tmpBuf);
+        inputArray = readBytes(_fd, 2);
+        usleep(12500);
 
         if (inputArray.length() != 2) {
             QString errorString = QString("Wanted length 2, got: %1").arg(inputArray.length());
@@ -312,22 +331,8 @@ namespace DS2PlusPlus {
             throw std::ios_base::failure(qPrintable(errorString));
         }
 
-        tmpBuf = static_cast<char *>(malloc(length - 2));
-        totalRead = 0;
-        while (totalRead < (length - 2)) {
-            int ret = read(_fd, tmpBuf + totalRead, 1);
-            if (ret != 1) {
-                qDebug() << "Error: " << strerror(errno);
-            } else {
-                totalRead++;
-            }
-        }
+        inputArray = readBytes(_fd, length - 2);
 
-        inputArray = QByteArray();
-        for (int i=0; i < (length -2); i++) {
-            inputArray.append((unsigned char)tmpBuf[i]);
-        }
-        free(tmpBuf);
         if (inputArray.length() != (length - 2)) {
             qDebug() << "RUH ROH";
         }
@@ -345,7 +350,6 @@ namespace DS2PlusPlus {
         if (ret->checksum() != realChecksum) {
             qDebug() << "Checksum mismatch...";
         }
-
         return ret;
     }
 
