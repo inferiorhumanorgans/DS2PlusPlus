@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       2,
-  "file_mtime":         "2014-09-09T14:26:51.0Z",
+  "file_version":       3,
+  "file_mtime":         "2014-09-12T21:34:42.0Z",
   "file_type":          "ecu",
   "uuid":               "3CD3AE6B-7826-4884-AC6A-A88FCF682B85",
   "address":            "0x5B",
@@ -71,6 +71,31 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
+          }
+        },
+        "mode.recirculation": {
+          "uuid":       "4DC3306E-3A4A-11E4-B5B6-902B3437F330",
+          "type":       "byte",
+          "display":    "enum",
+          "start_pos":  1,
+          "length":     1,
+          "levels": {
+            "0x10": "auto",
+            "0x20": "recirculation",
+            "else": "fresh"
+          }
+        },
+        "mode.vents": {
+          "uuid":       "E4B8C37B-3A4B-11E4-B5B6-902B3437F330",
+          "type":       "byte",
+          "display":    "enum",
+          "start_pos":  1,
+          "length":     1,
+          "levels": {
+            "0x01": "defrost",
+            "0x02": "dash",
+            "0x04": "floor",
+            "0x08": "auto"
           }
         },
         "selected_temperature": {
