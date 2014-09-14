@@ -224,18 +224,31 @@ namespace DS2PlusPlus {
         return ret;
     }
 
-    QSqlTableModel *Manager::stringTable()
+    QSqlTableModel *Manager::stringValuesTable()
     {
         if (!_db.isOpen()) {
             qDebug() << "DB NOT OPEN";
         }
 
         QSqlTableModel *ret = new QSqlTableModel(this, _db);
-        ret->setTable("strings");
+        ret->setTable("string_values");
         ret->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
         return ret;
 
+    }
+
+    QSqlTableModel *Manager::stringTablesTable()
+    {
+        if (!_db.isOpen()) {
+            qDebug() << "DB NOT OPEN";
+        }
+
+        QSqlTableModel *ret = new QSqlTableModel(this, _db);
+        ret->setTable("string_tables");
+        ret->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+        return ret;
     }
 
     Manager::~Manager() {
@@ -582,10 +595,15 @@ namespace DS2PlusPlus {
 
     bool Manager::removeStringTableByUuid(const QString &aUuid)
     {
-        QSqlQuery removeThisStringTableQuery(_db);
-        removeThisStringTableQuery.prepare("DELETE FROM strings WHERE table_uuid = :uuid");
-        removeThisStringTableQuery.bindValue(":uuid", aUuid);
-        return removeThisStringTableQuery.exec();
+        QSqlQuery removeTheseStringValuesByTableQuery(_db);
+        removeTheseStringValuesByTableQuery.prepare("DELETE FROM string_values WHERE table_uuid = :uuid");
+        removeTheseStringValuesByTableQuery.bindValue(":uuid", aUuid);
+
+        QSqlQuery removeThisStringTableByUuidQuery(_db);
+        removeThisStringTableByUuidQuery.prepare("DELETE FROM string_tables WHERE uuid = :uuid");
+        removeThisStringTableByUuidQuery.bindValue(":uuid", aUuid);
+
+        return removeTheseStringValuesByTableQuery.exec() && removeThisStringTableByUuidQuery.exec();
     }
 
     void Manager::initializeDatabase()
@@ -665,19 +683,35 @@ namespace DS2PlusPlus {
             }
         }
 
-        if (!_db.tables().contains("strings")) {
-            qDebug() << "Need to create strings table";
+        if (!_db.tables().contains("string_values")) {
+            qDebug() << "Need to create string_values table";
             QSqlQuery query(_db);
             bool ret = query.exec("" \
-                                  "CREATE TABLE strings (\n"                              \
-                                      "table_uuid BLOB NOT NULL,\n"                       \
-                                      "number     INTEGER NOT NULL,\n"                    \
-                                      "string     VARCHAR NOT NULL,\n"                    \
-                                      "PRIMARY KEY (table_uuid, number)\n"                \
-                                      ");"                                                \
+                                  "CREATE TABLE string_values (\n"          \
+                                      "table_uuid   BLOB NOT NULL,\n"       \
+                                      "number       INTEGER NOT NULL,\n"    \
+                                      "string       VARCHAR NOT NULL,\n"    \
+                                      "PRIMARY KEY (table_uuid, number)\n"  \
+                                      ");"                                  \
                                  );
             if (!ret) {
-                QString errorString = QString("Problem creating the strings table: %1").arg(query.lastError().driverText());
+                QString errorString = QString("Problem creating the string_values table: %1").arg(query.lastError().driverText());
+                throw std::runtime_error(qPrintable(errorString));
+            }
+        }
+
+        if (!_db.tables().contains("string_tables")) {
+            qDebug() << "Need to create string_tables table";
+            QSqlQuery query(_db);
+            bool ret = query.exec("" \
+                                  "CREATE TABLE string_tables (\n"          \
+                                      "uuid BLOB UNIQUE NOT NULL,\n"        \
+                                      "name VARCHAR UNIQUE NOT NULL,\n"     \
+                                      "PRIMARY KEY (uuid)\n"                \
+                                      ");"                                  \
+                                 );
+            if (!ret) {
+                QString errorString = QString("Problem creating the string_tables table: %1").arg(query.lastError().driverText());
                 throw std::runtime_error(qPrintable(errorString));
             }
         }
@@ -700,12 +734,27 @@ namespace DS2PlusPlus {
 
     QString Manager::findStringByTableAndNumber(const QString &aStringTable, int aNumber)
     {
-        QSharedPointer<QSqlTableModel> ourStringTable(stringTable());
-        ourStringTable->setFilter(QString("((table_name = '%1') OR (table_uuid = '%2')) AND (number = %3)").arg(aStringTable).arg(aStringTable).arg(aNumber));
-        ourStringTable->select();
+        QString uuid = DPP_V1_Parser::stringToUuidSQL(aStringTable);
 
-        if (ourStringTable->rowCount() == 1) {
-           QSqlRecord ourRecord = ourStringTable->record(0);
+        // If we were given an invalid UUID, assume we've got to look it up by name.
+        // We could join if it weren't such a pain in the ass with Qt.
+        if (uuid == "NULL") {
+            QSharedPointer<QSqlTableModel> ourStringTableTable(stringTablesTable());
+            ourStringTableTable->setFilter(QString("name = '%1'").arg(aStringTable));
+            ourStringTableTable->select();
+            if (ourStringTableTable->rowCount() == 1) {
+                QSqlRecord ourRecord = ourStringTableTable->record(0);
+                uuid = DPP_V1_Parser::rawUuidToString(ourRecord.value("uuid").toByteArray());
+                uuid = DPP_V1_Parser::stringToUuidSQL(uuid);
+            }
+        }
+
+        QSharedPointer<QSqlTableModel> ourStringValueTable(stringValuesTable());
+        ourStringValueTable->setFilter(QString("(table_uuid = %1) AND (number = %2)").arg(uuid).arg(aNumber));
+        ourStringValueTable->select();
+
+        if (ourStringValueTable->rowCount() == 1) {
+           QSqlRecord ourRecord = ourStringValueTable->record(0);
            return ourRecord.value("string").toString();
         }
         return QString::null;

@@ -87,7 +87,8 @@ namespace DS2PlusPlus
         QSqlTableModel *modulesTable();
         QSqlTableModel *operationsTable();
         QSqlTableModel *resultsTable();
-        QSqlTableModel *stringTable();
+        QSqlTableModel *stringValuesTable();
+        QSqlTableModel *stringTablesTable();
 
         QString dppDir();
         QString jsonDir();

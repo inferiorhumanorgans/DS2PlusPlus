@@ -232,7 +232,9 @@ namespace DS2PlusPlus {
 
     void DPP_V1_Parser::parseStringTableFile(const Json::Value &aJsonObject)
     {
-        QSharedPointer<QSqlTableModel> ourModel(_manager->stringTable());
+        QSharedPointer<QSqlTableModel> ourValueModel(_manager->stringValuesTable());
+        QSharedPointer<QSqlTableModel> ourTableModel(_manager->stringTablesTable());
+
         Json::Value stringJson = aJsonObject;
 
         QString uuid(getQStringFromJson(stringJson["uuid"]));
@@ -242,28 +244,39 @@ namespace DS2PlusPlus {
 
         _manager->removeStringTableByUuid(uuid);
 
+        QSqlRecord stringTableRecord = ourTableModel->record();
+        stringTableRecord.setValue("name", tableName);
+        stringTableRecord.setValue("uuid", stringToUuidVariant(uuid));
+        if (!ourTableModel->insertRecord(-1, stringTableRecord)) {
+            qDebug() << "insertRecord failed: " << ourTableModel->lastError();
+        }
+
+        if (!ourTableModel->submitAll()) {
+            QString exceptionString = QString("Saving the string_table at UUID %1 failed: %2").arg(uuid).arg(ourValueModel->lastError().databaseText());
+            throw std::runtime_error(qPrintable(exceptionString));
+        }
+
         Json::Value ourStrings = stringJson["strings"];
         Json::ValueIterator stringIterator = ourStrings.begin();
 
         quint64 stringCount = 0;
         while (stringIterator != ourStrings.end()) {
             Json::Value ourString = *stringIterator;
-            QSqlRecord stringRecord = ourModel->record();
+            QSqlRecord stringValueRecord = ourValueModel->record();
             bool ok;
             Json::Value ourKey = stringIterator.key();
             quint8 stringNumber = QString(getQStringFromJson(ourKey)).toUInt(&ok, 16);
 
-            stringRecord.setValue("table_uuid", stringToUuidVariant(uuid));
-            stringRecord.setValue("table_name", tableName);
-            stringRecord.setValue("number", stringNumber);
-            stringRecord.setValue("string", getQStringFromJson(ourString));
+            stringValueRecord.setValue("table_uuid", stringToUuidVariant(uuid));
+            stringValueRecord.setValue("number", stringNumber);
+            stringValueRecord.setValue("string", getQStringFromJson(ourString));
 
-            if (!ourModel->insertRecord(-1, stringRecord)) {
-                qDebug() << "insertRecord failed: " << ourModel->lastError();
+            if (!ourValueModel->insertRecord(-1, stringValueRecord)) {
+                qDebug() << "insertRecord failed: " << ourValueModel->lastError();
             }
 
-            if (!ourModel->submitAll()) {
-                QString exceptionString = QString("Saving the string table at UUID %1 failed: %2").arg(uuid).arg(ourModel->lastError().databaseText());
+            if (!ourValueModel->submitAll()) {
+                QString exceptionString = QString("Saving the string value at UUID %1 failed: %2").arg(uuid).arg(ourValueModel->lastError().databaseText());
                 throw std::runtime_error(qPrintable(exceptionString));
             }
 
