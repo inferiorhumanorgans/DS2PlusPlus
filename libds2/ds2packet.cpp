@@ -41,7 +41,15 @@ namespace DS2PlusPlus {
 
     DS2Packet::DS2Packet(const QString &aPacketString)
     {
+        if (aPacketString.isEmpty()) {
+            throw std::invalid_argument("Empty packet string is invalid");
+        }
+
         QStringList ourArguments = aPacketString.split(" ");
+
+        if (ourArguments.isEmpty()) {
+            throw std::invalid_argument("Empty packet string is invalid");
+        }
 
         quint8 ourAddress = ourArguments.takeFirst().toUShort(NULL, 16);
         quint8 ourLength = ourArguments.takeFirst().toUShort(NULL, 16) - 2;
