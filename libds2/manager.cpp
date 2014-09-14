@@ -439,7 +439,7 @@ namespace DS2PlusPlus {
         QSqlRecord rec;
         QSqlTableModel *ourModel = modulesTable();
 
-        ourModel->setFilter(QString("uuid = '%1'").arg(aUuid));
+        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
         ourModel->select();
 
         if (ourModel->rowCount() == 1) {
@@ -461,12 +461,12 @@ namespace DS2PlusPlus {
         QHash<QString, ControlUnitPtr > ret;
         QSqlTableModel *ourModel = modulesTable();
 
-        ourModel->setFilter(QString("family= '%1'").arg(aFamily));
+        ourModel->setFilter(QString("family = '%1'").arg(aFamily));
         ourModel->select();
 
         for (int i=0; i < ourModel->rowCount(); i++) {
             QSqlRecord theRecord = ourModel->record(i);
-            QString uuid(theRecord.value(theRecord.indexOf("uuid")).toString());
+            QString uuid(DPP_V1_Parser::rawUuidToString(theRecord.value("uuid").toByteArray()));
             ControlUnitPtr ecu(new ControlUnit(uuid, this));
             ret.insert(uuid, ecu);
         }
@@ -485,9 +485,9 @@ namespace DS2PlusPlus {
 
         for (int i=0; i < ourModel->rowCount(); i++) {
             QSqlRecord ourRecord = ourModel->record(i);
-            QString uuid(ourRecord.value(ourRecord.indexOf("uuid")).toString());
-            ControlUnitPtr ecu(new ControlUnit(uuid, this));
-            ret.insert(uuid, ecu);
+            QString ourUuid = DPP_V1_Parser::rawUuidToString(ourRecord.value("uuid").toByteArray());
+            ControlUnitPtr ecu(new ControlUnit(ourUuid, this));
+            ret.insert(ourUuid, ecu);
         }
 
         delete ourModel;
@@ -597,7 +597,7 @@ namespace DS2PlusPlus {
                                   "CREATE TABLE modules (\n"                    \
                                       "dpp_version  INTEGER NOT NULL,\n"        \
                                       "file_version INTEGER NOT NULL,\n"        \
-                                      "uuid         VARCHAR UNIQUE NOT NULL PRIMARY KEY,\n" \
+                                      "uuid         BLOB UNIQUE NOT NULL PRIMARY KEY,\n" \
                                       "address      INTEGER,\n"                 \
                                       "family       VARCHAR,\n"                 \
                                       "name         VARCHAR NOT NULL,\n"        \
@@ -623,11 +623,11 @@ namespace DS2PlusPlus {
             QSqlQuery query(_db);
             bool ret = query.exec("" \
                                   "CREATE TABLE operations (\n"                          \
-                                      "uuid      VARCHAR UNIQUE NOT NULL PRIMARY KEY,\n" \
-                                      "module_id VARCHAR NOT NULL,\n"                    \
+                                      "uuid      BLOB UNIQUE NOT NULL PRIMARY KEY,\n"    \
+                                      "module_id BLOB NOT NULL,\n"                       \
                                       "name      VARCHAR NOT NULL,\n"                    \
                                       "command   BLOB,\n"                                \
-                                      "parent_id VARCHAR,\n"                             \
+                                      "parent_id BLOB,\n"                                \
                                       "UNIQUE (module_id, name),\n"                      \
                                       "CHECK ((CASE WHEN command IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1)," \
                                       "CHECK (uuid <> '')\n"                             \
@@ -644,8 +644,8 @@ namespace DS2PlusPlus {
             QSqlQuery query(_db);
             bool ret = query.exec("" \
                                   "CREATE TABLE results (\n"                    \
-                                      "uuid         VARCHAR UNIQUE NOT NULL PRIMARY KEY,\n" \
-                                      "operation_id VARCHAR NOT NULL,\n"        \
+                                      "uuid         BLOB UNIQUE NOT NULL PRIMARY KEY,\n" \
+                                      "operation_id BLOB NOT NULL,\n"           \
                                       "name         VARCHAR NOT NULL,\n"        \
                                       "type         VARCHAR NOT NULL,\n"        \
                                       "display      VARCHAR NOT NULL,\n"        \
@@ -655,7 +655,7 @@ namespace DS2PlusPlus {
                                       "factor_a     NUMERIC,\n"                 \
                                       "factor_b     NUMERIC,\n"                 \
                                       "levels       VARCHAR,\n"                 \
-                                      "UNIQUE (operation_id, name),\n" \
+                                      "UNIQUE (operation_id, name),\n"          \
                                       "CHECK (uuid <> '')\n"                    \
                                       ");"                                      \
                                   );
@@ -670,8 +670,7 @@ namespace DS2PlusPlus {
             QSqlQuery query(_db);
             bool ret = query.exec("" \
                                   "CREATE TABLE strings (\n"                              \
-                                      "table_uuid VARCHAR NOT NULL,\n"                    \
-                                      "table_name VARCHAR NOT NULL,\n"                    \
+                                      "table_uuid BLOB NOT NULL,\n"                       \
                                       "number     INTEGER NOT NULL,\n"                    \
                                       "string     VARCHAR NOT NULL,\n"                    \
                                       "PRIMARY KEY (table_uuid, number)\n"                \
@@ -707,7 +706,7 @@ namespace DS2PlusPlus {
 
         if (ourStringTable->rowCount() == 1) {
            QSqlRecord ourRecord = ourStringTable->record(0);
-           return ourRecord.value(ourRecord.indexOf("string")).toString();
+           return ourRecord.value("string").toString();
         }
         return QString::null;
     }

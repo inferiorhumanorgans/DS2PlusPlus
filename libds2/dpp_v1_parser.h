@@ -47,6 +47,10 @@ namespace DS2PlusPlus {
         void parseFile(const QString &aLabel, QIODevice *anInput);
         void reset();
 
+        static QString rawUuidToString(const QByteArray &aRawUuid);
+        static QVariant stringToUuidVariant(const QString &aUuid);
+        static QString stringToUuidSQL(const QString &aRawUuid);
+
     protected:
         /*!
          * \brief parseEcuFile

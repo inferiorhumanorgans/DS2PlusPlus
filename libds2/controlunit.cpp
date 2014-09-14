@@ -35,9 +35,12 @@
 
 #include <QtEndian>
 
+#include <QUuid>
+
 #include "operation.h"
 #include "controlunit.h"
 #include "manager.h"
+#include "dpp_v1_parser.h"
 
 namespace DS2PlusPlus {
 
@@ -119,7 +122,7 @@ namespace DS2PlusPlus {
             if (aUuid == parent_id) {
                 _dppVersion = theRecord.value("dpp_version").toInt();
                 _fileVersion = theRecord.value("file_version").toInt();
-                _uuid = theRecord.value("uuid").toString();
+                _uuid = DPP_V1_Parser::rawUuidToString(theRecord.value("uuid").toByteArray());
                 _address = theRecord.value("address").toChar().toLatin1();
                 _family = theRecord.value("family").toString();
                 _name = theRecord.value("name").toString();
@@ -138,15 +141,15 @@ namespace DS2PlusPlus {
             }
 
             QSharedPointer<QSqlTableModel> operationsTable(_manager->operationsTable());
-            operationsTable->setFilter(QString("module_id = '%1'").arg(parent_id));
+            operationsTable->setFilter(QString("module_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(parent_id)));
             operationsTable->select();
             for (int i=0; i < operationsTable->rowCount(); i++) {
                 QSqlRecord opRecord = operationsTable->record(i);
 
-                QString opName = opRecord.value(opRecord.indexOf("name")).toString();
-                QString opUuid = opRecord.value(opRecord.indexOf("uuid")).toString();
-                QString opModule = opRecord.value(opRecord.indexOf("module_id")).toString();
-                QByteArray opCommand = opRecord.value(opRecord.indexOf("command")).toByteArray();
+                QString opName = opRecord.value("name").toString();
+                QString opUuid = DPP_V1_Parser::rawUuidToString(opRecord.value("uuid").toByteArray());
+                QString opModule = DPP_V1_Parser::rawUuidToString(opRecord.value("module_id").toByteArray());
+                QByteArray opCommand = opRecord.value("command").toByteArray();
 
                 if (_operations.contains(opName)) {
                     if (getenv("DPP_TRACE")) {
@@ -155,25 +158,25 @@ namespace DS2PlusPlus {
                 } else {
                     OperationPtr op(new Operation(opUuid, _address, opName, opCommand));
                     QSharedPointer<QSqlTableModel> results(_manager->resultsTable());
-                    results->setFilter(QString("operation_id = '%1'").arg(opUuid));
+                    results->setFilter(QString("operation_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(opUuid)));
                     results->select();
 
                     for (int j=0; j < results->rowCount(); j++) {
                         QSqlRecord resultRecord = results->record(j);
                         Result result;
-                        result.setName(resultRecord.value(resultRecord.indexOf("name")).toString());
-                        result.setUuid(resultRecord.value(resultRecord.indexOf("uuid")).toString());
-                        result.setType(resultRecord.value(resultRecord.indexOf("type")).toString());
-                        result.setDisplayFormat(resultRecord.value(resultRecord.indexOf("display")).toString());
-                        result.setStartPosition(resultRecord.value(resultRecord.indexOf("start_pos")).toInt());
-                        result.setLength(resultRecord.value(resultRecord.indexOf("length")).toInt());
-                        result.setMask(resultRecord.value(resultRecord.indexOf("mask")).toString());
-                        result.setFactorA(resultRecord.value(resultRecord.indexOf("factor_a")).toDouble());
-                        result.setFactorB(resultRecord.value(resultRecord.indexOf("factor_b")).toDouble());
+                        result.setName(resultRecord.value("name").toString());
+                        result.setUuid(resultRecord.value("uuid").toString());
+                        result.setType(resultRecord.value("type").toString());
+                        result.setDisplayFormat(resultRecord.value("display").toString());
+                        result.setStartPosition(resultRecord.value("start_pos").toInt());
+                        result.setLength(resultRecord.value("length").toInt());
+                        result.setMask(resultRecord.value("mask").toString());
+                        result.setFactorA(resultRecord.value("factor_a").toDouble());
+                        result.setFactorB(resultRecord.value("factor_b").toDouble());
 
                         QJsonParseError jsonError;
                         QHash<QString, QString> ourLevels;
-                        QByteArray jsonByteArray(qPrintable(resultRecord.value(resultRecord.indexOf("levels")).toString()));
+                        QByteArray jsonByteArray(qPrintable(resultRecord.value("levels").toString()));
                         QJsonDocument levelsDoc = QJsonDocument::fromJson(jsonByteArray, &jsonError);
                         QJsonObject ourLevelsJson = levelsDoc.object();
 
@@ -195,7 +198,7 @@ namespace DS2PlusPlus {
                     _operations.insert(opName, op);
                 }
             }
-            parent_id = theRecord.value("parent_id").toString();
+            parent_id = DPP_V1_Parser::rawUuidToString(theRecord.value("parent_id").toByteArray());
         }
     }
 

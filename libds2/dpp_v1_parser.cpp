@@ -28,7 +28,7 @@
 #include <json/json.h>
 
 #include <QDebug>
-
+#include <QUuid>
 #include <QDateTime>
 
 #include <QSqlError>
@@ -91,6 +91,32 @@ namespace DS2PlusPlus {
         }
     }
 
+    QString DPP_V1_Parser::rawUuidToString(const QByteArray &aRawUuid)
+    {
+        QUuid ourUuid = QUuid::fromRfc4122(aRawUuid);
+        if (ourUuid.isNull()) {
+            return QString::null;
+        }
+
+        return ourUuid.toString().mid(1,36).toUpper();
+    }
+
+    QString DPP_V1_Parser::stringToUuidSQL(const QString &aRawUuid)
+    {
+        QUuid ourUuid = QUuid(aRawUuid);
+        if (ourUuid.isNull()) {
+            return "NULL";
+        }
+
+        return QString("X'%1'").arg(ourUuid.toRfc4122().toHex().data());
+    }
+
+    QVariant DPP_V1_Parser::stringToUuidVariant(const QString &aUuid)
+    {
+        QUuid ourUuid(aUuid);
+        return ourUuid.isNull() ? QVariant(QString::null) : QVariant(ourUuid.toRfc4122());
+    }
+
     void DPP_V1_Parser::parseEcuFile(const Json::Value &aJsonObject)
     {
         QSharedPointer<QSqlTableModel> ourModel(_manager->modulesTable());
@@ -109,25 +135,25 @@ namespace DS2PlusPlus {
         }
 
         QSqlRecord moduleRecord = ourModel->record();
-        moduleRecord.setValue(moduleRecord.indexOf("uuid"), uuid);
-        moduleRecord.setValue(moduleRecord.indexOf("parent_id"), parent_id);
-        moduleRecord.setValue(moduleRecord.indexOf("file_version"), moduleJson["file_version"].asInt());
-        moduleRecord.setValue(moduleRecord.indexOf("dpp_version"), moduleJson["dpp_version"].asInt());
-        moduleRecord.setValue(moduleRecord.indexOf("name"), name);
-        moduleRecord.setValue(moduleRecord.indexOf("family"), getQStringFromJson(moduleJson["family"]));
+        moduleRecord.setValue("uuid", stringToUuidVariant(uuid));
+        moduleRecord.setValue("parent_id", stringToUuidVariant(parent_id));
+        moduleRecord.setValue("file_version", moduleJson["file_version"].asInt());
+        moduleRecord.setValue("dpp_version", moduleJson["dpp_version"].asInt());
+        moduleRecord.setValue("name", name);
+        moduleRecord.setValue("family", getQStringFromJson(moduleJson["family"]));
 
         QString ecuAddressString = getQStringFromJson(moduleJson["address"]);
         if (!ecuAddressString.isEmpty()) {
             bool ok;
             quint8 ecuAddressNumber = ecuAddressString.toInt(&ok, 16);
             if (ok) {
-                moduleRecord.setValue(moduleRecord.indexOf("address"), ecuAddressNumber);
+                moduleRecord.setValue("address", ecuAddressNumber);
             } else {
                 QString errorString = QString("Error reading module JSON, invalid address %1").arg(ecuAddressString);
                 throw std::runtime_error(qPrintable(errorString));
             }
         } else {
-            moduleRecord.setValue(moduleRecord.indexOf("address"), QVariant(QString::null));
+            moduleRecord.setValue("address", QVariant(QString::null));
         }
 
         qErr << "\tFound module definition: " << name;
@@ -143,41 +169,41 @@ namespace DS2PlusPlus {
 
         if (!moduleJson["part_number"].isNull()) {
             quint64 part_number = moduleJson["part_number"].asUInt64();
-            moduleRecord.setValue(moduleRecord.indexOf("part_number"), part_number);
+            moduleRecord.setValue("part_number", part_number);
         }
 
         if (!moduleJson["hardware_number"].isNull()) {
             quint64 hardware_number = QString(moduleJson["hardware_number"].asCString()).toULongLong(&ok, 16);
             if (ok) {
-                moduleRecord.setValue(moduleRecord.indexOf("hardware_num"), hardware_number);
+                moduleRecord.setValue("hardware_num", hardware_number);
             }
         }
 
         if (!moduleJson["software_number"].isNull()) {
             quint64 software_number = QString(moduleJson["software_number"].asCString()).toULongLong(&ok, 16);
             if (ok) {
-                moduleRecord.setValue(moduleRecord.indexOf("software_num"), software_number);
+                moduleRecord.setValue("software_num", software_number);
             }
         }
 
         if (!moduleJson["coding_index"].isNull()) {
             quint64 coding_index = QString(moduleJson["coding_index"].asCString()).toULongLong(&ok, 16);
             if (ok) {
-                moduleRecord.setValue(moduleRecord.indexOf("coding_index"), coding_index);
+                moduleRecord.setValue("coding_index", coding_index);
             }
         }
 
         if (moduleJson["endian"].isNull()) {
-            moduleRecord.setValue(moduleRecord.indexOf("big_endian"), QVariant(QString::null));
+            moduleRecord.setValue("big_endian", QVariant(QString::null));
         } else {
             QString endianness = moduleJson["endian"].asCString();
-            moduleRecord.setValue(moduleRecord.indexOf("big_endian"), (endianness == "big") ? 1 : 0);
+            moduleRecord.setValue("big_endian", (endianness == "big") ? 1 : 0);
         }
 
         if (!moduleJson["file_mtime"].isNull()) {
             QString mtimeString = moduleJson["file_mtime"].asCString();
             QDateTime mtime = QDateTime::fromString(mtimeString, Qt::ISODate);
-            moduleRecord.setValue(moduleRecord.indexOf("mtime"), mtime.toTime_t());
+            moduleRecord.setValue("mtime", mtime.toTime_t());
         }
 
         quint64 operationsCount = 0;
@@ -227,10 +253,10 @@ namespace DS2PlusPlus {
             Json::Value ourKey = stringIterator.key();
             quint8 stringNumber = QString(getQStringFromJson(ourKey)).toUInt(&ok, 16);
 
-            stringRecord.setValue(stringRecord.indexOf("table_uuid"), uuid);
-            stringRecord.setValue(stringRecord.indexOf("table_name"), tableName);
-            stringRecord.setValue(stringRecord.indexOf("number"), stringNumber);
-            stringRecord.setValue(stringRecord.indexOf("string"), getQStringFromJson(ourString));
+            stringRecord.setValue("table_uuid", stringToUuidVariant(uuid));
+            stringRecord.setValue("table_name", tableName);
+            stringRecord.setValue("number", stringNumber);
+            stringRecord.setValue("string", getQStringFromJson(ourString));
 
             if (!ourModel->insertRecord(-1, stringRecord)) {
                 qDebug() << "insertRecord failed: " << ourModel->lastError();
@@ -273,10 +299,10 @@ namespace DS2PlusPlus {
             _manager->removeOperationByUuid(uuid);
         }
 
-        operationRecord.setValue(operationRecord.indexOf("uuid"), uuid);
-        operationRecord.setValue(operationRecord.indexOf("module_id"), module_id);
-        operationRecord.setValue(operationRecord.indexOf("name"), operationIt.key().asCString());
-        operationRecord.setValue(operationRecord.indexOf("parent_id"), parent_id);
+        operationRecord.setValue("uuid", stringToUuidVariant(uuid));
+        operationRecord.setValue("module_id", stringToUuidVariant(module_id));
+        operationRecord.setValue("name", operationIt.key().asCString());
+        operationRecord.setValue("parent_id", stringToUuidVariant(parent_id));
 
         QByteArray commandByteList;
         for (Json::ArrayIndex i=0; i < ourOperation["command"].size(); i++) {
@@ -289,7 +315,7 @@ namespace DS2PlusPlus {
             commandByteList.append(static_cast<quint8>(byte));
         }
 
-        operationRecord.setValue(operationRecord.indexOf("command"), QVariant(commandByteList));
+        operationRecord.setValue("command", QVariant(commandByteList));
 
         QSharedPointer<QSqlTableModel> ourModel(_manager->operationsTable());
         if (!ourModel->insertRecord(-1, operationRecord)) {
@@ -345,16 +371,16 @@ namespace DS2PlusPlus {
             _manager->removeResultByUuid(uuid);
         }
 
-        resultRecord.setValue(resultRecord.indexOf("uuid"),         uuid);
-        resultRecord.setValue(resultRecord.indexOf("operation_id"), getQStringFromJson(operationJSON["uuid"]));
-        resultRecord.setValue(resultRecord.indexOf("name"),         aResultIterator.key().asCString());
-        resultRecord.setValue(resultRecord.indexOf("type"),         getQStringFromJson(ourResult["type"]));
-        resultRecord.setValue(resultRecord.indexOf("display"),      getQStringFromJson(ourResult["display"]));
-        resultRecord.setValue(resultRecord.indexOf("start_pos"),    ourResult["start_pos"].asInt());
-        resultRecord.setValue(resultRecord.indexOf("length"),       ourResult["length"].asInt());
-        resultRecord.setValue(resultRecord.indexOf("mask"),         getQStringFromJson(ourResult["mask"]));
-        resultRecord.setValue(resultRecord.indexOf("factor_a"),     ourResult["factor_a"].asDouble());
-        resultRecord.setValue(resultRecord.indexOf("factor_b"),     ourResult["factor_b"].asDouble());
+        resultRecord.setValue("uuid",         stringToUuidVariant(uuid));
+        resultRecord.setValue("operation_id", stringToUuidVariant(getQStringFromJson(operationJSON["uuid"])));
+        resultRecord.setValue("name",         aResultIterator.key().asCString());
+        resultRecord.setValue("type",         getQStringFromJson(ourResult["type"]));
+        resultRecord.setValue("display",      getQStringFromJson(ourResult["display"]));
+        resultRecord.setValue("start_pos",    ourResult["start_pos"].asInt());
+        resultRecord.setValue("length",       ourResult["length"].asInt());
+        resultRecord.setValue("mask",         getQStringFromJson(ourResult["mask"]));
+        resultRecord.setValue("factor_a",     ourResult["factor_a"].asDouble());
+        resultRecord.setValue("factor_b",     ourResult["factor_b"].asDouble());
 
 
         Json::FastWriter writer;
@@ -363,7 +389,7 @@ namespace DS2PlusPlus {
         if (levelsQString == "null") {
             levelsQString = QString::null;
         }
-        resultRecord.setValue(resultRecord.indexOf("levels"),       levelsQString);
+        resultRecord.setValue("levels",       levelsQString);
 
         if (!aResultsModel->insertRecord(-1, resultRecord)) {
             qDebug() << "insertResultRecord failed: " << aResultsModel->lastError() << endl;
