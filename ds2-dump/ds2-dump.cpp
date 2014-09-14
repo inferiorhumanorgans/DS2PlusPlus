@@ -128,6 +128,11 @@ void DataCollection::run()
             ourEcus = dbm->findAllModulesByFamily(aFamily);
         }
 
+        QMap<QString, QString> ecuSortMap;
+        foreach(const ControlUnitPtr ourEcu, ourEcus.values()) {
+            ecuSortMap.insert(ourEcu->name(), ourEcu->uuid());
+        }
+
         int totalLen = 38+40+9+21;
         qOut << qSetFieldWidth(38) << left << "UUID";
         qOut << qSetFieldWidth(40) << left << "Name";
@@ -144,7 +149,8 @@ void DataCollection::run()
 
         qOut << qSetFieldWidth(totalLen) << qSetPadChar('-') << "" << qSetFieldWidth(1) << qSetPadChar(' ') << endl;
 
-        foreach (const ControlUnitPtr ourEcu, ourEcus) {
+        foreach (const QString &ourUuid, ecuSortMap.values()) {
+            ControlUnitPtr ourEcu = ourEcus[ourUuid];
             qOut << qSetFieldWidth(38) << left << ourEcu->uuid();
             qOut << qSetFieldWidth(40) << left << ourEcu->name();
             qOut << qSetFieldWidth(9)  << left << ourEcu->fileVersion();
