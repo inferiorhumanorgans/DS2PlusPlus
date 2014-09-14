@@ -65,6 +65,11 @@ namespace DS2PlusPlus
         void initializeDatabase();
 
         /*!
+         * \brief reloadDatabase Reloads the DPP database from disk in case it's been changed out from under us.
+         */
+        void reloadDatabase();
+
+        /*!
          * \brief DPP_DB_PATH
          */
         static const QString DPP_DB_PATH;

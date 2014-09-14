@@ -170,6 +170,14 @@ namespace DS2PlusPlus {
         }
     }
 
+    void Manager::reloadDatabase()
+    {
+        if (_db.isOpen()) {
+            _db.close();
+        }
+        _db.open();
+    }
+
     void Manager::setFd(int aFd)
     {
         _fd = aFd;
