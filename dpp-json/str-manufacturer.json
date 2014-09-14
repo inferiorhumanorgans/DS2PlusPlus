@@ -1,7 +1,7 @@
 {
   "dpp_version":  1,
-  "file_version": 2,
-  "file_mtime":   "2014-09-09T14:26:51.0Z",
+  "file_version": 3,
+  "file_mtime":   "2014-09-14T19:50:54.0Z",
   "file_type":    "string_table",
   "uuid":         "6D084F33-7265-43E6-84F4-28F40D5A27A6",
   "table_name":   "suppliers",
@@ -23,7 +23,7 @@
     "0x15": "Blaupunkt",
     "0x16": "Philips",
     "0x17": "Alpine",
-    "0x18": "Teves",
+    "0x18": "ATE / Teves",
     "0x19": "Electromatic South Africa",
     "0x20": "Becker",
     "0x21": "Preh",
