@@ -92,6 +92,9 @@ void DataCollection::run()
 
     if (!parser->isSet("reload") && !parser->isSet("list-families") && !parser->isSet("list-ecus") && !parser->isSet("list-operations")) {
         if (!parser->isSet("input-packet")) {
+            if (!parser->isSet("port")) {
+                throw std::invalid_argument("A serial port is required.");
+            }
             this->serialSetup(parser);
         }
     }
