@@ -123,10 +123,10 @@ namespace DS2PlusPlus {
                 _address = theRecord.value("address").toChar().toLatin1();
                 _family = theRecord.value("family").toString();
                 _name = theRecord.value("name").toString();
-                _part_number = theRecord.value("part_number").toULongLong();
-                _hardware_number = theRecord.value("hardware_num").toULongLong();
-                _software_number = theRecord.value("software_num").toULongLong();
-                _coding_index = theRecord.value("coding_index").toULongLong();
+                _partNumber = theRecord.value("part_number").toULongLong();
+                _hardwareNumber = theRecord.value("hardware_num").toULongLong();
+                _softwareNumber = theRecord.value("software_num").toULongLong();
+                _codingIndex = theRecord.value("coding_index").toULongLong();
                 _bigEndian = (theRecord.value("big_endian").toULongLong() == 1) ? true : false;
                 time_t mtimeInt = theRecord.value("mtime").toULongLong();
                 _fileLastModified.setTime_t(mtimeInt);
@@ -355,19 +355,19 @@ namespace DS2PlusPlus {
     }
 
     quint64 ControlUnit::partNumber() const {
-        return _part_number;
+        return _partNumber;
     }
 
     quint64 ControlUnit::hardwareNumber() const {
-        return _hardware_number;
+        return _hardwareNumber;
     }
 
     quint64 ControlUnit::softwareNumber() const {
-        return _software_number;
+        return _softwareNumber;
     }
 
     quint64 ControlUnit::codingIndex() const {
-        return _coding_index;
+        return _codingIndex;
     }
 
     bool ControlUnit::bigEndian() const {

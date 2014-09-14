@@ -118,16 +118,16 @@ namespace DS2PlusPlus {
         Q_PROPERTY(const QString name MEMBER _name READ name)
 
         quint64 partNumber() const;
-        Q_PROPERTY(quint64 partNumber MEMBER _part_number READ partNumber)
+        Q_PROPERTY(quint64 partNumber MEMBER _partNumber READ partNumber)
 
         quint64 hardwareNumber() const;
-        Q_PROPERTY(quint64 hardwareNumber MEMBER _hardware_number READ hardwareNumber)
+        Q_PROPERTY(quint64 hardwareNumber MEMBER _hardwareNumber READ hardwareNumber)
 
         quint64 softwareNumber() const;
-        Q_PROPERTY(quint64 softwareNumber MEMBER _software_number READ softwareNumber)
+        Q_PROPERTY(quint64 softwareNumber MEMBER _softwareNumber READ softwareNumber)
 
         quint64 codingIndex() const;
-        Q_PROPERTY(quint64 codingIndex MEMBER _coding_index READ codingIndex)
+        Q_PROPERTY(quint64 codingIndex MEMBER _codingIndex READ codingIndex)
 
         bool bigEndian() const;
         Q_PROPERTY(bool bigEndian MEMBER _bigEndian READ bigEndian)
@@ -157,7 +157,7 @@ namespace DS2PlusPlus {
         QString _family;
         QString _name;
         QHash<QString, OperationPtr> _operations;
-        quint64 _part_number, _hardware_number, _software_number, _coding_index;
+        quint64 _partNumber, _hardwareNumber, _softwareNumber, _codingIndex;
         bool _bigEndian;
 
         Manager *_manager;
