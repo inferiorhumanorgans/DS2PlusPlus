@@ -324,7 +324,8 @@ namespace DS2PlusPlus {
         QByteArray ourBA = static_cast<QByteArray>(*aPacket);
         int written = write(_fd, ourBA.data(), ourBA.size());
         if (written != ourBA.size()) {
-            qDebug() << "Didn't write all " << written << " vs " << ourBA.size();
+            qDebug() << "Didn't write all " << written << " vs " << ourBA.size() << " Error: " << strerror(errno);
+            return ret;
         }
 
         // Read the echo back.  We should check to see if it matches, maybe...
