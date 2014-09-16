@@ -237,13 +237,20 @@ void DataCollection::run()
     }
 
     if (parser->isSet("run-job")) {
-        if (parser->isSet("input-packet"))
-            qOut << "Reading from packet specified on command line." << endl << endl;
-
         DS2PlusPlus::ControlUnitPtr autoDetect;
         DS2PacketPtr ourPacket;
 
+        if (parser->isSet("input-packet")) {
+            qOut << "Reading from packet specified on command line." << endl << endl;
+        }
+
         if (ecuUuid.isEmpty()) {
+            if (parser->isSet("input-packet")) {
+                qOut << "Auto detection from a command line packet is not supported." << endl << "Please specify an ECU UUID when specifying a packet on the command line." << endl;
+                finished();
+                return;
+            }
+
             autoDetect = (dbm->findModuleAtAddress(ecuAddress));
         } else {
             autoDetect = ControlUnitPtr(new ControlUnit(ecuUuid));
