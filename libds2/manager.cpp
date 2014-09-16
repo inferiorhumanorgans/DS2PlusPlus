@@ -329,8 +329,8 @@ namespace DS2PlusPlus {
         }
 
         // Read the echo back.  We should check to see if it matches, maybe...
+        usleep(80000);
         readBytes(_fd, ourBA.size());
-        usleep(15000);
 
         // Read the initial header
         quint8 ecuAddress;
