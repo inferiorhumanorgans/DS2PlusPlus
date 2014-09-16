@@ -135,7 +135,6 @@ namespace DS2PlusPlus {
                 _bigEndian = (theRecord.value("big_endian").toULongLong() == 1) ? true : false;
                 time_t mtimeInt = theRecord.value("mtime").toULongLong();
                 _fileLastModified.setTime_t(mtimeInt);
-
             }
 
             if (getenv("DPP_TRACE")) {
@@ -153,52 +152,71 @@ namespace DS2PlusPlus {
                 QString opModule = DPP_V1_Parser::rawUuidToString(opRecord.value("module_id").toByteArray());
                 QByteArray opCommand = opRecord.value("command").toByteArray();
 
+                OperationPtr op;
                 if (_operations.contains(opName)) {
+                    op = _operations.value(opName);
                     if (getenv("DPP_TRACE")) {
-                        qDebug() << "Skipping operation: " << opName << " we've a higher priority implementation";
+                        qDebug() << "\tMerging operation: " << opName << " we've a higher priority implementation";
+                    }
+
+                    // If we've not yet set the command from a higher priority operation, use this one.
+                    if (op->command().isEmpty()) {
+                        op->setCommand(opCommand);
                     }
                 } else {
-                    OperationPtr op(new Operation(opUuid, _address, opName, opCommand));
-                    QSharedPointer<QSqlTableModel> results(_manager->resultsTable());
-                    results->setFilter(QString("operation_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(opUuid)));
-                    results->select();
+                    if (getenv("DPP_TRACE")) {
+                        qDebug() << "\tProcessing job " << opName;
+                    }
+                    op = OperationPtr(new Operation(opUuid, _address, opName, opCommand));
+                }
 
-                    for (int j=0; j < results->rowCount(); j++) {
-                        QSqlRecord resultRecord = results->record(j);
-                        Result result;
-                        result.setName(resultRecord.value("name").toString());
-                        result.setUuid(resultRecord.value("uuid").toString());
-                        result.setType(resultRecord.value("type").toString());
-                        result.setDisplayFormat(resultRecord.value("display").toString());
-                        result.setStartPosition(resultRecord.value("start_pos").toInt());
-                        result.setLength(resultRecord.value("length").toInt());
-                        result.setMask(resultRecord.value("mask").toString());
-                        result.setFactorA(resultRecord.value("factor_a").toDouble());
-                        result.setFactorB(resultRecord.value("factor_b").toDouble());
+                QSharedPointer<QSqlTableModel> results(_manager->resultsTable());
+                results->setFilter(QString("operation_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(opUuid)));
+                results->select();
 
-                        QJsonParseError jsonError;
-                        QHash<QString, QString> ourLevels;
-                        QByteArray jsonByteArray(qPrintable(resultRecord.value("levels").toString()));
-                        QJsonDocument levelsDoc = QJsonDocument::fromJson(jsonByteArray, &jsonError);
-                        QJsonObject ourLevelsJson = levelsDoc.object();
+                for (int j=0; j < results->rowCount(); j++) {
+                    QSqlRecord resultRecord = results->record(j);
+                    Result result;
+                    result.setName(resultRecord.value("name").toString());
+                    result.setUuid(resultRecord.value("uuid").toString());
+                    result.setType(resultRecord.value("type").toString());
+                    result.setDisplayFormat(resultRecord.value("display").toString());
+                    result.setStartPosition(resultRecord.value("start_pos").toInt());
+                    result.setLength(resultRecord.value("length").toInt());
+                    result.setMask(resultRecord.value("mask").toString());
+                    result.setFactorA(resultRecord.value("factor_a").toDouble());
+                    result.setFactorB(resultRecord.value("factor_b").toDouble());
 
-                        QJsonObject::Iterator levelsIterator = ourLevelsJson.begin();
-                        while (levelsIterator != ourLevelsJson.end()) {
-                            QJsonValue level = levelsIterator.value();
-                            if (level.isString()) {
-                                ourLevels.insert(levelsIterator.key(), levelsIterator.value().toString());
-                            }
-                            levelsIterator++;
+                    QJsonParseError jsonError;
+                    QHash<QString, QString> ourLevels;
+                    QByteArray jsonByteArray(qPrintable(resultRecord.value("levels").toString()));
+                    QJsonDocument levelsDoc = QJsonDocument::fromJson(jsonByteArray, &jsonError);
+                    QJsonObject ourLevelsJson = levelsDoc.object();
+
+                    QJsonObject::Iterator levelsIterator = ourLevelsJson.begin();
+                    while (levelsIterator != ourLevelsJson.end()) {
+                        QJsonValue level = levelsIterator.value();
+                        if (level.isString()) {
+                            ourLevels.insert(levelsIterator.key(), levelsIterator.value().toString());
                         }
-
-                        result.setLevels(ourLevels);
-
-                        //qDebug() << "\t\tAdding result: " << result.name;
-                        op->insertResult(result.name(), result);
+                        levelsIterator++;
                     }
 
-                    _operations.insert(opName, op);
+                    result.setLevels(ourLevels);
+
+                    if (op->results().contains(result.name())) {
+                        if (getenv("DPP_TRACE")) {
+                            qDebug() << "\t\tSkipping result " << result.name() << " as we've a higher priority implementation";
+                        }
+                    } else {
+                        if (getenv("DPP_TRACE")) {
+                            qDebug() << "\t\tAdding result: " << result.name();
+                        }
+                        op->insertResult(result.name(), result);
+                    }
                 }
+
+                _operations.insert(opName, op);
             }
             parent_id = DPP_V1_Parser::rawUuidToString(theRecord.value("parent_id").toByteArray());
         }
