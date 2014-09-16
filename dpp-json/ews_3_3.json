@@ -1,0 +1,18 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2014-09-16T00:43:13.0Z",
+  "file_type":          "ecu",
+  "uuid":               "B1B8D02D-3E0C-45E0-ADA2-F820DB544910",
+  "address":            "0x44",
+  "family":             "EWS",
+  "name":               "Electronic Immobiliser v3.3",
+  "parent_id":          "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "part_number":        6905670,
+  "hardware_number":    "0x03",
+  "software_number":    "0x08",
+  "coding_index":       "0x81",
+  "endian":             "little",
+  "operations": {
+  }
+}

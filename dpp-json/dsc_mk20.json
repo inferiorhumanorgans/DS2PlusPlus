@@ -1,0 +1,18 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2014-09-16T00:43:13.0Z",
+  "file_type":          "ecu",
+  "uuid":               "85B56A93-C623-48E7-A768-182F8EB62CDB",
+  "address":            "0x56",
+  "family":             "DSC",
+  "name":               "ATE Dynamic Stability Conrol III Mk20",
+  "parent_id":          "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "part_number":        6753598,
+  "hardware_number":    "0x02",
+  "software_number":    "0x54",
+  "coding_index":       "0x09",
+  "endian":             "little",
+  "operations": {
+  }
+}
