@@ -53,6 +53,11 @@ namespace DS2PlusPlus {
         return ret;
     }
 
+    void Operation::setCommand(const QByteArray &aCommand)
+    {
+        _command = aCommand;
+    }
+
     const QHash<QString, Result> Operation::results() const
     {
         return _results;

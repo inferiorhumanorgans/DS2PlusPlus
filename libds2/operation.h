@@ -42,7 +42,7 @@ namespace DS2PlusPlus {
 
         const QString name() const;
         const QStringList command() const;
-        void setCommand(const QStringList &aCommand);
+        void setCommand(const QByteArray &aCommand);
 
         const QHash<QString, Result> results() const;
         void insertResult(const QString &aName, const Result aResult);
