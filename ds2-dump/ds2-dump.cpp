@@ -251,12 +251,16 @@ void DataCollection::run()
                 return;
             }
 
-            autoDetect = (dbm->findModuleAtAddress(ecuAddress));
+            autoDetect = dbm->findModuleAtAddress(ecuAddress);
         } else {
-            autoDetect = ControlUnitPtr(new ControlUnit(ecuUuid));
+            autoDetect = ControlUnitPtr(new ControlUnit(ecuUuid, &(*dbm)));
             ecuAddress = autoDetect->address();
 
-            ourPacket = DS2PacketPtr(new DS2Packet(parser->value("input-packet")));
+            if (parser->isSet("input-packet")) {
+                ourPacket = DS2PacketPtr(new DS2Packet(parser->value("input-packet")));
+            } else {
+                qDebug() << "No Input packet specified";
+            }
         }
 
         if (!autoDetect.isNull()) {
