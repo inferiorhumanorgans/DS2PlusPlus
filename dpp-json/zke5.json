@@ -29,7 +29,7 @@
     },
     "digital_status":  {
       "uuid":           "E717960A-A916-4A21-A99E-4793A233ECF8",
-      "command":        ["0x0b"],
+      "command":        ["0x0b", "0x00"],
       "results": {
         "contact.tailgate": {
           "uuid":       "E70BD9FD-0623-43A1-8320-A77ACA54505E",
