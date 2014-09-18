@@ -7,7 +7,7 @@
   "address":            "0x12",
   "family":             "DME",
   "name":               "Siemens MS 42.0",
-  "parent_id":          "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "parent_id":          "00000000-0000-0000-0000-000000000001",
   "part_number":        7500255,
   "hardware_number":    "0x15",
   "software_number":    "0xE3",

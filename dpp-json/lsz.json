@@ -7,7 +7,7 @@
   "address":            "0xd0",
   "family":             "LSZ",
   "name":               "E46 Lighting Module",
-  "parent_id":          "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "parent_id":          "00000000-0000-0000-0000-000000000001",
   "hardware_number":    "0x10",
   "software_number":    "0x20",
   "coding_index":       "0x29",

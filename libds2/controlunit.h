@@ -43,6 +43,8 @@ namespace DS2PlusPlus {
     {
         Q_OBJECT
     public:
+        static const QString ROOT_UUID;
+
         ControlUnit(const QString &aUuid = QString::null, Manager *aParent = 0);
 
         static quint8 addressForFamily(const QString &aFamily);
@@ -109,6 +111,9 @@ namespace DS2PlusPlus {
          */
         quint8 address() const;
         Q_PROPERTY(quint8 address MEMBER _address READ address)
+
+        bool isRoot() const;
+        Q_PROPERTY(bool isRoot READ isRoot)
 
         /*!
          * \brief name

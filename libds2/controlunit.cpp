@@ -45,6 +45,7 @@
 namespace DS2PlusPlus {
 
     QHash<QString, quint8> ControlUnit::_familyDictionary;
+    const QString ControlUnit::ROOT_UUID = "00000000-0000-0000-0000-000000000001";
 
     quint8 ControlUnit::addressForFamily(const QString &aFamily)
     {
@@ -366,6 +367,11 @@ namespace DS2PlusPlus {
     quint8 ControlUnit::address() const
     {
         return _address;
+    }
+
+    bool ControlUnit::isRoot() const
+    {
+        return _uuid == ROOT_UUID;
     }
 
     const QString ControlUnit::name() const

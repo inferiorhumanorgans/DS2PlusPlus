@@ -7,7 +7,7 @@
   "address":            "0x00",
   "family":             "ZKE",
   "name":               "Central Body Electronics v5",
-  "parent_id":          "B9D20D07-B7DA-4207-B8E1-2142AD938AD2",
+  "parent_id":          "00000000-0000-0000-0000-000000000001",
   "part_number":        6907663,
   "hardware_number":    "0x11",
   "software_number":    "0x16",
