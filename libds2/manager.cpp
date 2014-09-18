@@ -497,6 +497,25 @@ namespace DS2PlusPlus {
         return ret;
     }
 
+    QHash<QString, ControlUnitPtr> Manager::findAllModulesByAddress(quint8 anAddress)
+    {
+        QHash<QString, ControlUnitPtr > ret;
+        QSqlTableModel *ourModel = modulesTable();
+
+        ourModel->setFilter(QString("address = %1").arg(static_cast<quint64>(anAddress)));
+        ourModel->select();
+
+        for (int i=0; i < ourModel->rowCount(); i++) {
+            QSqlRecord theRecord = ourModel->record(i);
+            QString uuid(DPP_V1_Parser::rawUuidToString(theRecord.value("uuid").toByteArray()));
+            ControlUnitPtr ecu(new ControlUnit(uuid, this));
+            ret.insert(uuid, ecu);
+        }
+
+        delete ourModel;
+        return ret;
+    }
+
     QHash<QString, ControlUnitPtr > Manager::findAllModules()
     {
         QHash<QString, ControlUnitPtr > ret;
