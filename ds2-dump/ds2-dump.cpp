@@ -159,7 +159,7 @@ void DataCollection::run()
             qOut << qSetFieldWidth(9)  << left << ourEcu->fileVersion();
             qOut << qSetFieldWidth(21)  << left << ourEcu->fileLastModified().toString(Qt::ISODate);
             if (aFamily == "ALL") {
-                qOut << qSetFieldWidth(8) << left << ControlUnit::familyForAddress(ourEcu->address());
+                qOut << qSetFieldWidth(8) << left << ourEcu->family();
             }
             qOut << qSetFieldWidth(1) << endl;
         }
