@@ -324,13 +324,12 @@ namespace DS2PlusPlus {
 
     DS2PacketPtr Manager::query(DS2PacketPtr aPacket)
     {
-        if (fd_is_valid(_fd)) {
-            //throw std::ios_base::failure("Serial port is not open.");
+        if (!fd_is_valid(_fd)) {
+            throw std::ios_base::failure("Serial port is not open.");
         }
 
         DS2PacketPtr ret(new DS2Packet);
 
-        //_serialPort->setRequestToSend(true);
         // Send query to the ECU
         QByteArray ourBA = static_cast<QByteArray>(*aPacket);
 
@@ -342,7 +341,9 @@ namespace DS2PlusPlus {
 
         // Read the echo back.  We should check to see if it matches, maybe...
         usleep(80000);
-        readBytes(_fd, ourBA.size());
+        if (readBytes(_fd, ourBA.size()).size() != ourBA.size()) {
+            throw std::ios_base::failure("Error reading the echo echo echo echo...");
+        }
 
         // Read the initial header
         quint8 ecuAddress;
