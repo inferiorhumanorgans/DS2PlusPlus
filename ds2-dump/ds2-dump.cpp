@@ -88,6 +88,9 @@ void DataCollection::run()
     QCommandLineOption listOperationsOption("list-operations", "Print the known operations for a given ECU.");
     parser->addOption(listOperationsOption);
 
+    QCommandLineOption autoDiscoverOption("auto-discover", "Probe all known ECU addresses and print the results.");
+    parser->addOption(autoDiscoverOption);
+
     parser->process(*QCoreApplication::instance());
 
     if (!parser->isSet("reload") && !parser->isSet("list-families") && !parser->isSet("list-ecus") && !parser->isSet("list-operations")) {
@@ -227,6 +230,60 @@ void DataCollection::run()
         emit finished();
         return;
     }
+    if (parser->isSet("auto-discover")) {
+        QList<quint8> addresses = ControlUnit::knownAddresses();
+
+        int totalLen = 12+40+15+20+40;
+        qOut << qSetFieldWidth(12) << left << "Family";
+        qOut << qSetFieldWidth(40) << left << "Name";
+        qOut << qSetFieldWidth(15) << left << "Part Number";
+        qOut << qSetFieldWidth(20) << left << "Manufacturer";
+        qOut << qSetFieldWidth(40) << left << "Notes";
+        qOut << qSetFieldWidth(1)  << endl;
+        qOut << qSetFieldWidth(totalLen) << qSetPadChar('-') << "" << qSetFieldWidth(1) << qSetPadChar(' ') << endl;
+
+        foreach (quint8 address, addresses) {
+            usleep(100000);
+            DS2PlusPlus::ControlUnitPtr autoDetect(dbm->findModuleAtAddress(address));
+
+            if (autoDetect.isNull()) {
+                autoDetect = ControlUnitPtr(new ControlUnit(ControlUnit::ROOT_UUID, &(*dbm)));
+            }
+
+            usleep(100000);
+            DS2Response ourResponse = autoDetect->executeOperation("identify");
+            qOut << qSetFieldWidth(12) << left << (autoDetect->isRoot() ? ControlUnit::familyForAddress(address) : autoDetect->family());
+            qOut << qSetFieldWidth(40) << left << (autoDetect->isRoot() ? "Unknown" : autoDetect->name());
+            qOut << qSetFieldWidth(15) << left << ourResponse.value("part_number").toString();
+            qOut << qSetFieldWidth(20) << left << ourResponse.value("supplier").toString();
+
+            QStringList notes;
+            if (autoDetect->matchFlags() & ControlUnit::MatchSWMismatch) {
+                notes.append("SW mismatch");
+            }
+
+            if (autoDetect->matchFlags() & ControlUnit::MatchHWMismatch) {
+                notes.append("HW mismatch");
+            }
+
+            if (autoDetect->matchFlags() & ControlUnit::MatchCIMismatch) {
+                notes.append("CI mismatch");
+            }
+
+            if (autoDetect->operations().contains("vehicle_id")) {
+                usleep(250000);
+                DS2Response ourVin = autoDetect->executeOperation("vehicle_id");
+                if (ourVin.contains("vin")) {
+                    notes.append(QString("vin=%1").arg(ourVin.value("vin").toString()));
+                }
+            }
+
+            qOut << qSetFieldWidth(40) << left << notes.join(", ");
+            qOut << qSetFieldWidth(1)  << endl;
+        }
+        emit finished();
+        return;
+    }
 
     if (!parser->isSet("ecu") && !parser->isSet("data-log")) {
         if (!parser->isSet("reload")) {
@@ -296,7 +353,6 @@ void DataCollection::run()
         } else {
             qOut << "Couldn't find a match" << endl;
         }
-
     } else if (parser->isSet("probe")) {
         DS2PlusPlus::ControlUnitPtr autoDetect(dbm->findModuleAtAddress(ecuAddress));
         if (!autoDetect.isNull()) {
