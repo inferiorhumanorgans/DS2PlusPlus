@@ -403,8 +403,7 @@ namespace DS2PlusPlus {
         quint8 fullMatch = ControlUnit::MatchNone;
         QString ourKey;
 
-        // TODO: use findAllModulesByAddress instead
-        modules = findAllModules();
+        modules = findAllModulesByAddress(aPacket->address());
         for (moduleIt = modules.begin(); moduleIt != modules.end(); ++moduleIt) {
             ControlUnitPtr ecu(moduleIt.value());
 
