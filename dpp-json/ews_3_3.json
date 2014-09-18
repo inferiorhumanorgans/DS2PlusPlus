@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       1,
-  "file_mtime":         "2014-09-16T00:43:13.0Z",
+  "file_version":       2,
+  "file_mtime":         "2014-09-18T22:19:49.0Z",
   "file_type":          "ecu",
   "uuid":               "B1B8D02D-3E0C-45E0-ADA2-F820DB544910",
   "address":            "0x44",
@@ -14,5 +14,133 @@
   "coding_index":       "0x81",
   "endian":             "little",
   "operations": {
+    "dtc_count": {
+      "uuid":           "1FDFE61D-42F9-4779-9938-AECC97BF9B5E",
+      "command":        ["0x04", "0x00"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "A81EB224-F75B-4D0A-8C26-7D798A8FD8B4",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1
+        }
+      }
+    },
+    "dtc_load_bank1": {
+      "uuid":           "8E7AC8FB-2FCF-4D17-BBD5-72C423459752",
+      "command":        ["0x04", "0x01"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "749C9F49-5F43-40A9-AF95-B1D1ACCD5E2F",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1
+        },
+        "error_code.codes.0.dtc": {
+          "uuid":       "A8A745E0-DBBF-48F2-B4E9-4D3D6226F1A1",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  2,
+          "length":     1
+        },
+        "error_code.codes.0.description": {
+          "uuid":       "E9D74211-37F5-4991-BD2C-5416C5B296FD",
+          "type":       "byte",
+          "display":    "string_table:C70DCDA2-F952-4679-8FC5-217D4C144E2A",
+          "start_pos":  2,
+          "length":     1
+        },
+        "error_code.codes.0.frequency": {
+          "uuid":       "BFC42B6D-1180-4F6A-8EC2-9A5B1E3234A6",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x1f" // Rightmost 5 bits
+        },
+        "error_code.codes.0.type": {
+          "uuid":       "4EEB31F1-76B8-461A-B32C-E059539EC5DF",
+          "type":       "byte",
+          "display":    "enum",
+          "start_pos":  3,
+          "length":     1,
+          "rpn":        "N 5 >>", // Take the left most 3 bits
+          "levels": {
+            "0x00": "sporadic",
+            "0x01": "static"
+          }
+        },
+        "error_code.codes.1.dtc": {
+          "uuid":       "A1AC2007-8F48-4DE7-807D-3588C51F78C3",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  4,
+          "length":     1
+        },
+        "error_code.codes.1.description": {
+          "uuid":       "92698ACD-7AD1-4A76-9C12-944E722D6AAE",
+          "type":       "byte",
+          "display":    "string_table:C70DCDA2-F952-4679-8FC5-217D4C144E2A",
+          "start_pos":  4,
+          "length":     1
+        },
+        "error_code.codes.1.frequency": {
+          "uuid":       "2BC0262D-C450-488C-873A-908E16E4626F",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  5,
+          "length":     1,
+          "rpn":       "N 0x1f &"
+        },
+        "error_code.codes.1.type": {
+          "uuid":       "1E6FAAFB-8F3C-417F-A256-03BB136781B3",
+          "type":       "byte",
+          "display":    "enum",
+          "start_pos":  5,
+          "length":     1,
+          "rpn":        "N 5 >>", // Take the left most 3 bits
+          "levels": {
+            "0x00": "sporadic",
+            "0x01": "static"
+          }
+        },
+        "error_code.codes.2.dtc": {
+          "uuid":       "722A10C2-3FB5-4249-86C9-2E908AA0A625",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  6,
+          "length":     1
+        },
+        "error_code.codes.2.description": {
+          "uuid":       "79C5DEBF-09D4-4C71-AFEC-C7A63422FF5D",
+          "type":       "byte",
+          "display":    "string_table:C70DCDA2-F952-4679-8FC5-217D4C144E2A",
+          "start_pos":  6,
+          "length":     1
+        },
+        "error_code.codes.2.frequency": {
+          "uuid":       "956E36E9-FABD-4FE8-A82D-E71BC70BFCD3",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  7,
+          "length":     1,
+          "mask":       "0x1f"
+        },
+        "error_code.codes.2.type": {
+          "uuid":       "701CC609-1391-410C-8678-C519424A3C03",
+          "type":       "byte",
+          "display":    "enum",
+          "start_pos":  7,
+          "length":     1,
+          "rpn":        "N 5 >>", // Take the left most 3 bits
+          "levels": {
+            "0x00": "sporadic",
+            "0x01": "static"
+          }
+        }
+      }
+    }
   }
 }
