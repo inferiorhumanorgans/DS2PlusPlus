@@ -427,6 +427,16 @@ namespace DS2PlusPlus {
         return _bigEndian;
     }
 
+    quint8 ControlUnit::matchFlags() const
+    {
+        return _matchFlags;
+    }
+
+    void ControlUnit::setMatchFlags(quint8 someFlags)
+    {
+        _matchFlags = someFlags;
+    }
+
     char ControlUnit::decode_vin_char(int start, const QByteArray &bytes)
     {
       quint8 finish = start + 6;

@@ -392,9 +392,9 @@ namespace DS2PlusPlus {
 
     ControlUnitPtr Manager::findModuleByMatchingIdentPacket(const DS2PacketPtr aPacket) {
         ControlUnitPtr ret;
-        QHash<QString, ControlUnitPtr > modules;
-        QHash<QString, ControlUnitPtr >::Iterator moduleIt;
-        bool fullMatch = false;
+        QHash<QString, ControlUnitPtr> modules;
+        QHash<QString, ControlUnitPtr>::Iterator moduleIt;
+        quint8 fullMatch = ControlUnit::MatchNone;
         QString ourKey;
 
         // TODO: use findAllModulesByAddress instead
@@ -412,38 +412,41 @@ namespace DS2PlusPlus {
             }
 
             if (response.value("part_number").toULongLong() == ecu->partNumber()) {
-                fullMatch = true;
+                fullMatch |= ControlUnit::MatchAll;
                 ret = ecu;
                 ourKey = moduleIt.key();
 
                 quint64 actualSW = response.value("software_number").toString().toULongLong(NULL, 16);
                 if (actualSW != ecu->softwareNumber()) {
-                    fullMatch = false;
+                    fullMatch &= ~ControlUnit::MatchAll;
+                    fullMatch |= ControlUnit::MatchSWMismatch;
                     QString matchString = QString("SW version mismatch %1 != expected 0x%2")
                                             .arg(response.value("software_number").toString())
                                             .arg(ecu->softwareNumber(), 2, 16, QChar('0'));
-                    qDebug() << matchString;
+                    //qDebug() << matchString;
                 }
 
                 quint64 actualHW = response.value("hardware_number").toString().toULongLong(NULL, 16);
                 if (actualHW != ecu->hardwareNumber()) {
-                    fullMatch = false;
+                    fullMatch &= ~ControlUnit::MatchAll;
+                    fullMatch |= ControlUnit::MatchHWMismatch;
                     QString matchString = QString("HW version mismatch %1 != expected 0x%2")
                                             .arg(response.value("hardware_number").toString())
                                             .arg(ecu->hardwareNumber(), 2, 16, QChar('0'));
-                    qDebug() << matchString;
+                    //qDebug() << matchString;
                 }
 
                 quint64 actualCI = response.value("coding_index").toString().toULongLong(NULL, 16);
                 if (actualCI != ecu->codingIndex()) {
-                    fullMatch = false;
+                    fullMatch &= ~ControlUnit::MatchAll;
+                    fullMatch |= ControlUnit::MatchCIMismatch;
                     QString matchString = QString("CI mismatch %1 != expected 0x%2")
                                             .arg(response.value("coding_index").toString())
                                             .arg(ecu->codingIndex(), 2, 16, QChar('0'));
-                    qDebug() << matchString;
+                    //qDebug() << matchString;
                 }
 
-                if (fullMatch == true) {
+                if (fullMatch & ControlUnit::MatchAll) {
                     break;
                 }
             }
@@ -451,6 +454,10 @@ namespace DS2PlusPlus {
 
         modules.remove(ourKey);
         modules.clear();
+
+        if (!ret.isNull()) {
+            ret->setMatchFlags(fullMatch);
+        }
 
         return ret;
     }

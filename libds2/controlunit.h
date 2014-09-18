@@ -52,6 +52,13 @@ namespace DS2PlusPlus {
         static const QStringList knownFamilies();
         static const QList<quint8> knownAddresses();
 
+        enum MatchType {
+            MatchNone       = 0x00, // Nothing matches
+            MatchSWMismatch = 0x01, // Software version mismatches
+            MatchHWMismatch = 0x02, // Hardawre version mismatches
+            MatchCIMismatch = 0x04, // Coding index unexpected
+            MatchAll        = 0x10, // Everything matches
+        };
 
         /*!
          * \brief loadByUuid fetches functional info from the SQL database using the UUID as the key.
@@ -143,6 +150,10 @@ namespace DS2PlusPlus {
 
         QHash<QString, OperationPtr> operations() const;
 
+        quint8 matchFlags() const;
+        void setMatchFlags(quint8 someFlags);
+        Q_PROPERTY(quint8 matchFlags MEMBER _matchFlags READ matchFlags WRITE setMatchFlags)
+
     protected:
         /*!
          * \brief resultByteToVariant handles parsing any byte sized data type
@@ -168,6 +179,7 @@ namespace DS2PlusPlus {
         QHash<QString, OperationPtr> _operations;
         quint64 _partNumber, _hardwareNumber, _softwareNumber, _codingIndex;
         bool _bigEndian;
+        quint8 _matchFlags;
 
         Manager *_manager;
         static QHash<QString, quint8> _familyDictionary;
