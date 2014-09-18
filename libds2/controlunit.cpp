@@ -297,16 +297,11 @@ namespace DS2PlusPlus {
                 }
 
                 if (result.displayFormat() == "int") {
-                    if (result.factorA() != 0.0) {
-                        ourNumber *= result.factorA();
-                    }
-                    ret.insert(result.name(), QVariant(ourNumber + result.factorB()));
+                    quint64 value = runRpnForResult<float>(packet, result, ourNumber);
+                    ret.insert(result.name(), QVariant(value));
                 } else if (result.displayFormat() == "float") {
-                    double ourFloat = ourNumber;
+                    double ourFloat = runRpnForResult<float>(packet, result, ourNumber);
 
-                    if (result.factorA() != 0.0) {
-                        ourFloat*= result.factorA();
-                    }
                     ret.insert(result.name(), QVariant(ourFloat + result.factorB()));
                 } else {
                     throw std::invalid_argument("Invalid display type for short specified.");
@@ -470,10 +465,10 @@ namespace DS2PlusPlus {
       return '!';
     }
 
-    quint64 runRpnForResult(const DS2PacketPtr aPacket, const Result &aResult, quint64 aValue)
+    template <typename T> T ControlUnit::runRpnForResult(const DS2PacketPtr aPacket, const Result &aResult, T aValue)
     {
         if (!aResult.rpn().isEmpty()) {
-            QList<int> stack;
+            QList<T> stack;
             foreach (const QString &command, aResult.rpn()) {
                 if (command.startsWith("0x")) {
                     bool ok;
@@ -484,46 +479,54 @@ namespace DS2PlusPlus {
                         throw std::invalid_argument("Argh, tried to parse an invalid hex string");
                     }
                 } else if (command == "+")  {
-                    quint64 a, b;
+                    T a, b;
                     a = stack.takeFirst();
                     b = stack.takeFirst();
                     stack.push_back(b + a);
                 } else if (command == "-")  {
-                    quint64 a, b;
+                    T a, b;
                     a = stack.takeFirst();
                     b = stack.takeFirst();
                     stack.push_back(b - a);
                 } else if (command == "/")  {
-                    quint64 a, b;
+                    T a, b;
                     a = stack.takeFirst();
                     b = stack.takeFirst();
                     stack.push_back(b / a);
                 } else if (command == "*")  {
-                    quint64 a, b;
+                    T a, b;
                     a = stack.takeFirst();
                     b = stack.takeFirst();
                     stack.push_back(b * a);
                 } else if (command == "&")  {
-                    quint64 a, b;
+                    T a, b;
                     a = stack.takeFirst();
                     b = stack.takeFirst();
-                    stack.push_back(b & a);
+                    stack.push_back(static_cast<quint64>(b) & static_cast<quint64>(a));
                 } else if (command == ">>") {
-                    quint64 a, b;
+                    T a, b;
                     a = stack.takeFirst();
                     b = stack.takeFirst();
-                    stack.push_back(b >> a);
+                    stack.push_back(static_cast<quint64>(b) >> static_cast<quint64>(a));
                 } else if (command == "<<") {
-                    quint64 a, b;
+                    T a, b;
                     a = stack.takeFirst();
                     b = stack.takeFirst();
-                    stack.push_back(b << a);
+                    stack.push_back(static_cast<quint64>(b) << static_cast<quint64>(a));
                 } else if (command == "N")  {
                     stack.push_back(aValue);
                 } else {
                     // Assume it's a base 10 integer
                     bool ok;
-                    quint64 theNum = command.toULongLong(&ok, 10);
+                    T theNum;
+                    if (command.indexOf('.') > -1) {
+                        // Assume float
+                        theNum = command.toDouble(&ok);
+                    } else {
+                        // Assume int
+                        theNum = command.toULongLong(&ok, 10);
+                    }
+
                     if (ok) {
                         stack.push_front(theNum);
                     } else {
@@ -550,7 +553,7 @@ namespace DS2PlusPlus {
             byte = (byte & aResult.mask()) & 0xff;
         }
 
-        quint64 num = runRpnForResult(aPacket, aResult, byte);
+        quint64 num = runRpnForResult<quint64>(aPacket, aResult, byte);
 
         if (aResult.displayFormat() == "hex_string") {
             QString hex;
@@ -576,7 +579,8 @@ namespace DS2PlusPlus {
 
             return QVariant(tableName);
         } else if (aResult.displayFormat() == "float") {
-            double value = (byte * aResult.factorA()) + aResult.factorB();
+            double value = runRpnForResult<double>(aPacket, aResult, static_cast<quint8>(byte));
+            value = (byte * aResult.factorA()) + aResult.factorB();
             return QVariant(value);
         } else if (aResult.displayFormat() == "enum") {
             return QVariant(aResult.stringForLevel(byte));
