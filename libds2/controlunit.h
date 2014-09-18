@@ -50,6 +50,7 @@ namespace DS2PlusPlus {
         static quint8 addressForFamily(const QString &aFamily);
         static const QString familyForAddress(quint8 anAddress);
         static const QStringList knownFamilies();
+        static const QList<quint8> knownAddresses();
 
 
         /*!

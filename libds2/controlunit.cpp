@@ -80,6 +80,19 @@ namespace DS2PlusPlus {
         return _familyDictionary.keys();
     }
 
+    const QList<quint8> ControlUnit::knownAddresses()
+    {
+        QSet<quint8> set;
+        addressForFamily("");
+        foreach (quint8 address, _familyDictionary.values()) {
+            set.insert(address);
+        }
+
+        QList<quint8> ret(set.toList());
+        qSort(ret);
+        return ret;
+    }
+
     const QString ControlUnit::familyForAddress(quint8 anAddress)
     {
         QStringList ret;
