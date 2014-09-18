@@ -274,7 +274,12 @@ namespace DS2PlusPlus {
         if (dppDirEnv) {
             _dppDir = QString(dppDirEnv);
         } else {
-            _dppDir = DPP_DIR;
+            // This is cheating
+            if (QFile::exists(QDir::currentPath() + "/dppdb.sqlite3" )) {
+                _dppDir = QDir::currentPath();
+            } else {
+                _dppDir = DPP_DIR;
+            }
         }
 
         _dppDir = expandTilde(_dppDir);
