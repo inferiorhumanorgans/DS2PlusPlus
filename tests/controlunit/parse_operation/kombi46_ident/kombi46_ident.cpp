@@ -10,7 +10,7 @@ namespace Test_ControlUnit {
             using namespace DS2PlusPlus;
             packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("KOMBI"), kombi_ident));
             ecu = ControlUnitPtr(new ControlUnit);
-            ecu->loadByUuid("B9D20D07-B7DA-4207-B8E1-2142AD938AD2");
+            ecu->loadByUuid(ControlUnit::ROOT_UUID);
             results = ecu->parseOperation("identify", packet);
         }
 
