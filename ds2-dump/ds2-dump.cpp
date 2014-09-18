@@ -221,9 +221,9 @@ void DataCollection::run()
         opNames.sort();
         foreach (const QString &ourOpName, opNames) {
             qOut << qSetFieldWidth(11) << left << "Operation:";
-            qOut << qSetFieldWidth(1) << ourOpName << endl;
+            qOut << qSetFieldWidth(1)  << ourOpName << endl;
             qOut << qSetFieldWidth(11) << "Returns:";
-            qOut << qSetFieldWidth(1) << opsHash[ourOpName].join(", ") << endl;
+            qOut << qSetFieldWidth(1)  << opsHash[ourOpName].join(", ") << endl;
             qOut << endl;
         }
 
