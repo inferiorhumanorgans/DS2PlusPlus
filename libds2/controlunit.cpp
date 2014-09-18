@@ -449,7 +449,11 @@ namespace DS2PlusPlus {
             hex = QString("%1").arg(QString::number(byte, 16), 2, zeroPadding);
             return QVariant(hex.toUInt());
         } else if (aResult.displayFormat() == "raw") {
-            return QVariant(byte);
+            if (aResult.mask() != 0) {
+                return QVariant((byte & aResult.mask()) & 0xff);
+            } else {
+                return QVariant(byte);
+            }
         } else if (aResult.displayFormat().startsWith("string_table:")) {
             QString tableName = aResult.displayFormat().mid(13);
             QString stringValue = _manager->findStringByTableAndNumber(tableName, byte);
