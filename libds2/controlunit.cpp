@@ -440,7 +440,6 @@ namespace DS2PlusPlus {
                     bool ok;
                     quint64 theNum = command.toULongLong(&ok, 16);
                     if (ok) {
-                        qDebug() << "Pushing: " << theNum;
                         stack.push_front(theNum);
                     } else {
                         throw std::invalid_argument("Argh, tried to parse an invalid hex string");
@@ -487,7 +486,6 @@ namespace DS2PlusPlus {
                     bool ok;
                     quint64 theNum = command.toULongLong(&ok, 10);
                     if (ok) {
-                        qDebug() << "Pushing: " << theNum;
                         stack.push_front(theNum);
                     } else {
                         throw std::invalid_argument("Argh, tried to parse an invalid decimal string");
