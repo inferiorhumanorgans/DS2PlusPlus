@@ -50,16 +50,21 @@ namespace DS2PlusPlus {
     quint8 ControlUnit::addressForFamily(const QString &aFamily)
     {
         if (_familyDictionary.isEmpty()) {
-            _familyDictionary.insert("DME",     0x12);
-            _familyDictionary.insert("DDE",     0x12);
-            _familyDictionary.insert("DSC",     0x56);
-            _familyDictionary.insert("EWS",     0x44);
-            _familyDictionary.insert("IHKA",    0x5b);
-            _familyDictionary.insert("KOMBI",   0x80);
-            _familyDictionary.insert("LSZ",     0xd0);
-            _familyDictionary.insert("LWS",     0x57);
-            _familyDictionary.insert("RADIO",   0x68);
-            _familyDictionary.insert("ZKE",     0x00);
+            _familyDictionary.insert("AIC",     0xE8); // Rain sensor
+            _familyDictionary.insert("DME",     0x12); // Digital Motor Electronics
+            _familyDictionary.insert("DDE",     0x12); // Digital Diesel Electronics
+            _familyDictionary.insert("DSC",     0x56); // Dynamic Stability Control
+            _familyDictionary.insert("EGS",     0x32); // Electronic Transmission Control - Electronische Getriebe Steuerung
+            _familyDictionary.insert("EWS",     0x44); // Electronic Immobiliser / Elektronische Wegfahrsperre
+            _familyDictionary.insert("IHKA",    0x5b); // Auto Climate Control / Integrierte Heizung Kühlung?
+            _familyDictionary.insert("KOMBI",   0x80); // Instrument Cluster
+            _familyDictionary.insert("LSZ",     0xd0); // Light Switching Center / Lichtschaltzentrum
+            _familyDictionary.insert("LWS",     0x57); // Steering Angle Sensor / Lenkwinkelsensor
+            _familyDictionary.insert("MRS",     0xA4); // Multiple Restraint System
+            _familyDictionary.insert("RADIO",   0x68); // Radio
+            _familyDictionary.insert("RLS",     0xE8); // Rain and light sensor
+            _familyDictionary.insert("SMG",     0x32); // Sequential M Gearbox
+            _familyDictionary.insert("ZKE",     0x00); // Central Body Electronics / Zentrale Karosserieelektronik
         }
 
         if (_familyDictionary.contains(aFamily)) {
