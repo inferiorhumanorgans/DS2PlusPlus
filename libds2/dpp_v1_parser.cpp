@@ -395,6 +395,7 @@ namespace DS2PlusPlus {
         resultRecord.setValue("factor_a",     ourResult["factor_a"].asDouble());
         resultRecord.setValue("factor_b",     ourResult["factor_b"].asDouble());
 
+        resultRecord.setValue("rpn",          getQStringFromJson(ourResult["rpn"]));
 
         Json::FastWriter writer;
         std::string levelsString = writer.write(ourResult["levels"]);

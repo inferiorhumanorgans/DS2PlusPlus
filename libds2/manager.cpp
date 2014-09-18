@@ -676,6 +676,7 @@ namespace DS2PlusPlus {
                                       "factor_a     NUMERIC,\n"                 \
                                       "factor_b     NUMERIC,\n"                 \
                                       "levels       VARCHAR,\n"                 \
+                                      "rpn          VARCHAR,\n"                 \
                                       "UNIQUE (operation_id, name),\n"          \
                                       "CHECK (uuid <> '')\n"                    \
                                       ");"                                      \

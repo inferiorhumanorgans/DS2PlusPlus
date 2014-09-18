@@ -186,6 +186,7 @@ namespace DS2PlusPlus {
                     result.setMask(resultRecord.value("mask").toString());
                     result.setFactorA(resultRecord.value("factor_a").toDouble());
                     result.setFactorB(resultRecord.value("factor_b").toDouble());
+                    result.setRpn(resultRecord.value("rpn").toString());
 
                     QJsonParseError jsonError;
                     QHash<QString, QString> ourLevels;
@@ -430,6 +431,74 @@ namespace DS2PlusPlus {
       return '!';
     }
 
+    quint64 runRpnForResult(const DS2PacketPtr aPacket, const Result &aResult, quint64 aValue)
+    {
+        if (!aResult.rpn().isEmpty()) {
+            QList<int> stack;
+            foreach (const QString &command, aResult.rpn()) {
+                if (command.startsWith("0x")) {
+                    bool ok;
+                    quint64 theNum = command.toULongLong(&ok, 16);
+                    if (ok) {
+                        qDebug() << "Pushing: " << theNum;
+                        stack.push_front(theNum);
+                    } else {
+                        throw std::invalid_argument("Argh, tried to parse an invalid hex string");
+                    }
+                } else if (command == "+")  {
+                    quint64 a, b;
+                    a = stack.takeFirst();
+                    b = stack.takeFirst();
+                    stack.push_back(b + a);
+                } else if (command == "-")  {
+                    quint64 a, b;
+                    a = stack.takeFirst();
+                    b = stack.takeFirst();
+                    stack.push_back(b - a);
+                } else if (command == "/")  {
+                    quint64 a, b;
+                    a = stack.takeFirst();
+                    b = stack.takeFirst();
+                    stack.push_back(b / a);
+                } else if (command == "*")  {
+                    quint64 a, b;
+                    a = stack.takeFirst();
+                    b = stack.takeFirst();
+                    stack.push_back(b * a);
+                } else if (command == "&")  {
+                    quint64 a, b;
+                    a = stack.takeFirst();
+                    b = stack.takeFirst();
+                    stack.push_back(b & a);
+                } else if (command == ">>") {
+                    quint64 a, b;
+                    a = stack.takeFirst();
+                    b = stack.takeFirst();
+                    stack.push_back(b >> a);
+                } else if (command == "<<") {
+                    quint64 a, b;
+                    a = stack.takeFirst();
+                    b = stack.takeFirst();
+                    stack.push_back(b << a);
+                } else if (command == "N")  {
+                    stack.push_back(aValue);
+                } else {
+                    // Assume it's a base 10 integer
+                    bool ok;
+                    quint64 theNum = command.toULongLong(&ok, 10);
+                    if (ok) {
+                        qDebug() << "Pushing: " << theNum;
+                        stack.push_front(theNum);
+                    } else {
+                        throw std::invalid_argument("Argh, tried to parse an invalid decimal string");
+                    }
+                }
+            }
+            return stack.takeFirst();
+        }
+        return aValue;
+    }
+
     QVariant ControlUnit::resultByteToVariant(const DS2PacketPtr aPacket, const Result &aResult)
     {
         QChar zeroPadding = QChar('0');
@@ -440,6 +509,12 @@ namespace DS2PlusPlus {
         }
 
         unsigned char byte = aPacket->data().at(aResult.startPosition());
+        if (aResult.mask() != 0) {
+            byte = (byte & aResult.mask()) & 0xff;
+        }
+
+        quint64 num = runRpnForResult(aPacket, aResult, byte);
+
         if (aResult.displayFormat() == "hex_string") {
             QString hex;
             hex = QString("0x%1").arg(QString::number(byte, 16), 2, zeroPadding);
@@ -449,11 +524,7 @@ namespace DS2PlusPlus {
             hex = QString("%1").arg(QString::number(byte, 16), 2, zeroPadding);
             return QVariant(hex.toUInt());
         } else if (aResult.displayFormat() == "raw") {
-            if (aResult.mask() != 0) {
-                return QVariant((byte & aResult.mask()) & 0xff);
-            } else {
-                return QVariant(byte);
-            }
+            return QVariant(num);
         } else if (aResult.displayFormat().startsWith("string_table:")) {
             QString tableName = aResult.displayFormat().mid(13);
             QString stringValue = _manager->findStringByTableAndNumber(tableName, byte);

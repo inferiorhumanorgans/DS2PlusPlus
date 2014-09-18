@@ -131,6 +131,18 @@ namespace DS2PlusPlus {
         return _factorB;
     }
 
+    void Result::setRpn(const QString &aRpnString)
+    {
+        if (!aRpnString.isEmpty()) {
+            _rpn = aRpnString.split(" ");
+        }
+    }
+
+    QStringList Result::rpn() const
+    {
+        return _rpn;
+    }
+
     void Result::setLevels(QHash<QString, QString> someLevels)
     {
         _levels = someLevels;

@@ -62,6 +62,9 @@ namespace DS2PlusPlus {
         void setFactorB(double aFactor);
         double factorB() const;
 
+        void setRpn(const QString &aRpnString);
+        QStringList rpn() const;
+
         const QString stringForLevel(quint8 aLevel) const;
         void setLevels(QHash<QString, QString> someLevels);
 
@@ -75,6 +78,7 @@ namespace DS2PlusPlus {
         int _mask;
         float _factorA;
         float _factorB;
+        QStringList _rpn;
         QHash<QString, QString> _levels;
     };
 }

@@ -18,18 +18,12 @@ A string representing the last time this file was modified.
 ####`file_type`####
 A string representing the DPP-JSON subtype.  Either "ecu" or "string_table"
 
-##ECU Definition File##
-
-###Root Elements###
-
 ####`uuid`####
 A string representing an RFC 4122 GUID.  Must be unique across all files and object types.  Required.
 
-####`name`####
-A string representing the plain-text description of the ECU being described.  Required.
+##ECU Definition File##
 
-####`parent_id`####
-A string representing the RFC 4122 GUID of the parent ECU, or null if this is the root ECU.  Required.
+###Root Elements###
 
 ####`address`####
 A string containing a byte in hexadecimal form (ex: 0x00) that represents the DS2 address of the ECUs supported by this file, or null if this is the root ECU.  Required.
@@ -37,8 +31,11 @@ A string containing a byte in hexadecimal form (ex: 0x00) that represents the DS
 ####`family`####
 A string representing BMW's common name (ex: DME, DDE, EWS, etc.) for this type of ECU.  Required.
 
-####`part_number`####
-An integer representing the part number of the ECUs that this file describes.  Exact match.  Only present in non-root files.  Required.
+####`name`####
+A string representing the plain-text description of the ECU being described.  Required.
+
+####`parent_id`####
+A string representing the RFC 4122 GUID of the parent ECU, or null if this is the root ECU.  Required.
 
 ####`hardware_number`####
 A string containing a byte in hexadecimal form (ex: 0x00) that represents the hardware version of the ECUs supported by this file.  Fuzzy match.  Only present in non-root files.  Required.
@@ -48,6 +45,12 @@ A string containing a byte in hexadecimal form (ex: 0x00) that represents the so
 
 ####`coding_index`####
 A string containing a byte in hexadecimal form (ex: 0x00) that represents the coding index of the ECUs supported by this file.  Fuzzy match.  Only present in non-root files.  Required.
+
+####`part_number`####
+An integer representing the part number of the ECUs that this file describes.  Exact match.  Only present in non-root files.  Required.
+
+####`endian`####
+A string indicating the byte sex of an ECU.  Either big or little.  Required.
 
 ####`operations`####
 A hash with the keys being strings representing the names of the operations supported by this ECU, and the values being valid operation objects.  This is merged recursively with all parent ECUs, with items higher up on the tree taking a lower precedence.  Required.
@@ -69,10 +72,10 @@ A hash with the keys representing the name of the result element, and the values
 A string representing an RFC 4122 GUID.  Must be unique across all files and object types.  Required.
 
 ####`type`####
-A string representing the strategy used to decode this result.  Required.  One of: `boolean`, `string`, `byte`, `hex_string`, `short`.
+A string representing the strategy used to decode this result.  Required.  One of: `6bit-string`, `boolean`, `byte`, `hex_string`, `short`, `string`.
 
 ####`display`####
-A string representing the display format used to present this result.  Required.  One of: `string`, `raw`, `float`, `int`, `hex_string`, `hex_int`, `enum`.
+A string representing the display format used to present this result.  Required.  One of: `enum`, `float`, `hex_int`, `hex_string`, `int`, `raw`, `string`.
 
 ####`start_pos`####
 An integer representing the location of this result within the DS2 packet.  Offset relative to the start of the packet's payload.  Index 0 is the response status.  Required.
@@ -91,3 +94,18 @@ A floating point number representing the multiplicative factor used to resolve f
 
 ####`factor_b`####
 A floating point number representing the additive factor used to resolve floating point values from the DS2 packet.  Optional for `float` display types.  Default is 0.
+
+####`rpn`####
+A space delimited string representing a series of Reverse Polish Notation commands to run.  Base 16 numbers are supported (starts with 0x) as are base 10.  The following commands are supported:
+
+* `N` - push the current byte from the result
+* `+` - pop two from the stack, add, push result
+* `-` - pop two from the stack, subtract, push difference
+* `*` - pop two from the stack, multiply, push product
+* `/` - pop two from the stack, divide, push result
+* `>>` - pop two from the stack, shift right, push result
+* `<<` - pop two from the stack, shift left, push result
+
+Currently RPN is only observed on byte types and all numbers are assumed to be integers.
+
+This should probably replace `mask`, `factor_a`, and `factor_b`.
