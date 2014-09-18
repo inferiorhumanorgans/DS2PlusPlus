@@ -322,6 +322,7 @@ namespace DS2PlusPlus {
         //_serialPort->setRequestToSend(true);
         // Send query to the ECU
         QByteArray ourBA = static_cast<QByteArray>(*aPacket);
+
         int written = write(_fd, ourBA.data(), ourBA.size());
         if (written != ourBA.size()) {
             qDebug() << "Didn't write all " << written << " vs " << ourBA.size() << " Error: " << strerror(errno);
@@ -344,6 +345,7 @@ namespace DS2PlusPlus {
             QString errorString = QString("Wanted length 2, got: %1").arg(inputArray.length());
             throw std::ios_base::failure(qPrintable(errorString));
         }
+
         ecuAddress = inputArray.at(0);
         ret->setAddress(ecuAddress);
         length = inputArray.at(1);
