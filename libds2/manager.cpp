@@ -64,10 +64,16 @@ QByteArray readBytes(int fd, int length)
     tv.tv_sec = 0;
     tv.tv_usec = 500000;
 
+    int remainingTimeouts = 5;
+
     while (ret.length() < length) {
         switch(select(fd+1, &fds, NULL, NULL, &tv)) {
         case 0:
             // timeout
+            if (--remainingTimeouts == 0) {
+                qDebug() << "Timed out while waiting for packet";
+                return ret;
+            }
             break;
         case -1:
             // error
