@@ -387,6 +387,11 @@ namespace DS2PlusPlus {
         return _address;
     }
 
+    QString ControlUnit::family() const
+    {
+        return _family;
+    }
+
     bool ControlUnit::isRoot() const
     {
         return _uuid == ROOT_UUID;

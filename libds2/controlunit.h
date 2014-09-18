@@ -113,6 +113,9 @@ namespace DS2PlusPlus {
         quint8 address() const;
         Q_PROPERTY(quint8 address MEMBER _address READ address)
 
+        QString family() const;
+        Q_PROPERTY(QString family MEMBER _family READ family)
+
         bool isRoot() const;
         Q_PROPERTY(bool isRoot READ isRoot)
 
