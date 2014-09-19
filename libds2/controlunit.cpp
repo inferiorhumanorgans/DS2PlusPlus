@@ -381,6 +381,10 @@ namespace DS2PlusPlus {
     {
         return _address;
     }
+    void ControlUnit::setAddress(quint8 anAddress)
+    {
+        _address = anAddress;
+    }
 
     QString ControlUnit::family() const
     {

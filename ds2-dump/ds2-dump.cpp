@@ -248,6 +248,7 @@ void DataCollection::run()
 
             if (autoDetect.isNull()) {
                 autoDetect = ControlUnitPtr(new ControlUnit(ControlUnit::ROOT_UUID, &(*dbm)));
+                autoDetect->setAddress(address);
             }
 
             usleep(100000);

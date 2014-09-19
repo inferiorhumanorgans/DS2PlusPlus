@@ -118,7 +118,8 @@ namespace DS2PlusPlus {
          * \return Returns the address of this ECU
          */
         quint8 address() const;
-        Q_PROPERTY(quint8 address MEMBER _address READ address)
+        void setAddress(quint8 anAddress);
+        Q_PROPERTY(quint8 address MEMBER _address READ address WRITE setAddress)
 
         QString family() const;
         Q_PROPERTY(QString family MEMBER _family READ family)
