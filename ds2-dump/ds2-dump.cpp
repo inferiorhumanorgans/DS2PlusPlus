@@ -286,6 +286,17 @@ void DataCollection::run()
                 }
             }
 
+            if (autoDetect->operations().contains("dtc_count")) {
+                usleep(250000);
+                DS2Response ourFaultCountResponse = autoDetect->executeOperation("dtc_count");
+                if (ourFaultCountResponse.contains("error_code.count")) {
+                    quint64 ourFaultCount = ourFaultCountResponse.value("error_code.count").toULongLong();
+                    if (ourFaultCount > 0) {
+                        notes.append(QString("faults=%1").arg(ourFaultCount));
+                    }
+                }
+            }
+
             qOut << qSetFieldWidth(40) << left << notes.join(", ");
             qOut << qSetFieldWidth(1)  << endl;
         }
