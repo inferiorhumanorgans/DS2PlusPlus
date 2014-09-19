@@ -26,7 +26,8 @@ HEADERS +=\
            result.h \
            controlunit.h \
            manager.h \
-    dpp_v1_parser.h
+    dpp_v1_parser.h \
+    exceptions.h
 
 unix {
     target.path = /usr/lib

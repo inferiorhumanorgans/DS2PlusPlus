@@ -36,6 +36,7 @@
 #include <ds2packet.h>
 #include <manager.h>
 #include <controlunit.h>
+#include <exceptions.h>
 
 #include "ds2-dump.h"
 
@@ -96,7 +97,7 @@ void DataCollection::run()
     if (!parser->isSet("reload") && !parser->isSet("families") && !parser->isSet("ecus") && !parser->isSet("operations")) {
         if (!parser->isSet("input-packet")) {
             if (!parser->isSet("port")) {
-                throw std::invalid_argument("A serial port is required.");
+                throw CommandlineArgumentException("A serial port is required.");
             }
             this->serialSetup(parser);
         }
@@ -375,7 +376,7 @@ void DataCollection::run()
             QStringList currentSpec = spec.split(":");
 
             if (currentSpec.length() != 3) {
-                throw std::invalid_argument("Data log spec must follow the format ECU:job:result1,result2,resultn");
+                throw CommandlineArgumentException("Data log spec must follow the format ECU:job:result1,result2,resultn");
             }
 
             QString ecuName = currentSpec.at(0);
@@ -385,7 +386,7 @@ void DataCollection::run()
             if (!ecus.contains(ecuName)) {
                 DS2PlusPlus::ControlUnitPtr ourEcu(dbm->findModuleAtAddress(ControlUnit::addressForFamily(ecuName)));
                 if (ourEcu.isNull()) {
-                    throw std::invalid_argument(qPrintable(QString("Could not locate ECU at %1").arg(ecuName)));
+                    throw std::runtime_error(qPrintable(QString("Could not locate ECU at %1").arg(ecuName)));
                 }
                 ecus.insert(ecuName, ourEcu);
             }

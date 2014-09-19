@@ -30,7 +30,6 @@
 #include <unistd.h>
 
 #include <iostream>
-#include <stdexcept>
 
 #include <QTextStream>
 #include <QDebug>
@@ -49,8 +48,8 @@
 #include <QSqlRecord>
 #include <QSqlError>
 
+#include "exceptions.h"
 #include "manager.h"
-
 #include "dpp_v1_parser.h"
 
 QByteArray readBytes(int fd, int length)
@@ -71,21 +70,18 @@ QByteArray readBytes(int fd, int length)
         case 0:
             // timeout
             if (--remainingTimeouts == 0) {
-                qDebug() << "Timed out while waiting for packet";
-                return ret;
+                throw DS2PlusPlus::TimeoutException();
             }
             break;
         case -1:
-            // error
-            qDebug() << "Error from select: " << strerror(errno);
-            return ret;
+            throw std::runtime_error(strerror(errno));
         case 1:
         default:
             unsigned char byte = 0;
             int bytesRead = read(fd, &byte, 1);
             if (bytesRead != 1) {
-                qDebug() << "Didn't read the byte we were expecting.  Error: " << strerror(errno);
-                return ret;
+                QString errorString = QString("Didn't read the byte we were expecting.  Error: %1").arg(strerror(errno));
+                throw std::runtime_error(qPrintable(errorString));
             }
             ret.append(byte);
             break;
