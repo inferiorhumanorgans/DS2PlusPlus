@@ -8,8 +8,8 @@ QT       -= gui
 QT       += core sql
 
 TARGET = ds2-dump
-CONFIG   += console
-CONFIG   -= app_bundle
+CONFIG += console
+CONFIG -= app_bundle
 
 LIBS += -lds2
 INCLUDEPATH += ../libds2

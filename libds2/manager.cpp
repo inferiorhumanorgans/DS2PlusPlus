@@ -123,7 +123,7 @@ namespace DS2PlusPlus {
     {
         if (!_cliParser.isNull()) {
             // We should really check to see if the user has already defined this, and if so we should whine.
-            QCommandLineOption targetDirectoryOption(QStringList() << "f" << "port",
+            QCommandLineOption targetDirectoryOption(QStringList() << "p" << "port",
                       "Read from serial port <port>.",
                       "port");
             aParser->addOption(targetDirectoryOption);

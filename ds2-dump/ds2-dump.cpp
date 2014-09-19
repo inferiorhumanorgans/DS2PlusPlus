@@ -61,39 +61,39 @@ void DataCollection::run()
     QCommandLineOption reloadJsonOption(QStringList() << "r" << "reload" << "load", "Load JSON data into SQL db");
     parser->addOption(reloadJsonOption);
 
-    QCommandLineOption setEcuOption(QStringList() << "e" << "ecu", "The ECU to operate on (family name or numerical address).", "ecu");
+    QCommandLineOption setEcuOption(QStringList() << "e" << "ecu", "The ECU to operate on (family name, numerical address, or UUID).", "ecu");
     parser->addOption(setEcuOption);
 
-    QCommandLineOption detectEcuOption(QStringList() << "p" << "probe", "Probe an ECU at <ecu> for its identity.");
-    parser->addOption(detectEcuOption);
+    QCommandLineOption listFamiliesOption(QStringList() << "f" << "families", "Print the known ECU families.");
+    parser->addOption(listFamiliesOption);
 
-    QCommandLineOption runJobOption(QStringList() << "j" << "run-job", "Probe an ECU at <ecu> for its identity.", "job");
-    parser->addOption(runJobOption);
+    QCommandLineOption listEcuOption(QStringList() << "c" << "ecus", "Print the known ECUs for a given family.", "family");
+    parser->addOption(listEcuOption);
+
+    QCommandLineOption listOperationsOption(QStringList() << "o" << "operations", "Print the known operations for a given ECU.  ECU UUID must be specified with --ecu.");
+    parser->addOption(listOperationsOption);
 
     QCommandLineOption iterateOption(QStringList() << "n" << "iterate", "Iterate <n> number of times.", "n");
     parser->addOption(iterateOption);
 
-    QCommandLineOption datalogOption(QStringList() << "d" << "data-log", "Create a CSV log, write until interrupted.", "ecu-jobs-and-results");
-    parser->addOption(datalogOption);
-
-    QCommandLineOption textPacketOption(QStringList() << "i" << "input-packet", "packet", "input-packet");
+    QCommandLineOption textPacketOption(QStringList() << "i" << "input-packet", "Treat this argument as a packet instead of reading from the serial port.  Base 16, space delimited.", "input-packet");
     parser->addOption(textPacketOption);
 
-    QCommandLineOption listFamiliesOption("list-families", "Print the known ECU families.");
-    parser->addOption(listFamiliesOption);
+    QCommandLineOption detectEcuOption(QStringList() << "P" << "probe", "Probe an ECU at <ecu> for its identity.");
+    parser->addOption(detectEcuOption);
 
-    QCommandLineOption listEcuOption("list-ecus", "Print the known ECUs for a given family.", "family");
-    parser->addOption(listEcuOption);
-
-    QCommandLineOption listOperationsOption("list-operations", "Print the known operations for a given ECU.");
-    parser->addOption(listOperationsOption);
-
-    QCommandLineOption autoDiscoverOption("auto-discover", "Probe all known ECU addresses and print the results.");
+    QCommandLineOption autoDiscoverOption(QStringList() << "A" << "probe-all", "Probe all known ECU addresses and print the results.");
     parser->addOption(autoDiscoverOption);
+
+    QCommandLineOption runJobOption(QStringList() << "J" << "run-operation", "Run an operation on an ECU, prints results as JSON to stdout.  Must also specify --ecu.", "operation");
+    parser->addOption(runJobOption);
+
+    QCommandLineOption datalogOption(QStringList() << "D" << "data-log", "Create a CSV log, write until interrupted.", "ecu-jobs-and-results");
+    parser->addOption(datalogOption);
 
     parser->process(*QCoreApplication::instance());
 
-    if (!parser->isSet("reload") && !parser->isSet("list-families") && !parser->isSet("list-ecus") && !parser->isSet("list-operations")) {
+    if (!parser->isSet("reload") && !parser->isSet("families") && !parser->isSet("ecus") && !parser->isSet("operations")) {
         if (!parser->isSet("input-packet")) {
             if (!parser->isSet("port")) {
                 throw std::invalid_argument("A serial port is required.");
@@ -109,7 +109,7 @@ void DataCollection::run()
         dbm->initializeDatabase();
     }
 
-    if (parser->isSet("list-families")) {
+    if (parser->isSet("families")) {
         // Gross but this will initialize the hash for us.
         ControlUnit::addressForFamily("");
 
@@ -121,10 +121,10 @@ void DataCollection::run()
         return;
     }
 
-    if (parser->isSet("list-ecus")) {
+    if (parser->isSet("ecus")) {
         QHash<QString, ControlUnitPtr> ourEcus;
 
-        QString aFamily = parser->value("list-ecus");
+        QString aFamily = parser->value("ecus");
         if (aFamily == "ALL") {
             ourEcus = dbm->findAllModules();
         } else {
@@ -194,7 +194,7 @@ void DataCollection::run()
         }
     }
 
-    if (parser->isSet("list-operations")) {
+    if (parser->isSet("operations")) {
         if  (ecuUuid.isEmpty()) {
             qErr << "A valid ECU UUID is required to proceed further." << endl;
             emit finished();
@@ -230,7 +230,7 @@ void DataCollection::run()
         emit finished();
         return;
     }
-    if (parser->isSet("auto-discover")) {
+    if (parser->isSet("probe-all")) {
         QList<quint8> addresses = ControlUnit::knownAddresses();
 
         int totalLen = 12+40+15+20+40;
@@ -293,7 +293,7 @@ void DataCollection::run()
         return;
     }
 
-    if (parser->isSet("run-job")) {
+    if (parser->isSet("run-operation")) {
         DS2PlusPlus::ControlUnitPtr autoDetect;
         DS2PacketPtr ourPacket;
 
@@ -321,7 +321,7 @@ void DataCollection::run()
         }
 
         if (!autoDetect.isNull()) {
-            QString ourJob = parser->value("run-job");
+            QString ourJob = parser->value("run-operation");
             qOut << QString("At 0x%1 we think we have: %2").arg(ecuAddress, 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
 
             bool ok;
