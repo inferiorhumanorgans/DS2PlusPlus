@@ -245,7 +245,13 @@ void DataCollection::run()
 
         foreach (quint8 address, addresses) {
             usleep(100000);
-            DS2PlusPlus::ControlUnitPtr autoDetect(dbm->findModuleAtAddress(address));
+
+            DS2PlusPlus::ControlUnitPtr autoDetect;
+            try {
+                autoDetect = DS2PlusPlus::ControlUnitPtr (dbm->findModuleAtAddress(address));
+            } catch(DS2PlusPlus::TimeoutException exception) {
+                continue;
+            }
 
             if (autoDetect.isNull()) {
                 autoDetect = ControlUnitPtr(new ControlUnit(ControlUnit::ROOT_UUID, &(*dbm)));
