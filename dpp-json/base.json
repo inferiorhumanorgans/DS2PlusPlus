@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       2,
-  "file_mtime":         "2014-09-09T14:26:51.0Z",
+  "file_version":       3,
+  "file_mtime":         "2014-09-18T22:19:49.0Z",
   "file_type":          "ecu",
   "uuid":               "00000000-0000-0000-0000-000000000001", // Let's call this "well-known"
   "name":               "Basic module functionality",
@@ -72,6 +72,19 @@
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  12,
+          "length":     1
+        }
+      }
+    },
+    "dtc_count": {
+      "uuid":           "1FDFE61D-42F9-4779-9938-AECC97BF9B5E",
+      "command":        ["0x04", "0x00"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "A81EB224-F75B-4D0A-8C26-7D798A8FD8B4",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
           "length":     1
         }
       }

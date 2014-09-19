@@ -14,19 +14,6 @@
   "coding_index":       "0x81",
   "endian":             "little",
   "operations": {
-    "dtc_count": {
-      "uuid":           "1FDFE61D-42F9-4779-9938-AECC97BF9B5E",
-      "command":        ["0x04", "0x00"],
-      "results": {
-        "error_code.count": {
-          "uuid":       "A81EB224-F75B-4D0A-8C26-7D798A8FD8B4",
-          "type":       "byte",
-          "display":    "raw",
-          "start_pos":  1,
-          "length":     1
-        }
-      }
-    },
     "dtc_load_bank1": {
       "uuid":           "8E7AC8FB-2FCF-4D17-BBD5-72C423459752",
       "command":        ["0x04", "0x01"],
