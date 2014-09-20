@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       3,
-  "file_mtime":         "2014-09-18T22:19:49.0Z",
+  "file_version":       4,
+  "file_mtime":         "2014-09-20T02:09:17.0Z",
   "file_type":          "ecu",
   "uuid":               "D077EE50-034D-4DA7-B106-18D23AA9E6CB",
   "address":            "0x80",
@@ -27,6 +27,19 @@
           "rpn":        "N 6.4 /"
         }
       }
+    },
+    "vehicle_id_short": {
+      "uuid":           "3249CA53-6CF7-4EDC-BEB4-41ABE20FEB5B",
+      "command":        ["0x02", "0x02"],
+      "results": {
+        "short_vin": {
+          "uuid":       "4D75EE37-1618-4FEE-ACC9-6C52E0FE370F",
+          "type":       "short_vin",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     5
+        }
+      }      
     }
   }
 }

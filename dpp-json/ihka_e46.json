@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       3,
-  "file_mtime":         "2014-09-12T21:34:42.0Z",
+  "file_version":       4,
+  "file_mtime":         "2014-09-20T02:09:17.0Z",
   "file_type":          "ecu",
   "uuid":               "3CD3AE6B-7826-4884-AC6A-A88FCF682B85",
   "address":            "0x5B",
@@ -104,8 +104,7 @@
           "display":    "float",
           "start_pos":  3,
           "length":     1,
-          "factor_a":   0.5,
-          "factor_b":   -13.5
+          "rpn":        "N 0.5 * -13.5 +"
         }
       }
     }

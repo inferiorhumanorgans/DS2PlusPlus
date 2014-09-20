@@ -203,8 +203,6 @@ namespace DS2PlusPlus {
                     result.setStartPosition(resultRecord.value("start_pos").toInt());
                     result.setLength(resultRecord.value("length").toInt());
                     result.setMask(resultRecord.value("mask").toString());
-                    result.setFactorA(resultRecord.value("factor_a").toDouble());
-                    result.setFactorB(resultRecord.value("factor_b").toDouble());
                     result.setRpn(resultRecord.value("rpn").toString());
 
                     QJsonParseError jsonError;
@@ -302,7 +300,7 @@ namespace DS2PlusPlus {
                 } else if (result.displayFormat() == "float") {
                     double ourFloat = runRpnForResult<float>(packet, result, ourNumber);
 
-                    ret.insert(result.name(), QVariant(ourFloat + result.factorB()));
+                    ret.insert(result.name(), QVariant(ourFloat));
                 } else {
                     throw std::invalid_argument("Invalid display type for short specified.");
                 }
@@ -544,13 +542,14 @@ namespace DS2PlusPlus {
                         theNum = command.toDouble(&ok);
                     } else {
                         // Assume int
-                        theNum = command.toULongLong(&ok, 10);
+                        theNum = command.toLongLong(&ok, 10);
                     }
 
                     if (ok) {
                         stack.push_front(theNum);
                     } else {
-                        throw std::invalid_argument("Argh, tried to parse an invalid decimal string");
+                        QString errorString("Argh, tried to parse an invalid decimal string: %1");
+                        throw std::invalid_argument(qPrintable(errorString.arg(command)));
                     }
                 }
             }
@@ -573,7 +572,7 @@ namespace DS2PlusPlus {
             byte = (byte & aResult.mask()) & 0xff;
         }
 
-        quint64 num = runRpnForResult<quint64>(aPacket, aResult, byte);
+        qint64 num = runRpnForResult<qint64>(aPacket, aResult, byte);
 
         if (aResult.displayFormat() == "hex_string") {
             QString hex;
@@ -600,7 +599,6 @@ namespace DS2PlusPlus {
             return QVariant(tableName);
         } else if (aResult.displayFormat() == "float") {
             double value = runRpnForResult<double>(aPacket, aResult, static_cast<quint8>(byte));
-            value = (byte * aResult.factorA()) + aResult.factorB();
             return QVariant(value);
         } else if (aResult.displayFormat() == "enum") {
             return QVariant(aResult.stringForLevel(byte));

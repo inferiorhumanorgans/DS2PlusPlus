@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       4,
-  "file_mtime":         "2014-09-13T20:35:19.0Z",
+  "file_version":       5,
+  "file_mtime":         "2014-09-20T02:09:17.0Z",
   "file_type":          "ecu",
   "uuid":               "14CF43EA-B17C-4308-A71D-84C81B4E37FE",
   "address":            "0xd0",
@@ -25,7 +25,7 @@
           "display":    "float",
           "start_pos":  3,
           "length":     1,
-          "factor_a":   0.019607843 /* 1/51 */
+          "rpn":        "N 51 /"
         },
         "voltage.turn_signal_switch": {
           "uuid":       "87E18594-2F38-406F-AF03-5585E1A6C5CA",
@@ -33,7 +33,7 @@
           "display":    "float",
           "start_pos":  4,
           "length":     1,
-          "factor_a":   0.019607843
+          "rpn":        "N 51 /"
         },
         "voltage.unknown1": {
           "uuid":       "7826387F-A23E-4C13-8791-E331B13DFDE4",
@@ -41,7 +41,7 @@
           "display":    "float",
           "start_pos":  8,
           "length":     1,
-          "factor_a":   0.019607843
+          "rpn":        "N 51 /"
         },
         "voltage.dimmer": {
           "uuid":       "23DBF8E8-BCEC-4905-85A4-86CC3853E104",
@@ -49,7 +49,7 @@
           "display":    "float",
           "start_pos":  16,
           "length":     1,
-          "factor_a":   0.019607843
+          "rpn":        "N 51 /"
         },
         "voltage.unknown2": {
           "uuid":       "B84404B0-6045-48EA-B168-E4109D04FF95",
@@ -57,7 +57,7 @@
           "display":    "float",
           "start_pos":  17,
           "length":     1,
-          "factor_a":   0.019607843
+          "rpn":        "N 51 /"
         },
         "voltage.photosensor": {
           "uuid":       "155962F7-0827-4368-8C4F-53ADCEF46FD7",
@@ -65,7 +65,7 @@
           "display":    "float",
           "start_pos":  18,
           "length":     1,
-          "factor_a":   0.019607843
+          "rpn":        "N 51 /"
         },
         /* Ignition terminals */
         "ignition_terminal.15": { /* Position 2 */
@@ -318,6 +318,19 @@
           }
         }
       }
+    },
+    "vehicle_id_short": {
+      "uuid":           "0D094F0C-B5FF-412D-9AEF-5FE340F0A5C1",
+      "command":        ["0x02", "0x02"],
+      "results": {
+        "short_vin": {
+          "uuid":       "A277882F-B8AD-4CFC-99B9-5374F878C07A",
+          "type":       "short_vin",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     5
+        }
+      }      
     }
   }
 }

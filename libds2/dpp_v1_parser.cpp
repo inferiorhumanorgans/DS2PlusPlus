@@ -392,9 +392,6 @@ namespace DS2PlusPlus {
         resultRecord.setValue("start_pos",    ourResult["start_pos"].asInt());
         resultRecord.setValue("length",       ourResult["length"].asInt());
         resultRecord.setValue("mask",         getQStringFromJson(ourResult["mask"]));
-        resultRecord.setValue("factor_a",     ourResult["factor_a"].asDouble());
-        resultRecord.setValue("factor_b",     ourResult["factor_b"].asDouble());
-
         resultRecord.setValue("rpn",          getQStringFromJson(ourResult["rpn"]));
 
         Json::FastWriter writer;

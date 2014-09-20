@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       3,
-  "file_mtime":         "2014-09-09T14:26:51.0Z",
+  "file_version":       4,
+  "file_mtime":         "2014-09-13T20:35:19.0Z",
   "file_type":          "ecu",
   "uuid":               "F5C34396-809C-44C0-868E-49500414BEAA",
   "address":            "0x12",
@@ -93,8 +93,7 @@
           "display":    "float",
           "start_pos":  8,
           "length":     1,
-          "factor_a":   0.75,
-          "factor_b":   -48
+          "rpn":        "N 0.75 * -48 +"
         },
         "temp.coolant": {
           "uuid":       "B9BB4B8F-2E46-48A1-85E2-76D77D037F21",
@@ -102,8 +101,7 @@
           "display":    "float",
           "start_pos":  9,
           "length":     1,
-          "factor_a":   0.75,
-          "factor_b":   -48
+          "rpn":        "N 0.75 * -48 +"
         },
         "temp.motor_oil": {
           "uuid":       "24BA89AE-4086-4AC4-9D5C-0A542555F998",
@@ -111,8 +109,7 @@
           "display":    "float",
           "start_pos":  10,
           "length":     1,
-          "factor_a":   0.7961,
-          "factor_b":   -48
+          "rpn":        "N 0.7961 * -48 +"
         },
         "temp.coolant_outlet": {
           "uuid":       "815020E6-FCDB-4D9A-9795-94F397850D76",
@@ -120,8 +117,7 @@
           "display":    "float",
           "start_pos":  11,
           "length":     1,
-          "factor_a":   0.75,
-          "factor_b":   -48
+          "rpn":        "N 0.75 * -48 +"
         },
         "ignition_deg_kw": {
           "uuid":       "13ADB316-5D80-43FB-A730-F01B14BD444B",
@@ -129,8 +125,7 @@
           "display":    "float",
           "start_pos":  12,
           "length":     1,
-          "factor_a":   0.375,
-          "factor_b":   -60
+          "rpn":        "N 0.375 * -60 +"
         },
         "voltage.battery": {
           "uuid":       "7ADCE62E-816B-4CB3-9566-77A74C37FFA5",
@@ -138,7 +133,7 @@
           "display":    "float",
           "start_pos":  21,
           "length":     1,
-          "factor_a":   0.10196
+          "rpn":        "N 0.10196 *"
         }
       }
     },
@@ -152,7 +147,7 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "factor_a":   0.004887
+          "rpn":        "N 0.004887 *"
         }
       }
     },
@@ -166,7 +161,7 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "factor_a":   0.004887
+          "rpn":        "N 0.004887 *"
         }
       }
     },
@@ -180,7 +175,7 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "factor_a":   0.004887
+          "rpn":        "N 0.004887 *"
         }
       }
     },
@@ -194,7 +189,7 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "factor_a":   0.004887
+          "rpn":        "N 0.004887 *"
         }
       }
     },
@@ -208,7 +203,7 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "factor_a":   0.004887
+          "rpn":        "N 0.004887 *"
         }
       }
     },
@@ -222,7 +217,7 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "factor_a":   0.004887
+          "rpn":        "N 0.004887 *"
         }
       }
     },
@@ -236,13 +231,13 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "factor_a":   0.004887
+          "rpn":        "N 0.004887 *"
         }
       }
     },
     "vehicle_id": {
       "uuid":           "A58351D0-1978-48F6-9F20-3D50EF1998DD",
-      "command":        ["0x06", "0x00", "0x00", "0x3c", "0x4a", "0x2e"],
+      "command":        ["0x06", "0x00", "0x00", "0x3c", "0x4a", "0x2e"], // Read RAM at 0x3C4A/15434, 0x2E/46 bytes
       "results": {
         "vin": {
           "uuid":       "5F6564C6-03E7-4580-BA8C-49D1C81DDD39",

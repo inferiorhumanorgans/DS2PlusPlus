@@ -706,8 +706,6 @@ namespace DS2PlusPlus {
                                       "start_pos    INTEGER NOT NULL,\n"        \
                                       "length       INTEGER NOT NULL,\n"        \
                                       "mask         INTEGER,\n"                 \
-                                      "factor_a     NUMERIC,\n"                 \
-                                      "factor_b     NUMERIC,\n"                 \
                                       "levels       VARCHAR,\n"                 \
                                       "rpn          VARCHAR,\n"                 \
                                       "UNIQUE (operation_id, name),\n"          \

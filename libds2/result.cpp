@@ -111,26 +111,6 @@ namespace DS2PlusPlus {
         return _mask;
     }
 
-    void Result::setFactorA(double aFactor)
-    {
-        _factorA = aFactor;
-    }
-
-    double Result::factorA() const
-    {
-        return _factorA;
-    }
-
-    void Result::setFactorB(double aFactor)
-    {
-        _factorB = aFactor;
-    }
-
-    double Result::factorB() const
-    {
-        return _factorB;
-    }
-
     void Result::setRpn(const QString &aRpnString)
     {
         if (!aRpnString.isEmpty()) {
