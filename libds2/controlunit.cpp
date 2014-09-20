@@ -285,7 +285,12 @@ namespace DS2PlusPlus {
             }
             if (result.isType("byte")) {
                 ret.insert(result.name(), resultByteToVariant(packet, result));
-            } else if (result.isType("short")) {
+            } else if (result.isType("short") || result.isType("signed_short")) {
+                if (result.length() != 2) {
+                    QString errorString = QString("Length for short data type must be 2.  Length was %1, Result was %2 (%3)").arg(result.length()).arg(result.name()).arg(result.uuid());
+                    throw std::invalid_argument(qPrintable(errorString));
+                }
+
                 quint16 ourNumber;
                 memcpy(&ourNumber, packet->data().mid(result.startPosition(), result.length()), qMin((size_t)result.length(), sizeof(quint16)));
                 if (_bigEndian) {
@@ -295,10 +300,20 @@ namespace DS2PlusPlus {
                 }
 
                 if (result.displayFormat() == "int") {
-                    quint64 value = runRpnForResult<float>(packet, result, ourNumber);
-                    ret.insert(result.name(), QVariant(value));
+                    if (result.isType("signed_short")) {
+                        qint64 value = runRpnForResult<float>(packet, result, static_cast<qint16>(ourNumber));
+                        ret.insert(result.name(), QVariant(value));
+                    } else {
+                        quint64 value = runRpnForResult<float>(packet, result, ourNumber);
+                        ret.insert(result.name(), QVariant(value));
+                    }
                 } else if (result.displayFormat() == "float") {
-                    double ourFloat = runRpnForResult<float>(packet, result, ourNumber);
+                    double ourFloat;
+                    if (result.isType("signed_short")) {
+                        ourFloat = runRpnForResult<float>(packet, result, static_cast<qint16>(ourNumber));
+                    } else {
+                        ourFloat = runRpnForResult<float>(packet, result, ourNumber);
+                    }
 
                     ret.insert(result.name(), QVariant(ourFloat));
                 } else {
