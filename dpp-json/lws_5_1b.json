@@ -1,0 +1,68 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2014-09-16T00:43:13.0Z",
+  "file_type":          "ecu",
+  "uuid":               "F9A49A42-D1AF-462B-BAE1-626FCB9883EE",
+  "address":            "0x57",
+  "family":             "LWS",
+  "name":               "Steering Angle Sensor v5.1b",
+  "parent_id":          "00000000-0000-0000-0000-000000000001",
+  "part_number":        1096943,
+  "hardware_number":    "0x07",
+  "software_number":    "0xeb",
+  "coding_index":       "0x01",
+  "endian":             "big",
+  "operations": {
+    "steering_status": {
+      "uuid":           "96D564CD-77A8-443C-8E08-1A5230BCBB4B",
+      "command":        ["0x1b", "0x01"],
+      "results": {
+        "steering.angle": {
+          "uuid":       "FD1B24A4-1333-4CC2-B2AD-33B663D350D4",
+          "type":       "signed_short",
+          "display":    "float",
+          "start_pos":  1,
+          "length":     2,
+          "rpn":        "N 0.04394531 *"
+        },
+        "steering.speed": {
+          "uuid":       "34A0E324-B82A-4549-8A51-6B2A1B118D9F",
+          "type":       "signed_short",
+          "display":    "float",
+          "start_pos":  3,
+          "length":     2,
+          "rpn":        "N 0.04394531 *"
+        },
+        "vehicle.speed": {
+          "uuid":       "1E04E708-E110-405A-9E68-58E21EFCE374",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  5,
+          "length":     2,
+          "rpn":        "N 16 /"
+        },
+        "runtime": {
+          "uuid":       "C0A3B33B-942F-4C32-836F-AA67BD45F418",
+          "type":       "short",
+          "display":    "int",
+          "start_pos":  7,
+          "length":     2
+        }
+      }
+    },
+    "vehicle_id_short": {
+      "uuid":           "F9054875-69A5-4745-AF83-3E3E09EC8880",
+      "command":        ["0x02", "0x02"],
+      "results": {
+        "short_vin": {
+          "uuid":       "E2B1FBA3-2B9A-4336-B833-FDF70AC25672",
+          "type":       "short_vin",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     5
+        }
+      }      
+    }
+  }
+}
