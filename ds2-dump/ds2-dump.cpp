@@ -226,7 +226,7 @@ void DataCollection::listEcus()
     qOut << qSetFieldWidth(38) << left << "UUID";
     qOut << qSetFieldWidth(40) << left << "Name";
     qOut << qSetFieldWidth(9)  << left << "Version";
-    qOut << qSetFieldWidth(21)  << left << "Last Modified";
+    qOut << qSetFieldWidth(21) << left << "Last Modified";
 
     if (aFamily == "ALL") {
         qOut << qSetFieldWidth(8) << left << "Family";

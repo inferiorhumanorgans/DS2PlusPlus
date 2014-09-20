@@ -56,7 +56,7 @@ namespace DS2PlusPlus {
             _familyDictionary.insert("DSC",     0x56); // Dynamic Stability Control
             _familyDictionary.insert("EGS",     0x32); // Electronic Transmission Control - Electronische Getriebe Steuerung
             _familyDictionary.insert("EWS",     0x44); // Electronic Immobiliser / Elektronische Wegfahrsperre
-            _familyDictionary.insert("IHKA",    0x5b); // Auto Climate Control / Integrierte Heizung Kühlung?
+            _familyDictionary.insert("IHKA",    0x5B); // Auto Climate Control / Integrierte Heizung Kühlung?
             _familyDictionary.insert("KOMBI",   0x80); // Instrument Cluster
             _familyDictionary.insert("LSZ",     0xd0); // Light Switching Center / Lichtschaltzentrum
             _familyDictionary.insert("LWS",     0x57); // Steering Angle Sensor / Lenkwinkelsensor
