@@ -10,7 +10,7 @@ namespace Test_ControlUnit {
             using namespace DS2PlusPlus;
             packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("IHKA"), ihka_ident));
             json = ControlUnitPtr(new DS2PlusPlus::ControlUnit);
-            json->loadByUuid("3CD3AE6B-7826-4884-AC6A-A88FCF682B85");
+            json->loadByUuid("5B000000-0001-0000-0000-000000000000");
             results = json->parseOperation("identify", packet);
         }
 

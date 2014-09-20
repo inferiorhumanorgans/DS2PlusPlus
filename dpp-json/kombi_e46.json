@@ -3,11 +3,11 @@
   "file_version":       4,
   "file_mtime":         "2014-09-20T02:09:17.0Z",
   "file_type":          "ecu",
-  "uuid":               "D077EE50-034D-4DA7-B106-18D23AA9E6CB",
+  "uuid":               "80000000-0001-0000-0000-000000000000",
   "address":            "0x80",
   "family":             "KOMBI",
   "name":               "E46 Instrument Cluster",
-  "parent_id":          "00000000-0000-0000-0000-000000000001",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        6906896,
   "hardware_number":    "0x10",
   "software_number":    "0x20",
@@ -15,11 +15,11 @@
   "endian":             "little",
   "operations": {
     "canbus_rpm":  {
-      "uuid":           "54E4BA86-D6B8-4460-B282-9995F0E134A3",
+      "uuid":           "80000000-0001-0001-0000-000000000000",
       "command":        ["0x06", "0x0a", "0x00", "0x00", "0x92", "0x02"],
       "results": {
         "rpm": {
-          "uuid":       "36FDB3A3-A2B5-479F-90BA-4EFA0A01974A",
+          "uuid":       "80000000-0001-0001-0001-000000000000",
           "type":       "short", /* 16 bits */
           "display":    "int",
           "start_pos":  1,
@@ -29,11 +29,11 @@
       }
     },
     "vehicle_id_short": {
-      "uuid":           "3249CA53-6CF7-4EDC-BEB4-41ABE20FEB5B",
+      "uuid":           "80000000-0001-0002-0000-000000000000",
       "command":        ["0x02", "0x02"],
       "results": {
         "short_vin": {
-          "uuid":       "4D75EE37-1618-4FEE-ACC9-6C52E0FE370F",
+          "uuid":       "80000000-0001-0002-0001-000000000000",
           "type":       "short_vin",
           "display":    "string",
           "start_pos":  2,

@@ -12,7 +12,7 @@ namespace Test_ControlUnit {
         {
             packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("ZKE"), zke_status));
             ecu= ControlUnitPtr(new ControlUnit);
-            ecu->loadByUuid("67FEBF5E-0109-42B9-83C8-2B68D2CAE2FD");
+            ecu->loadByUuid("00000000-0001-0000-0000-000000000000");
             results = ecu->parseOperation("digital_status", packet);
             qDebug() << DS2ResponseToJsonString(results) << endl;
         }

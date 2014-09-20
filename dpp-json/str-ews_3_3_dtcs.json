@@ -3,7 +3,7 @@
   "file_version": 1,
   "file_mtime":   "2014-09-14T19:50:54.0Z",
   "file_type":    "string_table",
-  "uuid":         "C70DCDA2-F952-4679-8FC5-217D4C144E2A",
+  "uuid":         "00002222-0002-0000-0000-000000000000",
   "table_name":   "ews3.3_dtcs",
   "strings": {
     "0x00": "Key #0 invalid identification",

@@ -16,7 +16,7 @@ namespace Test_ControlUnit {
             packet1 = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("LSZ"), lsz_status1));
             packet2 = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("LSZ"), lsz_status2));
             ecu = ControlUnitPtr(new DS2PlusPlus::ControlUnit);
-            ecu->loadByUuid("14CF43EA-B17C-4308-A71D-84C81B4E37FE");
+            ecu->loadByUuid("D0000000-0001-0000-0000-000000000000");
             results1 = ecu->parseOperation("status", packet1);
             results2 = ecu->parseOperation("status", packet2);
 

@@ -3,11 +3,11 @@
   "file_version":       1,
   "file_mtime":         "2014-09-19T00:40:14.0Z",
   "file_type":          "ecu",
-  "uuid":               "AD3B9168-B4D5-46A7-8625-55818937623F",
+  "uuid":               "A4000000-0001-0000-0000-000000000000",
   "address":            "0xA4",
   "family":             "MRS",
   "name":               "Multiple Restraint System v3",
-  "parent_id":          "00000000-0000-0000-0000-000000000001",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        6905491,
   "hardware_number":    "0x01",
   "software_number":    "0x06",
@@ -15,25 +15,25 @@
   "endian":             "little",
   "operations": {
     "dtc_load_bank1": {
-      "uuid":           "6AE30425-C5D6-4602-89A5-8D358A1BCC88",
+      "uuid":           "A4000000-0001-0001-0000-000000000000",
       "command":        ["0x04", "0x01"],
       "results": {
         "error_code.codes.0.dtc": {
-          "uuid":       "CA7C17F0-8960-4EFA-ACF0-3F43BE919B04",
+          "uuid":       "A4000000-0001-0001-0001-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  2,
           "length":     1
         },
         "error_code.codes.0.description": {
-          "uuid":       "93595381-D947-429C-8F8C-8AB8E0C7C44E",
+          "uuid":       "A4000000-0001-0001-0002-000000000000",
           "type":       "byte",
           "display":    "string_table:44583BBC-FE38-488A-A6F7-E7C29CC46093",
           "start_pos":  2,
           "length":     1
         },
         "error_code.codes.0.frequency": {
-          "uuid":       "C1DEEA52-92B5-4E44-939D-E108040BE3B2",
+          "uuid":       "A4000000-0001-0001-0003-000000000000",
           "type":       "byte",
           "display":    "raw",
           "start_pos":  4,
@@ -43,11 +43,11 @@
       }
     },
     "vehicle_id_short": {
-      "uuid":           "1AE3AC0C-344C-4F80-8157-DC6D4DEE360A",
+      "uuid":           "A4000000-0001-0002-0000-000000000000",
       "command":        ["0x08", "0x0D"],
       "results": {
         "short_vin": {
-          "uuid":       "CF6F3827-C86B-4972-B28E-F1DDF93DE94A",
+          "uuid":       "A4000000-0001-0002-0001-000000000000",
           "type":       "short_vin",
           "display":    "string",
           "start_pos":  2,

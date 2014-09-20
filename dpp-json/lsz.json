@@ -3,11 +3,11 @@
   "file_version":       6,
   "file_mtime":         "2014-09-20T15:23:32.0Z",
   "file_type":          "ecu",
-  "uuid":               "14CF43EA-B17C-4308-A71D-84C81B4E37FE",
+  "uuid":               "D0000000-0001-0000-0000-000000000000",
   "address":            "0xd0",
   "family":             "LSZ",
   "name":               "E46 Lighting Module",
-  "parent_id":          "00000000-0000-0000-0000-000000000001",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
   "hardware_number":    "0x10",
   "software_number":    "0x20",
   "coding_index":       "0x29",
@@ -15,12 +15,12 @@
   "endian":             "little",
   "operations": {
     "status":  {
-      "uuid":           "CCF25AA6-D919-4632-83C8-81E0BDA2DD03",
+      "uuid":           "D0000000-0001-0001-0000-000000000000",
       "command":        ["0x0b"],
       "results": {
         /* Voltages */
         "voltage.flash_to_pass": {
-          "uuid":       "F8B00424-AE90-4C2B-A5C1-5D0CB9A83153",
+          "uuid":       "D0000000-0001-0001-0001-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  3,
@@ -28,7 +28,7 @@
           "rpn":        "N 51 /"
         },
         "voltage.turn_signal_switch": {
-          "uuid":       "87E18594-2F38-406F-AF03-5585E1A6C5CA",
+          "uuid":       "D0000000-0001-0001-0002-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  4,
@@ -36,7 +36,7 @@
           "rpn":        "N 51 /"
         },
         "voltage.vehicle_height": {
-          "uuid":       "7826387F-A23E-4C13-8791-E331B13DFDE4",
+          "uuid":       "D0000000-0001-0001-0003-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  8,
@@ -44,7 +44,7 @@
           "rpn":        "N 51 /"
         },
         "voltage.dimmer": {
-          "uuid":       "23DBF8E8-BCEC-4905-85A4-86CC3853E104",
+          "uuid":       "D0000000-0001-0001-0004-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  16,
@@ -52,7 +52,7 @@
           "rpn":        "N 51 /"
         },
         "voltage.headlight_height": { // LWR
-          "uuid":       "B84404B0-6045-48EA-B168-E4109D04FF95",
+          "uuid":       "D0000000-0001-0001-0005-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  17,
@@ -60,7 +60,7 @@
           "rpn":        "N 51 /"
         },
         "voltage.photosensor": {
-          "uuid":       "155962F7-0827-4368-8C4F-53ADCEF46FD7",
+          "uuid":       "D0000000-0001-0001-0006-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  18,
@@ -69,7 +69,7 @@
         },
         /* Ignition terminals */
         "ignition_terminal.15": { /* Position 2 */
-          "uuid":       "4B544C8F-D908-439A-8D64-33CBDBB22666",
+          "uuid":       "D0000000-0001-0001-0007-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  1,
@@ -81,7 +81,7 @@
           }
         },
         "ignition_terminal.r": { /* Position 1 */
-          "uuid":       "2CD60E20-A252-48C7-A223-25F7153753D1",
+          "uuid":       "D0000000-0001-0001-0008-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  2,
@@ -93,7 +93,7 @@
           }
         },
         "ignition_terminal.58a": {
-          "uuid":       "6EFA3E6F-CDFC-47AF-96EA-E95B5D752692",
+          "uuid":       "D0000000-0001-0001-0009-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  9,
@@ -106,7 +106,7 @@
         },
         /* Switches and buttons */
         "switch.brake_light": {
-          "uuid":       "C7CA7C5B-B830-4B76-BAA7-74953DE1CD01",
+          "uuid":       "D0000000-0001-0001-000A-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  2,
@@ -118,7 +118,7 @@
           }
         },
         "switch.hazard_light": {
-          "uuid":       "84407C9B-22D5-444B-81B0-632976D8C80E",
+          "uuid":       "D0000000-0001-0001-000B-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  1,
@@ -130,7 +130,7 @@
           }
         },
         "switch.headlight": {
-          "uuid":       "156DFCC4-1C50-43CE-A980-6339D2FB7963",
+          "uuid":       "D0000000-0001-0001-000C-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  2,
@@ -141,7 +141,7 @@
           }
         },
         "switch.fog_light": {
-          "uuid":       "9D490703-9D30-4C46-B677-D7D4269678E7",
+          "uuid":       "D0000000-0001-0001-000D-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  2,
@@ -153,7 +153,7 @@
         },
         /* Stalk */
         "stalk.high_beam": {
-          "uuid":       "4503132B-5048-4C88-968D-62661C0CD886",
+          "uuid":       "D0000000-0001-0001-000E-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  3,
@@ -165,7 +165,7 @@
           }
         },
         "stalk.turn_signal": {
-          "uuid":       "D5FABE26-426F-4144-B696-EB1480B6ACCF",
+          "uuid":       "D0000000-0001-0001-000F-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  4,
@@ -178,7 +178,7 @@
         },
         /* Outputs */
         "output.front.fog_light": {
-          "uuid":       "2A6C817D-9F0E-48D4-A723-C4E571C85615",
+          "uuid":       "D0000000-0001-0001-0010-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  7,
@@ -190,7 +190,7 @@
           }
         },
         "output.front.parking_light.left": {
-          "uuid":       "3B96A2FA-E469-4CC3-A89D-675CAABCB440",
+          "uuid":       "D0000000-0001-0001-0011-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  6,
@@ -202,7 +202,7 @@
           }
         },
         "output.front.parking_light.right": {
-          "uuid":       "2AA4CEF0-36EA-4C93-8E97-E717AF61387A",
+          "uuid":       "D0000000-0001-0001-0012-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  5,
@@ -214,7 +214,7 @@
           }
         },
         "output.front.turn_signal": {
-          "uuid":       "72FA020C-5405-44C6-A237-0EC8F1D21B73",
+          "uuid":       "D0000000-0001-0001-0013-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  5,
@@ -225,7 +225,7 @@
           }          
         },
         "output.headlight.low_beam": {
-          "uuid":       "66C124CA-BEC1-4131-B189-88AD24D3B5B0",
+          "uuid":       "D0000000-0001-0001-0014-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  6,
@@ -236,7 +236,7 @@
           }
         },
         "output.headlight.high_beam": {
-          "uuid":       "C8148576-2D30-4ED1-9CFF-834E73361D89",
+          "uuid":       "D0000000-0001-0001-0015-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  6,
@@ -247,7 +247,7 @@
           }
         },
         "output.license_plate_light": {
-          "uuid":       "0C14BBE4-ECFA-49AF-84D8-3E7F43FB8526",
+          "uuid":       "D0000000-0001-0001-0016-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  7,
@@ -259,7 +259,7 @@
           }
         },
         "output.rear.brake_light": {
-          "uuid":       "368FF501-963A-4A57-9B3C-863B33A3E5EE",
+          "uuid":       "D0000000-0001-0001-0017-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  5,
@@ -271,7 +271,7 @@
           }          
         },
         "output.rear.fog_light": {
-          "uuid":       "1853FB1D-DCFC-4DAD-9FF5-99538DBB40C3",
+          "uuid":       "D0000000-0001-0001-0018-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  7,
@@ -283,7 +283,7 @@
           }
         },
         "output.rear.tail_light.left": {
-          "uuid":       "FD28CD9C-93AD-4833-BBD6-60FA3706A804",
+          "uuid":       "D0000000-0001-0001-0019-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  6,
@@ -295,7 +295,7 @@
           }
         },
         "output.rear.tail_light.right": {
-          "uuid":       "29B9EA54-DEAD-4A46-88A6-753AAB2DACE0",
+          "uuid":       "D0000000-0001-0001-001A-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  7,
@@ -307,7 +307,7 @@
           }
         },
         "output.rear.turn_signal": {
-          "uuid":       "8C3B5E9C-91F3-481F-A238-49DFC6B17F18",
+          "uuid":       "D0000000-0001-0001-001B-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  7,
@@ -320,11 +320,11 @@
       }
     },
     "vehicle_id_short": {
-      "uuid":           "0D094F0C-B5FF-412D-9AEF-5FE340F0A5C1",
+      "uuid":           "D0000000-0001-0002-0000-000000000000",
       "command":        ["0x02", "0x02"],
       "results": {
         "short_vin": {
-          "uuid":       "A277882F-B8AD-4CFC-99B9-5374F878C07A",
+          "uuid":       "D0000000-0001-0002-0001-000000000000",
           "type":       "short_vin",
           "display":    "string",
           "start_pos":  2,

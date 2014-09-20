@@ -11,7 +11,7 @@ namespace Test_ControlUnit {
             packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("DME"), dme_ident));
             ecu = ControlUnitPtr(new ControlUnit);
             //json.loadByUUID(ControlUnit::ROOT_UUID);
-            ecu->loadByUuid("F5C34396-809C-44C0-868E-49500414BEAA");
+            ecu->loadByUuid("12000000-0001-0000-0000-000000000000");
             results = ecu->parseOperation("identify", packet);
         }
 

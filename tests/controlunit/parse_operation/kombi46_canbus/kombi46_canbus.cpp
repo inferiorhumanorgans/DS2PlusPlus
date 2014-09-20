@@ -7,7 +7,7 @@ namespace Test_ControlUnit {
 
         KOMBI46_CanBus::KOMBI46_CanBus()
         {
-            ecu = ControlUnitPtr(new ControlUnit("D077EE50-034D-4DA7-B106-18D23AA9E6CB"));
+            ecu = ControlUnitPtr(new ControlUnit("80000000-0001-0000-0000-000000000000"));
         }
 
         #if 0

@@ -3,11 +3,11 @@
   "file_version":       4,
   "file_mtime":         "2014-09-20T02:09:17.0Z",
   "file_type":          "ecu",
-  "uuid":               "3CD3AE6B-7826-4884-AC6A-A88FCF682B85",
+  "uuid":               "5B000000-0001-0000-0000-000000000000",
   "address":            "0x5B",
   "family":             "IHKA",
   "name":               "E46 Auto Climate Control",
-  "parent_id":          "00000000-0000-0000-0000-000000000001",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        4106930,
   "hardware_number":    "0x22",
   "software_number":    "0x05",
@@ -15,11 +15,11 @@
   "endian":             "little",
   "operations": {
     "status":  {
-      "uuid":           "43CE7889-9A3E-4779-BD50-AC687C286046",
+      "uuid":           "5B000000-0001-0001-0000-000000000000",
       "command":        ["0x0B", "0x03"],
       "results": {
         "fan.mode": {
-          "uuid":       "965E012A-0477-4475-9739-3DD6D22830DA",
+          "uuid":       "5B000000-0001-0001-0001-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  2,
@@ -31,14 +31,14 @@
           }
         },
         "fan.speed": {
-          "uuid":       "F06FD78E-3228-4DE6-8924-96608B77969F",
+          "uuid":       "5B000000-0001-0001-0002-000000000000",
           "type":       "byte",
           "display":    "raw",
           "start_pos":  4,
           "length":     1
         },
         "mode.front_defrost": {
-          "uuid":       "E640C8C9-3B42-483D-9BA1-13B52BF639E3",
+          "uuid":       "5B000000-0001-0001-0003-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  2,
@@ -50,7 +50,7 @@
           }
         },
         "mode.air_conditioning": {
-          "uuid":       "E5AEA135-01BE-4016-98BA-282A0D54E589",
+          "uuid":       "5B000000-0001-0001-0004-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  1,
@@ -62,7 +62,7 @@
           }
         },
         "mode.rear_defroster": {
-          "uuid":       "E061817B-4C52-42EC-9FE8-37ABEE0A2B9F",
+          "uuid":       "5B000000-0001-0001-0005-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  1,
@@ -74,7 +74,7 @@
           }
         },
         "mode.recirculation": {
-          "uuid":       "4DC3306E-3A4A-11E4-B5B6-902B3437F330",
+          "uuid":       "5B000000-0001-0001-0006-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  1,
@@ -86,7 +86,7 @@
           }
         },
         "mode.vents": {
-          "uuid":       "E4B8C37B-3A4B-11E4-B5B6-902B3437F330",
+          "uuid":       "5B000000-0001-0001-0007-000000000000",
           "type":       "byte",
           "display":    "enum",
           "start_pos":  1,
@@ -99,7 +99,7 @@
           }
         },
         "selected_temperature": {
-          "uuid":       "CB9C34EE-0D24-456F-A2D0-D508D9F845C6",
+          "uuid":       "5B000000-0001-0001-0008-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  3,

@@ -3,11 +3,11 @@
   "file_version":       3,
   "file_mtime":         "2014-09-13T20:35:19.0Z",
   "file_type":          "ecu",
-  "uuid":               "67FEBF5E-0109-42B9-83C8-2B68D2CAE2FD",
+  "uuid":               "00000000-0001-0000-0000-000000000000",
   "address":            "0x00",
   "family":             "ZKE",
   "name":               "Central Body Electronics v5",
-  "parent_id":          "00000000-0000-0000-0000-000000000001",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        6907663,
   "hardware_number":    "0x11",
   "software_number":    "0x16",
@@ -15,11 +15,11 @@
   "endian":             "little",
   "operations": {
     "identify":  {
-      "uuid":           "887E29A3-D2B9-4466-BE43-12665AF6E55A",
-      "parent":         "023A31A5-AEA7-48D5-955D-40096C55C1C5",
+      "uuid":           "00000000-0001-0001-0000-000000000000",
+      "parent":         "00001111-0000-0001-0000-000000000000",
       "results": {
         "variant": { /*This is bogus */
-          "uuid":       "76AB946C-6FFD-4DD8-BA5E-168F1840396B",
+          "uuid":       "00000000-0001-0001-0001-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  5,
@@ -28,11 +28,11 @@
       }
     },
     "digital_status":  {
-      "uuid":           "E717960A-A916-4A21-A99E-4793A233ECF8",
+      "uuid":           "00000000-0001-0002-0000-000000000000",
       "command":        ["0x0b", "0x00"],
       "results": {
         "contact.tailgate": {
-          "uuid":       "E70BD9FD-0623-43A1-8320-A77ACA54505E",
+          "uuid":       "00000000-0001-0002-0001-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  1,
@@ -44,7 +44,7 @@
           }
         },
         "contact.door.front.driver": {
-          "uuid":       "7A718B62-92AF-4704-BFD4-F10D6C59B72C",
+          "uuid":       "00000000-0001-0002-0002-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  7,
@@ -56,7 +56,7 @@
           }
         },
         "contact.door.front.passenger": {
-          "uuid":       "9998AFC4-AA38-43B2-98CC-3E0405A25DF6",
+          "uuid":       "00000000-0001-0002-0003-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  7,
@@ -68,7 +68,7 @@
           }
         },
         "contact.door.rear.driver": {
-          "uuid":       "3F9BFAA9-993F-4E85-AD7D-DAB74A390788",
+          "uuid":       "00000000-0001-0002-0004-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  7,
@@ -80,7 +80,7 @@
           }
         },
         "contact.door.rear.passenger": {
-          "uuid":       "94187561-E83A-4E88-B0B1-9F95F9655CC7",
+          "uuid":       "00000000-0001-0002-0005-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  7,
@@ -92,7 +92,7 @@
           }
         },
         "radio.keys.0.battery_level": {
-          "uuid":       "130B33A8-AE4E-4DD8-B208-77534F920343",
+          "uuid":       "00000000-0001-0002-0006-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  19,
@@ -104,7 +104,7 @@
           }
         },
         "radio.keys.1.battery_level": {
-          "uuid":       "901704AB-6AE9-4C2E-8542-014BB94C4415",
+          "uuid":       "00000000-0001-0002-0007-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  19,
@@ -116,7 +116,7 @@
           }
         },
         "radio.keys.2.battery_level": {
-          "uuid":       "4BB0A906-91C0-4F71-9C7D-85CF7009F1E8",
+          "uuid":       "00000000-0001-0002-0008-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  19,
@@ -128,7 +128,7 @@
           }
         },
         "radio.keys.3.battery_level": {
-          "uuid":       "1C5168E4-6013-4784-9776-620579AD3409",
+          "uuid":       "00000000-0001-0002-0009-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  19,

@@ -3,11 +3,11 @@
   "file_version":       3,
   "file_mtime":         "2014-09-13T20:35:19.0Z",
   "file_type":          "ecu",
-  "uuid":               "36DAD065-4EC9-446C-A7E6-415F601BC150",
+  "uuid":               "68000000-0001-0000-0000-000000000000",
   "address":            "0x68",
   "family":             "RADIO",
   "name":               "Business Radio CD53",
-  "parent_id":          "00000000-0000-0000-0000-000000000001",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        6941505,
   "hardware_number":    "0x44",
   "software_number":    "0x43",
@@ -15,11 +15,11 @@
   "endian":             "little",
   "operations": {
     "status":  {
-      "uuid":           "4EEDB33C-F8F6-4E17-B75D-7798A0BAC876",
+      "uuid":           "68000000-0001-0001-0000-000000000000",
       "command":        ["0x0b"],
       "results": {
         "radio.powered": { // This is bogus, ignore.
-          "uuid":       "7C3A04B6-9A2F-47A4-ACFF-B7490CF0C3E0",
+          "uuid":       "68000000-0001-0001-0001-000000000000",
           "type":       "boolean",
           "display":    "string",
           "start_pos":  2,

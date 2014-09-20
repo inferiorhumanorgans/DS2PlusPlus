@@ -3,7 +3,7 @@
   "file_version": 1,
   "file_mtime":   "2014-09-19T04:04:09.0Z",
   "file_type":    "string_table",
-  "uuid":         "44583BBC-FE38-488A-A6F7-E7C29CC46093",
+  "uuid":         "00002222-0003-0000-0000-000000000000",
   "table_name":   "mrs3_dtcs",
   "strings": {
     "0x01": "Ignition circuit ZK0 -> airbag driver",

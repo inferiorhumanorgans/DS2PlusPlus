@@ -11,9 +11,8 @@ namespace Test_ControlUnit {
         {
             packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("RADIO"), cd53_ident));
             ecu = ControlUnitPtr(new ControlUnit);
-            ecu->loadByUuid("36DAD065-4EC9-446C-A7E6-415F601BC150");
+            ecu->loadByUuid("68000000-0001-0000-0000-000000000000");
             results = ecu->parseOperation("identify", packet);
-
         }
 
         void RADIO_CD53_Ident::partNumber()

@@ -3,11 +3,11 @@
   "file_version":       4,
   "file_mtime":         "2014-09-13T20:35:19.0Z",
   "file_type":          "ecu",
-  "uuid":               "F5C34396-809C-44C0-868E-49500414BEAA",
+  "uuid":               "12000000-0001-0000-0000-000000000000",
   "address":            "0x12",
   "family":             "DME",
   "name":               "Siemens MS 42.0",
-  "parent_id":          "00000000-0000-0000-0000-000000000001",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        7500255,
   "hardware_number":    "0x15",
   "software_number":    "0xE3",
@@ -15,67 +15,67 @@
   "endian":             "big",
   "operations": {
     "identify":  {
-      "uuid":           "B8D66536-17F0-4494-91C5-B1817C548454",
+      "uuid":           "12000000-0001-0001-0000-000000000000",
       "command":        ["0x00"],
       "results": {
         "part_number": {
-          "uuid":       "00AD6856-1C38-4EAE-9E87-C319CFD4071E",
+          "uuid":       "12000000-0001-0001-0001-000000000000",
           "type":       "string",
           "display":    "int",
           "start_pos":  1,
           "length":     7
         },
         "hardware_number": {
-          "uuid":       "E6B05454-6ECE-418C-9A33-6CFB00BFF239",
+          "uuid":       "12000000-0001-0001-0002-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  8,
           "length":     2
         },
         "coding_index": {
-          "uuid":       "FABDC1F7-5645-40B8-9D71-0F536F4DA97A",
+          "uuid":       "12000000-0001-0001-0003-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  10,
           "length":     2
         },
         "diag_index": {
-          "uuid":       "B7809A77-7BE5-4B52-968A-F7831FCA9E19",
+          "uuid":       "12000000-0001-0001-0004-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  12,
           "length":     2
         },
         "bus_index": {
-          "uuid":       "A2E55EC3-F12B-4606-9315-0900943C75B1",
+          "uuid":       "12000000-0001-0001-0005-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  14,
           "length":     2
         },
         "build_date.week": {
-          "uuid":       "665C0F3F-50BA-43B8-9826-BF68836456E4",
+          "uuid":       "12000000-0001-0001-0006-000000000000",
           "type":       "string",
           "display":    "int",
           "start_pos":  16,
           "length":     2
         },
         "build_date.year": {
-          "uuid":       "0E0B6392-CF6E-4777-9D07-59E2971A10E8",
+          "uuid":       "12000000-0001-0001-0007-000000000000",
           "type":       "string",
           "display":    "int",
           "start_pos":  12,
           "length":     2
         },
         "supplier": {
-          "uuid":       "E08EBE54-80FF-42F5-847E-A4EDF5A76A93",
+          "uuid":       "12000000-0001-0001-0008-000000000000",
           "type":       "string",
           "display":    "string",
           "start_pos":  20,
           "length":     6
         },
         "software_number": {
-          "uuid":       "FBDFE1BC-4F5C-4C07-BFB2-01ABBBF57400",
+          "uuid":       "12000000-0001-0001-0009-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  26,
@@ -84,11 +84,11 @@
       }
     },
     "status":  {
-      "uuid":           "0830569F-964E-440F-8145-344929B790FE",
+      "uuid":           "12000000-0001-0002-0000-000000000000",
       "command":        ["0x0b", "0x03"],
       "results": {
         "temp.intake_air": {
-          "uuid":       "D40F37F8-2D48-4D2D-9487-C6457695A4B2",
+          "uuid":       "12000000-0001-0002-0001-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  8,
@@ -96,7 +96,7 @@
           "rpn":        "N 0.75 * -48 +"
         },
         "temp.coolant": {
-          "uuid":       "B9BB4B8F-2E46-48A1-85E2-76D77D037F21",
+          "uuid":       "12000000-0001-0002-0002-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  9,
@@ -104,7 +104,7 @@
           "rpn":        "N 0.75 * -48 +"
         },
         "temp.motor_oil": {
-          "uuid":       "24BA89AE-4086-4AC4-9D5C-0A542555F998",
+          "uuid":       "12000000-0001-0002-0003-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  10,
@@ -112,7 +112,7 @@
           "rpn":        "N 0.7961 * -48 +"
         },
         "temp.coolant_outlet": {
-          "uuid":       "815020E6-FCDB-4D9A-9795-94F397850D76",
+          "uuid":       "12000000-0001-0002-0004-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  11,
@@ -120,7 +120,7 @@
           "rpn":        "N 0.75 * -48 +"
         },
         "ignition_deg_kw": {
-          "uuid":       "13ADB316-5D80-43FB-A730-F01B14BD444B",
+          "uuid":       "12000000-0001-0002-0005-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  12,
@@ -128,7 +128,7 @@
           "rpn":        "N 0.375 * -60 +"
         },
         "voltage.battery": {
-          "uuid":       "7ADCE62E-816B-4CB3-9566-77A74C37FFA5",
+          "uuid":       "12000000-0001-0002-0006-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  21,
@@ -138,11 +138,11 @@
       }
     },
     "precat_o2_bank1_voltage": {
-      "uuid":           "50280D84-17F0-4CED-8346-176861C62B9B",
+      "uuid":           "12000000-0001-0003-0000-000000000000",
       "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x01"],
       "results": {
         "voltage.precat_o2.bank1": {
-          "uuid":       "E053CAC5-1E86-48F5-A494-F1EF4B46F0F3",
+          "uuid":       "12000000-0001-0003-0001-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  2,
@@ -152,11 +152,11 @@
       }
     },
     "precat_o2_bank2_voltage": {
-      "uuid":           "3427A93E-FB8D-4FD7-B783-5E379B9C45FF",
+      "uuid":           "12000000-0001-0004-0000-000000000000",
       "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x02"],
       "results": {
         "voltage.precat_o2.bank2": {
-          "uuid":       "2A8DA40E-BE9C-445E-A225-00EE9433EFE9",
+          "uuid":       "12000000-0001-0004-0001-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  2,
@@ -166,11 +166,11 @@
       }
     },
     "postcat_o2_bank1_voltage": {
-      "uuid":           "A125D2BC-CD64-4EB1-9735-BB01379BEACD",
+      "uuid":           "12000000-0001-0005-0000-000000000000",
       "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x19"],
       "results": {
         "voltage.postcat_o2.bank1": {
-          "uuid":       "A4D1DF6B-069E-4351-AC79-0E8407E34E92",
+          "uuid":       "12000000-0001-0005-0001-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  2,
@@ -180,11 +180,11 @@
       }
     },
     "postcat_o2_bank2_voltage": {
-      "uuid":           "03AA98C9-072C-4AC6-8BCF-C19584B933C0",
+      "uuid":           "12000000-0001-0006-0000-000000000000",
       "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x1a"],
       "results": {
         "voltage.postcat_o2.bank2": {
-          "uuid":       "0B3F8335-002A-4B44-BA1A-253C97660A1A",
+          "uuid":       "12000000-0001-0006-0001-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  2,
@@ -194,11 +194,11 @@
       }
     },
     "amm_voltage": {
-      "uuid":           "CE7AA377-A1FF-4B40-8EFF-08BF2E51BF30",
+      "uuid":           "12000000-0001-0007-0000-000000000000",
       "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x06"],
       "results": {
         "voltage.air_mass_meter": {
-          "uuid":       "C5C90257-9690-4921-A931-F7952610E962",
+          "uuid":       "12000000-0001-0007-0001-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  2,
@@ -208,11 +208,11 @@
       }
     },
     "mdk_pot1_voltage": {
-      "uuid":           "597CA152-A327-4F77-A0D6-2956F6E07477",
+      "uuid":           "12000000-0001-0008-0000-000000000000",
       "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x0a"],
       "results": {
         "voltage.mdk.pot1": {
-          "uuid":       "D05487C2-FB66-4F12-9EDD-A957A9D4DC18",
+          "uuid":       "12000000-0001-0008-0001-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  2,
@@ -222,11 +222,11 @@
       }
     },
     "mdk_pot2_voltage": {
-      "uuid":           "35BB3650-3381-4D03-9745-E7367A0B8EB1",
+      "uuid":           "12000000-0001-0009-0000-000000000000",
       "command":        ["0x0b", "0x02", "0x0e", "0x00", "0x00", "0x0b"],
       "results": {
         "voltage.mdk.pot2": {
-          "uuid":       "F2355E69-57B1-49D0-ABF3-3DE476DE78AD",
+          "uuid":       "12000000-0001-0009-0001-000000000000",
           "type":       "byte",
           "display":    "float",
           "start_pos":  2,
@@ -236,11 +236,11 @@
       }
     },
     "vehicle_id": {
-      "uuid":           "A58351D0-1978-48F6-9F20-3D50EF1998DD",
+      "uuid":           "12000000-0001-000A-0000-000000000000",
       "command":        ["0x06", "0x00", "0x00", "0x3c", "0x4a", "0x2e"], // Read RAM at 0x3C4A/15434, 0x2E/46 bytes
       "results": {
         "vin": {
-          "uuid":       "5F6564C6-03E7-4580-BA8C-49D1C81DDD39",
+          "uuid":       "12000000-0001-000A-0001-000000000000",
           "type":       "6bit-string",
           "display":    "string",
           "start_pos":  1,
@@ -249,18 +249,18 @@
       }      
     },
     "engine_status": {
-      "uuid":           "0F4A2B94-CA41-4684-8412-DC7F6004E74D",
+      "uuid":           "12000000-0001-000B-0000-000000000000",
       "command":        ["0x0b", "0x03"],
       "results": {
         "engine.current_rpm": {
-          "uuid":       "E54E7F8D-A887-4320-A72F-8ABFC9B14758",
+          "uuid":       "12000000-0001-000B-0001-000000000000",
           "type":       "short",
           "display":    "int",
           "start_pos":  1,
           "length":     2
         },
         "vehicle.current_speed": {
-          "uuid":       "D60BCE9B-5520-48D4-8D4A-2040992214C5",
+          "uuid":       "12000000-0001-000B-0004-000000000000",
           "type":       "byte",
           "display":    "raw",
           "start_pos":  3,

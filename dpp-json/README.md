@@ -106,6 +106,40 @@ A space delimited string representing a series of Reverse Polish Notation comman
 * `>>` - pop two from the stack, shift right, push result
 * `<<` - pop two from the stack, shift left, push result
 
-Currently RPN is only observed on byte types and all numbers are assumed to be integers.
+##UUID Objects##
+All of the UUID fields should MUST to RFC 4122, and they SHOULD also encode some information wthin.
 
-This should probably replace `mask`, `factor_a`, and `factor_b`.
+For example, take the UUID describing a DME control unit:
+`12010000-0001-0000-0000-000000000000`
+
+`12` - address (DME/DDE=0x12)
+`01` - family (DME=0, DDE=1, etc)
+`0000` - root = 1111, string table = 2222, else = 0000
+-
+`0`   - 0 if serial number, 1 if random number
+`001` - ecu or string table serial number starting at 1, or random number
+-
+`0000` - operation serial number starts at 1, otherwise 0000
+-
+`0000` - result serial number starts at 1, otherwise 0000
+-
+`00000000` - unused
+`0000` - reserved for extra entropy
+
+
+Other examples:
+
+`00001111-0000-0000-0000-000000000000` - Root ECU
+
+`12000000-0001-0000-0000-000000000000` - MS42.0
+`12000000-0001-0001-0000-000000000000` - first operation
+`12000000-0001-0001-0001-000000000000` - first operation's first result
+
+`12000000-0002-0000-0000-000000000000` - MS43.0
+`12000000-0002-0001-0000-000000000000` - first operation
+`12000000-0002-0001-0001-000000000000` - first operation's first result
+
+
+String table:
+
+`00002222-0001-0000-0000-000000000000`
