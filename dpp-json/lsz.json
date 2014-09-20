@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       5,
-  "file_mtime":         "2014-09-20T02:09:17.0Z",
+  "file_version":       6,
+  "file_mtime":         "2014-09-20T15:23:32.0Z",
   "file_type":          "ecu",
   "uuid":               "14CF43EA-B17C-4308-A71D-84C81B4E37FE",
   "address":            "0xd0",
@@ -35,7 +35,7 @@
           "length":     1,
           "rpn":        "N 51 /"
         },
-        "voltage.unknown1": {
+        "voltage.vehicle_height": {
           "uuid":       "7826387F-A23E-4C13-8791-E331B13DFDE4",
           "type":       "byte",
           "display":    "float",
@@ -51,7 +51,7 @@
           "length":     1,
           "rpn":        "N 51 /"
         },
-        "voltage.unknown2": {
+        "voltage.headlight_height": { // LWR
           "uuid":       "B84404B0-6045-48EA-B168-E4109D04FF95",
           "type":       "byte",
           "display":    "float",
