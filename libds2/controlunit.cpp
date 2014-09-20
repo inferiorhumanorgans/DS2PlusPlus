@@ -396,6 +396,10 @@ namespace DS2PlusPlus {
     void ControlUnit::setAddress(quint8 anAddress)
     {
         _address = anAddress;
+        _family = familyForAddress(anAddress).split(", ").at(0);
+        foreach (const QString &key, operations().keys()) {
+            _operations[key]->setAddress(anAddress);
+        }
     }
 
     QString ControlUnit::family() const

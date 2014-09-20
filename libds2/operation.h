@@ -47,6 +47,8 @@ namespace DS2PlusPlus {
         const QHash<QString, Result> results() const;
         void insertResult(const QString &aName, const Result aResult);
 
+        void setAddress(quint8 anAddress);
+
         DS2Packet *queryPacket() const;
 
     protected:

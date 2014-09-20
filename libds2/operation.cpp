@@ -72,4 +72,9 @@ namespace DS2PlusPlus {
     {
        return new DS2Packet(_controlUnitAddress, _command);
     }
+
+    void Operation::setAddress(quint8 anAddress)
+    {
+        _controlUnitAddress = anAddress;
+    }
 }
