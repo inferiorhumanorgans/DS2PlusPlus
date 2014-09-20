@@ -92,9 +92,13 @@ namespace DS2PlusPlus
 namespace Json {
     class Value;
 };
-const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse);
-const QString DS2ResponseToString(const DS2PlusPlus::DS2Response &aResponse);
 
+const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse);
+const QString DS2ResponseToJsonString(const DS2PlusPlus::DS2Response &aResponse);
+const QString DS2PacketToByteString(const DS2PlusPlus::DS2Packet &packet);
+
+QTextStream &operator << (QTextStream &s, const DS2PlusPlus::DS2Packet &packet);
+QTextStream &operator << (QTextStream &s, DS2PlusPlus::DS2PacketPtr packet);
 QDebug operator << (QDebug d, const DS2PlusPlus::DS2Packet &packet);
 
 #endif // DS2PACKET_H

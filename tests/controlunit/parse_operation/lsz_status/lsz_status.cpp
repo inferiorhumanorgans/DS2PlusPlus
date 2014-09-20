@@ -20,8 +20,8 @@ namespace Test_ControlUnit {
             results1 = ecu->parseOperation("status", packet1);
             results2 = ecu->parseOperation("status", packet2);
 
-            qDebug() << DS2ResponseToString(results1) << endl;
-            qDebug() << DS2ResponseToString(results2) << endl;
+            qDebug() << DS2ResponseToJsonString(results1) << endl;
+            qDebug() << DS2ResponseToJsonString(results2) << endl;
         }
 
         #if 0

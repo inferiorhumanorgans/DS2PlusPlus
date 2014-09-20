@@ -25,6 +25,7 @@
 
 #include <stdexcept>
 
+#include <QSharedPointer>
 #include "ds2packet.h"
 
 namespace DS2PlusPlus {
@@ -209,7 +210,7 @@ const Json::Value *DS2ResponseToJson(const DS2PlusPlus::DS2Response &aResponse)
     return new Json::Value(root);
 }
 
-const QString DS2ResponseToString(const DS2PlusPlus::DS2Response &aResponse)
+const QString DS2ResponseToJsonString(const DS2PlusPlus::DS2Response &aResponse)
 {
     const Json::Value *ourJson = DS2ResponseToJson(aResponse);
     std::string ourStr = ourJson->toStyledString();
@@ -217,21 +218,42 @@ const QString DS2ResponseToString(const DS2PlusPlus::DS2Response &aResponse)
     return QString(ourStr.c_str());
 }
 
-QDebug operator << (QDebug d, const DS2PlusPlus::DS2Packet &packet)
+const QString DS2PacketToByteString(const DS2PlusPlus::DS2Packet &packet)
 {
-    QString debugString("ECU: %1 DATA: %2 CHECKSUM: %3");
+    QStringList ret;
     QChar zeroPadding('0');
-    QString ecuString = QString("0x%1").arg(packet.address(), 2, 16, zeroPadding);
 
-    QByteArray data = packet.data();
-    QStringList dataStringList;
-    for (int i=0; i < data.length(); i++) {
-        dataStringList.append(QString("0x%1").arg(static_cast<quint8>(data.at(i)), 2, 16, zeroPadding));
+    ret.append(QString("%1").arg(packet.address(), 2, 16, zeroPadding));
+    ret.append(QString("%1").arg(packet.data().length() + 3, 2, 16, zeroPadding));
+
+    for (int i=0; i < packet.data().length(); i++) {
+        ret.append(QString("%1").arg(static_cast<quint8>(packet.data().at(i)), 2, 16, zeroPadding));
     }
 
+    return ret.join(" ");
+}
+
+QTextStream &operator << (QTextStream &s, const DS2PlusPlus::DS2Packet &packet)
+{
+    s << DS2PacketToByteString(packet);
+    return s;
+}
+
+QTextStream &operator << (QTextStream &s, DS2PlusPlus::DS2PacketPtr packet)
+{
+    s << *packet;
+    return s;
+}
+
+QDebug operator << (QDebug d, const DS2PlusPlus::DS2Packet &packet)
+{
+    QString debugString("ECU: %1 LENGTH: %2 CHECKSUM: %3 RAW: %4");
+    QChar zeroPadding('0');
+
+    QString ecuString = QString("0x%1").arg(packet.address(), 2, 16, zeroPadding);
     QString checksumString = QString("0x%1").arg(packet.checksum(), 2, 16, zeroPadding);
 
-    d << debugString.arg(ecuString).arg(dataStringList.join(", ")).arg(checksumString);
+    d << debugString.arg(ecuString).arg(packet.data().length() + 3).arg(checksumString).arg(DS2PacketToByteString(packet));
 
     return d;
 }
