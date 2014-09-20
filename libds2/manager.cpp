@@ -553,7 +553,7 @@ namespace DS2PlusPlus {
         bool ret = false;
         QSqlTableModel *ourModel = modulesTable();
 
-        ourModel->setFilter(QString("uuid = '%1'").arg(aUuid));
+        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
         ourModel->select();
 
         if (ourModel->rowCount() == 1) {
@@ -570,7 +570,7 @@ namespace DS2PlusPlus {
         QHash<QString, QVariant> ret;
         QSharedPointer<QSqlTableModel> ourModel(operationsTable());
 
-        ourModel->setFilter(QString("uuid = '%1'").arg(aUuid));
+        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
         ourModel->select();
 
         if (ourModel->rowCount() == 1) {
@@ -587,7 +587,7 @@ namespace DS2PlusPlus {
     {
         QSharedPointer<QSqlTableModel> ourModel(operationsTable());
 
-        ourModel->setFilter(QString("uuid = '%1'").arg(aUuid));
+        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
         ourModel->select();
 
         if (ourModel->rowCount() == 1) {
@@ -605,7 +605,7 @@ namespace DS2PlusPlus {
         QHash<QString, QVariant> ret;
         QSharedPointer<QSqlTableModel> ourModel(resultsTable());
 
-        ourModel->setFilter(QString("uuid = '%1'").arg(aUuid));
+        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
         ourModel->select();
 
         if (ourModel->rowCount() == 1) {
@@ -622,7 +622,7 @@ namespace DS2PlusPlus {
     {
         QSharedPointer<QSqlTableModel> ourModel(resultsTable());
 
-        ourModel->setFilter(QString("uuid = '%1'").arg(aUuid));
+        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
         ourModel->select();
 
         if (ourModel->rowCount() == 1) {
@@ -635,13 +635,20 @@ namespace DS2PlusPlus {
 
     bool Manager::removeStringTableByUuid(const QString &aUuid)
     {
+        QUuid ourUuid(aUuid);
+
+        if (ourUuid.isNull()) {
+            // Throw exception?
+            return false;
+        }
+
         QSqlQuery removeTheseStringValuesByTableQuery(_db);
         removeTheseStringValuesByTableQuery.prepare("DELETE FROM string_values WHERE table_uuid = :uuid");
-        removeTheseStringValuesByTableQuery.bindValue(":uuid", aUuid);
+        removeTheseStringValuesByTableQuery.bindValue(":uuid", ourUuid.toRfc4122());
 
         QSqlQuery removeThisStringTableByUuidQuery(_db);
         removeThisStringTableByUuidQuery.prepare("DELETE FROM string_tables WHERE uuid = :uuid");
-        removeThisStringTableByUuidQuery.bindValue(":uuid", aUuid);
+        removeThisStringTableByUuidQuery.bindValue(":uuid", ourUuid.toRfc4122());
 
         return removeTheseStringValuesByTableQuery.exec() && removeThisStringTableByUuidQuery.exec();
     }
