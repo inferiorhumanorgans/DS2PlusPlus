@@ -1,7 +1,9 @@
 DS2PlusPlus
 -----------
 
-This library and all of its constitutent elements are licensed under the LGPL v3.0.
+This library, including its code, its data, and all of its other constitutent elements, is licensed under the [GNU LGPL v3.0](http://www.gnu.org/licenses/lgpl-3.0.html).
+
+tl;dr You're welcome to use this in a commercial, closed source application.  However any changes you make to libds2 or the ECU definition files must be made available.  Sharing is caring, right?
 
 ###Contents###
 
@@ -11,11 +13,11 @@ A Qt/C++ library to interface with BMW control units.
 
 ####`ds2-dump`####
 
-A quick program that can: process DPP-JSON files, run arbitarary commands against an ECU, and identify an ECU.
+A command line program that can: compile DPP-JSON files, run arbitarary commands against an control unit, and identify control units installed on a car, as well as run a series of commands and log the output to a CSV file.
 
 ####`dpp-json`####
 
-ECU definition files.
+Control unit and string table definition files.
 
 ####`dpp-tools`####
 
@@ -29,7 +31,7 @@ Tests, of course.  Written using QTestLib.  Running `make check` will excute the
 
 ####Requirements###
 
-* Qt 5.2 or newer with the `serialport` and `sql` modules.
+* Qt 5.2 or newer with the `sql` module.
 
 ####Building Everything###
 

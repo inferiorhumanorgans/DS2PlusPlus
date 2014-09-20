@@ -383,7 +383,7 @@ namespace DS2PlusPlus {
             qDebug() << "Checksum mismatch...";
         }
 
-        if (getenv("DS2_TRACE_QUERY")) {
+        if (getenv("DPP_TRACE_QUERY")) {
             qErr << "Returning: " << ret << endl;
         }
         return ret;
