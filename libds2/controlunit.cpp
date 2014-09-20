@@ -325,6 +325,18 @@ namespace DS2PlusPlus {
                     QString errorString = QString("Unknown display type for string type: ").arg(result.displayFormat());
                     throw std::invalid_argument(qPrintable(errorString));
                 }
+            } else if (result.isType("short_vin")) {
+                QString vin;
+                vin.append(packet->data().at(result.startPosition()));
+                vin.append(packet->data().at(result.startPosition() + 1));
+
+                quint32 number_part;
+                memcpy(&number_part, packet->data().mid(result.startPosition() + 1, 4), 4);
+                number_part = qFromBigEndian(number_part);
+                number_part = (number_part & 0x00ffffff) >> 4;
+                vin.append(QString::number(number_part, 16));
+
+                ret.insert(result.name(), vin);
             } else if (result.isType("6bit-string")) {
                 QByteArray encodedString = packet->data().mid(result.startPosition(), result.length());
 
