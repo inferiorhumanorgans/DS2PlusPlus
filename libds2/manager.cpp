@@ -382,13 +382,17 @@ namespace DS2PlusPlus {
         if (ret->checksum() != realChecksum) {
             qDebug() << "Checksum mismatch...";
         }
+
+        if (getenv("DS2_TRACE_QUERY")) {
+            qErr << "Returning: " << ret << endl;
+        }
         return ret;
     }
 
     ControlUnitPtr Manager::findModuleAtAddress(quint8 anAddress) {
         DS2PacketPtr ourSentPacket(new DS2Packet(anAddress, QByteArray((int)1, (unsigned char)0x00)));
         DS2PacketPtr ourReceivedPacket = query(ourSentPacket);
-        qDebug() << "Our IDENT: " << *ourReceivedPacket;
+        //qDebug() << "Our IDENT: " << *ourReceivedPacket;
         return findModuleByMatchingIdentPacket(ourReceivedPacket);
     }
 

@@ -273,7 +273,7 @@ namespace DS2PlusPlus {
 
         if (packet->address() != address()) {
             QString errorString = QString("WARNING: RECV'D PACKET FOR ECU AT 0x%1. OUR ADDR IS 0x%2").arg(packet->address(), 2, 16, QChar('0')).arg(address(), 2, 16, QChar('0'));
-            qErr << errorString << endl;
+            //qErr << errorString << endl;
         }
 
         foreach(const Result &result, theOp->results()) {
