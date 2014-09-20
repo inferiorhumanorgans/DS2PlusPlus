@@ -403,11 +403,13 @@ namespace DS2PlusPlus {
         resultRecord.setValue("levels",       levelsQString);
 
         if (!aResultsModel->insertRecord(-1, resultRecord)) {
-            qDebug() << "insertResultRecord failed: " << aResultsModel->lastError() << endl;
+            qErr  << "insertResultRecord: " << aResultsModel->lastError().databaseText() << endl;
             return false;
         }
+
         if (!aResultsModel->submitAll()) {
-            qDebug() << "submitResultRecords Failed: " << aResultsModel->lastError() << endl;
+            QString errorString = QString("submitResultRecords: %1 (uuid=%2)").arg(aResultsModel->lastError().databaseText()).arg(uuid);
+            qErr << errorString << endl;
             return false;
         }
 
