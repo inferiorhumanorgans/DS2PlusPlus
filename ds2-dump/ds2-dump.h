@@ -41,10 +41,20 @@ signals:
 
 public slots:
     void run();
+    void probeAll();
+    void listFamilies();
+    void listEcus();
+    void listOperations();
+    void runOperation();
+    void dataLog();
 
 protected:
     void serialSetup(QSharedPointer<QCommandLineParser> parser);
     DS2PlusPlus::ManagerPtr dbm;
+    QTextStream qOut, qErr;
+    QSharedPointer<QCommandLineParser> parser;
+    QString ecuUuid;
+    quint8 ecuAddress;
 };
 
 #endif // DATACOLLECTION_H
