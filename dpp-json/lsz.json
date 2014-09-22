@@ -25,7 +25,8 @@
           "display":    "float",
           "start_pos":  3,
           "length":     1,
-          "rpn":        "N 51 /"
+          "rpn":        "N 51 /",
+          "units":      "V"
         },
         "voltage.turn_signal_switch": {
           "uuid":       "D0000000-0001-0001-0002-000000000000",
@@ -33,7 +34,8 @@
           "display":    "float",
           "start_pos":  4,
           "length":     1,
-          "rpn":        "N 51 /"
+          "rpn":        "N 51 /",
+          "units":      "V"
         },
         "voltage.vehicle_height": {
           "uuid":       "D0000000-0001-0001-0003-000000000000",
@@ -41,7 +43,8 @@
           "display":    "float",
           "start_pos":  8,
           "length":     1,
-          "rpn":        "N 51 /"
+          "rpn":        "N 51 /",
+          "units":      "V"
         },
         "voltage.dimmer": {
           "uuid":       "D0000000-0001-0001-0004-000000000000",
@@ -49,7 +52,8 @@
           "display":    "float",
           "start_pos":  16,
           "length":     1,
-          "rpn":        "N 51 /"
+          "rpn":        "N 51 /",
+          "units":      "V"
         },
         "voltage.headlight_height": { // LWR
           "uuid":       "D0000000-0001-0001-0005-000000000000",
@@ -57,7 +61,8 @@
           "display":    "float",
           "start_pos":  17,
           "length":     1,
-          "rpn":        "N 51 /"
+          "rpn":        "N 51 /",
+          "units":      "V"
         },
         "voltage.photosensor": {
           "uuid":       "D0000000-0001-0001-0006-000000000000",
@@ -65,7 +70,8 @@
           "display":    "float",
           "start_pos":  18,
           "length":     1,
-          "rpn":        "N 51 /"
+          "rpn":        "N 51 /",
+          "units":      "V"
         },
         /* Ignition terminals */
         "ignition_terminal.15": { /* Position 2 */
@@ -78,7 +84,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         "ignition_terminal.r": { /* Position 1 */
           "uuid":       "D0000000-0001-0001-0008-000000000000",
@@ -90,7 +97,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         "ignition_terminal.58a": {
           "uuid":       "D0000000-0001-0001-0009-000000000000",
@@ -102,7 +110,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         /* Switches and buttons */
         "switch.brake_light": {
@@ -115,7 +124,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         "switch.hazard_light": {
           "uuid":       "D0000000-0001-0001-000B-000000000000",
@@ -127,7 +137,8 @@
           "levels": {
             "yes":      "down",
             "no":       "up"
-          }
+          },
+          "units":      "string"
         },
         "switch.headlight": {
           "uuid":       "D0000000-0001-0001-000C-000000000000",
@@ -138,7 +149,8 @@
           "levels": {
             "0x01": "parking_light",
             "0x02": "low_beam"
-          }
+          },
+          "units":      "string"
         },
         "switch.fog_light": {
           "uuid":       "D0000000-0001-0001-000D-000000000000",
@@ -149,7 +161,8 @@
           "levels": {
             "0x04": "front",
             "0x08": "rear"
-          }          
+          },
+          "units":      "string"
         },
         /* Stalk */
         "stalk.high_beam": {
@@ -162,7 +175,8 @@
             "0x50": "high_beam",
             "0x80": "flash_to_pass",
             "all":  "neutral"
-          }
+          },
+          "units":      "string"
         },
         "stalk.turn_signal": {
           "uuid":       "D0000000-0001-0001-000F-000000000000",
@@ -174,7 +188,8 @@
             "0x50":     "left",
             "0x80":     "right",
             "all":      "neutral"
-          }
+          },
+          "units":      "string"
         },
         /* Outputs */
         "output.front.fog_light": {
@@ -187,7 +202,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         "output.front.parking_light.left": {
           "uuid":       "D0000000-0001-0001-0011-000000000000",
@@ -199,7 +215,8 @@
           "levels": {
             "yes":      "left",
             "no":       ""
-          }
+          },
+          "units":      "string"
         },
         "output.front.parking_light.right": {
           "uuid":       "D0000000-0001-0001-0012-000000000000",
@@ -211,7 +228,8 @@
           "levels": {
             "yes":      "right",
             "no":       ""
-          }
+          },
+          "units":      "string"
         },
         "output.front.turn_signal": {
           "uuid":       "D0000000-0001-0001-0013-000000000000",
@@ -222,7 +240,8 @@
           "levels": {
             "0x20":   "left",
             "0x40":   "right"
-          }          
+          },
+          "units":      "string"
         },
         "output.headlight.low_beam": {
           "uuid":       "D0000000-0001-0001-0014-000000000000",
@@ -233,7 +252,8 @@
           "levels": {
             "0x10":     "left",
             "0x20":     "right"
-          }
+          },
+          "units":      "string"
         },
         "output.headlight.high_beam": {
           "uuid":       "D0000000-0001-0001-0015-000000000000",
@@ -244,7 +264,8 @@
           "levels": {
             "0x02":     "right",
             "0x04":     "left"
-          }
+          },
+          "units":      "string"
         },
         "output.license_plate_light": {
           "uuid":       "D0000000-0001-0001-0016-000000000000",
@@ -256,7 +277,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         "output.rear.brake_light": {
           "uuid":       "D0000000-0001-0001-0017-000000000000",
@@ -268,7 +290,8 @@
             "0x01":     "center",
             "0x08":     "left",
             "0x10":     "right"
-          }          
+          },
+          "units":      "string"
         },
         "output.rear.fog_light": {
           "uuid":       "D0000000-0001-0001-0018-000000000000",
@@ -280,7 +303,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         "output.rear.tail_light.left": {
           "uuid":       "D0000000-0001-0001-0019-000000000000",
@@ -292,7 +316,8 @@
           "levels": {
             "yes":      "left",
             "no":       ""
-          }
+          },
+          "units":      "string"
         },
         "output.rear.tail_light.right": {
           "uuid":       "D0000000-0001-0001-001A-000000000000",
@@ -304,7 +329,8 @@
           "levels": {
             "yes":      "right",
             "no":       ""
-          }
+          },
+          "units":      "string"
         },
         "output.rear.turn_signal": {
           "uuid":       "D0000000-0001-0001-001B-000000000000",
@@ -315,7 +341,8 @@
           "levels": {
             "0x20":     "left",
             "0x80":     "right"
-          }
+          },
+          "units":      "string"
         }
       }
     },
@@ -328,7 +355,8 @@
           "type":       "short_vin",
           "display":    "string",
           "start_pos":  2,
-          "length":     5
+          "length":     5,
+          "units":      "string"
         }
       }      
     }

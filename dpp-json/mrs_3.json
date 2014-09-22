@@ -23,14 +23,16 @@
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  2,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         },
         "error_code.codes.0.description": {
           "uuid":       "A4000000-0001-0001-0002-000000000000",
           "type":       "byte",
           "display":    "string_table:00002222-0003-0000-0000-000000000000",
           "start_pos":  2,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         },
         "error_code.codes.0.frequency": {
           "uuid":       "A4000000-0001-0001-0003-000000000000",
@@ -38,7 +40,8 @@
           "display":    "raw",
           "start_pos":  4,
           "length":     1,
-          "rpn":        "N 1 +"
+          "rpn":        "N 1 +",
+          "units":      "int"
         }
       }
     },
@@ -51,7 +54,8 @@
           "type":       "short_vin",
           "display":    "string",
           "start_pos":  2,
-          "length":     5
+          "length":     5,
+          "units":      "string"
         }
       }      
     }

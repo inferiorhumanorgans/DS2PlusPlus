@@ -486,7 +486,8 @@ void DataCollection::dataLog()
             QStringList ourResults = ourJobs[jobName];
             foreach (const QString &resultName, ourResults) {
                 headers << QString("%1:%2:%3").arg(ecuName).arg(jobName).arg(resultName);
-                formats << "int";
+                Result r = ecus[ecuName]->operations()[jobName]->results()[resultName];
+                formats << r.units();
             }
         }
     }

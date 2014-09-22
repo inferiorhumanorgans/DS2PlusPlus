@@ -16,63 +16,72 @@
           "type":       "hex_string",
           "display":    "int",
           "start_pos":  1,
-          "length":     4
+          "length":     4,
+          "units":      "string"
         },
         "hardware_number": {
           "uuid":       "00001111-0000-0001-0002-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  5,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         },
         "coding_index": {
           "uuid":       "00001111-0000-0001-0003-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  6,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         },
         "diag_index": {
           "uuid":       "00001111-0000-0001-0004-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  7,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         },
         "bus_index": {
           "uuid":       "00001111-0000-0001-0005-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  8,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         },
         "build_date.week": {
           "uuid":       "00001111-0000-0001-0006-000000000000",
           "type":       "byte",
           "display":    "hex_int",
           "start_pos":  9,
-          "length":     1
+          "length":     1,
+          "units":      "week"
         },
         "build_date.year": {
           "uuid":       "00001111-0000-0001-0007-000000000000",
           "type":       "byte",
           "display":    "hex_int",
           "start_pos":  10,
-          "length":     1
+          "length":     1,
+          "units":      "year"
         },
         "supplier": {
           "uuid":       "00001111-0000-0001-0008-000000000000",
           "type":       "byte",
           "display":    "string_table:00002222-0001-0000-0000-000000000000",
           "start_pos":  11,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         },
         "software_number": {
           "uuid":       "00001111-0000-0001-0009-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  12,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         }
       }
     },
@@ -85,7 +94,8 @@
           "type":       "byte",
           "display":    "raw",
           "start_pos":  1,
-          "length":     1
+          "length":     1,
+          "units":      "int"
         }
       }
     }

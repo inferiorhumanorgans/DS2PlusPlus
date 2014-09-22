@@ -23,7 +23,8 @@
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  5,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         }
       }
     },
@@ -41,7 +42,8 @@
           "levels": {
             "yes":      "open",
             "no":       "closed"
-          }
+          },
+          "units":      "string"
         },
         "contact.door.front.driver": {
           "uuid":       "00000000-0001-0002-0002-000000000000",
@@ -53,7 +55,8 @@
           "levels": {
             "yes":      "open",
             "no":       "closed"
-          }
+          },
+          "units":      "string"
         },
         "contact.door.front.passenger": {
           "uuid":       "00000000-0001-0002-0003-000000000000",
@@ -65,7 +68,8 @@
           "levels": {
             "yes":      "open",
             "no":       "closed"
-          }
+          },
+          "units":      "string"
         },
         "contact.door.rear.driver": {
           "uuid":       "00000000-0001-0002-0004-000000000000",
@@ -77,7 +81,8 @@
           "levels": {
             "yes":      "open",
             "no":       "closed"
-          }
+          },
+          "units":      "string"
         },
         "contact.door.rear.passenger": {
           "uuid":       "00000000-0001-0002-0005-000000000000",
@@ -89,7 +94,8 @@
           "levels": {
             "yes":      "open",
             "no":       "closed"
-          }
+          },
+          "units":      "string"
         },
         "radio.keys.0.battery_level": {
           "uuid":       "00000000-0001-0002-0006-000000000000",
@@ -101,7 +107,8 @@
           "levels": {
             "yes":      "low",
             "no":       "normal"
-          }
+          },
+          "units":      "string"
         },
         "radio.keys.1.battery_level": {
           "uuid":       "00000000-0001-0002-0007-000000000000",
@@ -113,7 +120,8 @@
           "levels": {
             "yes":      "low",
             "no":       "normal"
-          }
+          },
+          "units":      "string"
         },
         "radio.keys.2.battery_level": {
           "uuid":       "00000000-0001-0002-0008-000000000000",
@@ -125,7 +133,8 @@
           "levels": {
             "yes":      "low",
             "no":       "normal"
-          }
+          },
+          "units":      "string"
         },
         "radio.keys.3.battery_level": {
           "uuid":       "00000000-0001-0002-0009-000000000000",
@@ -137,7 +146,8 @@
           "levels": {
             "yes":      "low",
             "no":       "normal"
-          }
+          },
+          "units":      "string"
         }
       }
     }

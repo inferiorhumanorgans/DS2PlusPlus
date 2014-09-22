@@ -128,6 +128,16 @@ namespace DS2PlusPlus {
         _levels = someLevels;
     }
 
+    const QString Result::units() const
+    {
+        return _units;
+    }
+
+    void Result::setUnits(const QString &aUnit)
+    {
+        _units = aUnit;
+    }
+
     const QString Result::stringForLevel(quint8 aLevel) const
     {
         // Boolean

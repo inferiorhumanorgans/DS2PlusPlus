@@ -719,6 +719,7 @@ namespace DS2PlusPlus {
                                       "mask         INTEGER,\n"                 \
                                       "levels       VARCHAR,\n"                 \
                                       "rpn          VARCHAR,\n"                 \
+                                      "units        VARCHAR,\n"                 \
                                       "UNIQUE (operation_id, name),\n"          \
                                       "CHECK (uuid <> '')\n"                    \
                                       ");"                                      \

@@ -62,6 +62,9 @@ namespace DS2PlusPlus {
         const QString stringForLevel(quint8 aLevel) const;
         void setLevels(QHash<QString, QString> someLevels);
 
+        const QString units() const;
+        void setUnits(const QString &aUnit);
+
     protected:
         QString _uuid;
         QString _name;
@@ -72,6 +75,7 @@ namespace DS2PlusPlus {
         int _mask;
         QStringList _rpn;
         QHash<QString, QString> _levels;
+        QString _units;
     };
 }
 

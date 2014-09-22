@@ -23,21 +23,24 @@
           "type":       "byte",
           "display":    "raw",
           "start_pos":  1,
-          "length":     1
+          "length":     1,
+          "units":      "int"
         },
         "error_code.codes.0.dtc": {
           "uuid":       "44000000-0001-0001-0002-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  2,
-          "length":     1
+          "length":     1,
+          "units":      "int"
         },
         "error_code.codes.0.description": {
           "uuid":       "44000000-0001-0001-0003-000000000000",
           "type":       "byte",
           "display":    "string_table:00002222-0002-0000-0000-000000000000",
           "start_pos":  2,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         },
         "error_code.codes.0.frequency": {
           "uuid":       "44000000-0001-0001-0004-000000000000",
@@ -45,7 +48,8 @@
           "display":    "raw",
           "start_pos":  3,
           "length":     1,
-          "mask":       "0x1f" // Rightmost 5 bits
+          "mask":       "0x1f", // Rightmost 5 bits
+          "units":      "int"
         },
         "error_code.codes.0.type": {
           "uuid":       "44000000-0001-0001-0005-000000000000",
@@ -57,21 +61,24 @@
           "levels": {
             "0x00": "sporadic",
             "0x01": "static"
-          }
+          },
+          "units":      "string"
         },
         "error_code.codes.1.dtc": {
           "uuid":       "44000000-0001-0001-0006-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  4,
-          "length":     1
+          "length":     1,
+          "units":      "int"
         },
         "error_code.codes.1.description": {
           "uuid":       "44000000-0001-0001-0007-000000000000",
           "type":       "byte",
           "display":    "string_table:00002222-0002-0000-0000-000000000000",
           "start_pos":  4,
-          "length":     1
+          "length":     1,
+          "units":      "int"
         },
         "error_code.codes.1.frequency": {
           "uuid":       "44000000-0001-0001-0008-000000000000",
@@ -79,7 +86,8 @@
           "display":    "raw",
           "start_pos":  5,
           "length":     1,
-          "rpn":       "N 0x1f &"
+          "rpn":        "N 0x1f &",
+          "units":      "int"
         },
         "error_code.codes.1.type": {
           "uuid":       "44000000-0001-0001-0009-000000000000",
@@ -91,21 +99,24 @@
           "levels": {
             "0x00": "sporadic",
             "0x01": "static"
-          }
+          },
+          "units":      "string"
         },
         "error_code.codes.2.dtc": {
           "uuid":       "44000000-0001-0001-000A-000000000000",
           "type":       "byte",
           "display":    "hex_string",
           "start_pos":  6,
-          "length":     1
+          "length":     1,
+          "units":      "int"
         },
         "error_code.codes.2.description": {
           "uuid":       "44000000-0001-0001-000B-000000000000",
           "type":       "byte",
           "display":    "string_table:00002222-0002-0000-0000-000000000000",
           "start_pos":  6,
-          "length":     1
+          "length":     1,
+          "units":      "string"
         },
         "error_code.codes.2.frequency": {
           "uuid":       "44000000-0001-0001-000C-000000000000",
@@ -113,7 +124,8 @@
           "display":    "raw",
           "start_pos":  7,
           "length":     1,
-          "mask":       "0x1f"
+          "mask":       "0x1f",
+          "units":      "string"
         },
         "error_code.codes.2.type": {
           "uuid":       "44000000-0001-0001-000D-000000000000",
@@ -125,7 +137,8 @@
           "levels": {
             "0x00": "sporadic",
             "0x01": "static"
-          }
+          },
+          "units":      "string"
         }
       }
     }

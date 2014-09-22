@@ -24,7 +24,8 @@
           "display":    "float",
           "start_pos":  1,
           "length":     2,
-          "rpn":        "N 0.04394531 *"
+          "rpn":        "N 0.04394531 *",
+          "units":      "°"
         },
         "steering.speed": {
           "uuid":       "57000000-0001-0002-0002-000000000000",
@@ -32,7 +33,8 @@
           "display":    "float",
           "start_pos":  3,
           "length":     2,
-          "rpn":        "N 0.04394531 *"
+          "rpn":        "N 0.04394531 *",
+          "units":      "°/sec"
         },
         "vehicle.speed": {
           "uuid":       "57000000-0001-0002-0003-000000000000",
@@ -40,14 +42,16 @@
           "display":    "float",
           "start_pos":  5,
           "length":     2,
-          "rpn":        "N 16 /"
+          "rpn":        "N 16 /",
+          "units":      "km/h"
         },
         "runtime": {
           "uuid":       "57000000-0001-0002-0004-000000000000",
           "type":       "short",
           "display":    "int",
           "start_pos":  7,
-          "length":     2
+          "length":     2,
+          "units":      "μ second"
         }
       }
     },
@@ -60,7 +64,8 @@
           "type":       "short_vin",
           "display":    "string",
           "start_pos":  2,
-          "length":     5
+          "length":     5,
+          "units":      "string"
         }
       }      
     }

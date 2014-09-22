@@ -28,14 +28,16 @@
           "levels": {
             "yes":      "manual",
             "no":       "auto"
-          }
+          },
+          "units":      "string"
         },
         "fan.speed": {
           "uuid":       "5B000000-0001-0001-0002-000000000000",
           "type":       "byte",
           "display":    "raw",
           "start_pos":  4,
-          "length":     1
+          "length":     1,
+          "units":      "int"
         },
         "mode.front_defrost": {
           "uuid":       "5B000000-0001-0001-0003-000000000000",
@@ -47,7 +49,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         "mode.air_conditioning": {
           "uuid":       "5B000000-0001-0001-0004-000000000000",
@@ -59,7 +62,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         "mode.rear_defroster": {
           "uuid":       "5B000000-0001-0001-0005-000000000000",
@@ -71,7 +75,8 @@
           "levels": {
             "yes":      "on",
             "no":       "off"
-          }
+          },
+          "units":      "string"
         },
         "mode.recirculation": {
           "uuid":       "5B000000-0001-0001-0006-000000000000",
@@ -83,7 +88,8 @@
             "0x10": "auto",
             "0x20": "recirculation",
             "else": "fresh"
-          }
+          },
+          "units":      "string"
         },
         "mode.vents": {
           "uuid":       "5B000000-0001-0001-0007-000000000000",
@@ -96,7 +102,8 @@
             "0x02": "dash",
             "0x04": "floor",
             "0x08": "auto"
-          }
+          },
+          "units":      "string"
         },
         "selected_temperature": {
           "uuid":       "5B000000-0001-0001-0008-000000000000",
@@ -104,7 +111,8 @@
           "display":    "float",
           "start_pos":  3,
           "length":     1,
-          "rpn":        "N 0.5 * -13.5 +"
+          "rpn":        "N 0.5 * -13.5 +",
+          "units":      "°C"
         }
       }
     }

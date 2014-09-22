@@ -27,7 +27,8 @@
           "levels": {
             "yes":      "powered on",
             "no":       "turned off"
-          }
+          },
+          "units":      "string"
         }
       }
     }

@@ -24,7 +24,8 @@
           "display":    "int",
           "start_pos":  1,
           "length":     2,
-          "rpn":        "N 6.4 /"
+          "rpn":        "N 6.4 /",
+          "units":      "RPM"
         }
       }
     },
@@ -37,7 +38,8 @@
           "type":       "short_vin",
           "display":    "string",
           "start_pos":  2,
-          "length":     5
+          "length":     5,
+          "units":      "string"
         }
       }      
     }

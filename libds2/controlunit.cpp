@@ -204,6 +204,7 @@ namespace DS2PlusPlus {
                     result.setLength(resultRecord.value("length").toInt());
                     result.setMask(resultRecord.value("mask").toString());
                     result.setRpn(resultRecord.value("rpn").toString());
+                    result.setUnits(resultRecord.value("units").toString());
 
                     QJsonParseError jsonError;
                     QHash<QString, QString> ourLevels;

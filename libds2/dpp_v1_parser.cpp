@@ -393,6 +393,7 @@ namespace DS2PlusPlus {
         resultRecord.setValue("length",       ourResult["length"].asInt());
         resultRecord.setValue("mask",         getQStringFromJson(ourResult["mask"]));
         resultRecord.setValue("rpn",          getQStringFromJson(ourResult["rpn"]));
+        resultRecord.setValue("units",        getQStringFromJson(ourResult["units"]));
 
         Json::FastWriter writer;
         std::string levelsString = writer.write(ourResult["levels"]);

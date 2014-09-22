@@ -23,63 +23,72 @@
           "type":       "string",
           "display":    "int",
           "start_pos":  1,
-          "length":     7
+          "length":     7,
+          "units":      "int"
         },
         "hardware_number": {
           "uuid":       "12000000-0001-0001-0002-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  8,
-          "length":     2
+          "length":     2,
+          "units":      "string"
         },
         "coding_index": {
           "uuid":       "12000000-0001-0001-0003-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  10,
-          "length":     2
+          "length":     2,
+          "units":      "string"
         },
         "diag_index": {
           "uuid":       "12000000-0001-0001-0004-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  12,
-          "length":     2
+          "length":     2,
+          "units":      "string"
         },
         "bus_index": {
           "uuid":       "12000000-0001-0001-0005-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  14,
-          "length":     2
+          "length":     2,
+          "units":      "string"
         },
         "build_date.week": {
           "uuid":       "12000000-0001-0001-0006-000000000000",
           "type":       "string",
           "display":    "int",
           "start_pos":  16,
-          "length":     2
+          "length":     2,
+          "units":      "week"
         },
         "build_date.year": {
           "uuid":       "12000000-0001-0001-0007-000000000000",
           "type":       "string",
           "display":    "int",
           "start_pos":  12,
-          "length":     2
+          "length":     2,
+          "units":      "year"
         },
         "supplier": {
           "uuid":       "12000000-0001-0001-0008-000000000000",
           "type":       "string",
           "display":    "string",
           "start_pos":  20,
-          "length":     6
+          "length":     6,
+          "units":      "string"
         },
         "software_number": {
           "uuid":       "12000000-0001-0001-0009-000000000000",
           "type":       "string",
           "display":    "hex_string",
           "start_pos":  26,
-          "length":     2
+          "length":     2,
+          "units":      "string"
         }
       }
     },
@@ -93,7 +102,8 @@
           "display":    "float",
           "start_pos":  8,
           "length":     1,
-          "rpn":        "N 0.75 * -48 +"
+          "rpn":        "N 0.75 * -48 +",
+          "units":      "°C"
         },
         "temp.coolant": {
           "uuid":       "12000000-0001-0002-0002-000000000000",
@@ -101,7 +111,8 @@
           "display":    "float",
           "start_pos":  9,
           "length":     1,
-          "rpn":        "N 0.75 * -48 +"
+          "rpn":        "N 0.75 * -48 +",
+          "units":      "°C"
         },
         "temp.motor_oil": {
           "uuid":       "12000000-0001-0002-0003-000000000000",
@@ -109,7 +120,8 @@
           "display":    "float",
           "start_pos":  10,
           "length":     1,
-          "rpn":        "N 0.7961 * -48 +"
+          "rpn":        "N 0.7961 * -48 +",
+          "units":      "°C"
         },
         "temp.coolant_outlet": {
           "uuid":       "12000000-0001-0002-0004-000000000000",
@@ -117,7 +129,8 @@
           "display":    "float",
           "start_pos":  11,
           "length":     1,
-          "rpn":        "N 0.75 * -48 +"
+          "rpn":        "N 0.75 * -48 +",
+          "units":      "°C"
         },
         "ignition_deg_kw": {
           "uuid":       "12000000-0001-0002-0005-000000000000",
@@ -125,7 +138,8 @@
           "display":    "float",
           "start_pos":  12,
           "length":     1,
-          "rpn":        "N 0.375 * -60 +"
+          "rpn":        "N 0.375 * -60 +",
+          "units":      "°"
         },
         "voltage.battery": {
           "uuid":       "12000000-0001-0002-0006-000000000000",
@@ -133,7 +147,8 @@
           "display":    "float",
           "start_pos":  21,
           "length":     1,
-          "rpn":        "N 0.10196 *"
+          "rpn":        "N 0.10196 *",
+          "units":      "V"
         }
       }
     },
@@ -147,7 +162,8 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "rpn":        "N 0.004887 *"
+          "rpn":        "N 0.004887 *",
+          "units":      "V"
         }
       }
     },
@@ -161,7 +177,8 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "rpn":        "N 0.004887 *"
+          "rpn":        "N 0.004887 *",
+          "units":      "V"
         }
       }
     },
@@ -175,7 +192,8 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "rpn":        "N 0.004887 *"
+          "rpn":        "N 0.004887 *",
+          "units":      "V"
         }
       }
     },
@@ -189,7 +207,8 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "rpn":        "N 0.004887 *"
+          "rpn":        "N 0.004887 *",
+          "units":      "V"
         }
       }
     },
@@ -203,7 +222,8 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "rpn":        "N 0.004887 *"
+          "rpn":        "N 0.004887 *",
+          "units":      "V"
         }
       }
     },
@@ -217,7 +237,8 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "rpn":        "N 0.004887 *"
+          "rpn":        "N 0.004887 *",
+          "units":      "V"
         }
       }
     },
@@ -231,7 +252,8 @@
           "display":    "float",
           "start_pos":  2,
           "length":     1,
-          "rpn":        "N 0.004887 *"
+          "rpn":        "N 0.004887 *",
+          "units":      "V"
         }
       }
     },
@@ -244,7 +266,8 @@
           "type":       "6bit-string",
           "display":    "string",
           "start_pos":  1,
-          "length":     13
+          "length":     13,
+          "units":      "string"
         }
       }      
     },
@@ -257,7 +280,8 @@
           "type":       "short",
           "display":    "int",
           "start_pos":  1,
-          "length":     2
+          "length":     2,
+          "units":      "RPM"
         },
         "input.throttle_pedal_angle": { // Expected: 0-120 degrees,
           "uuid":       "12000000-0001-000B-0003-000000000000",
@@ -265,14 +289,16 @@
           "display":    "float",
           "start_pos":  4,
           "length":     2,
-          "rpn":        "N 0.0018223 *"
+          "rpn":        "N 0.0018223 *",
+          "units":      "°"
         },
         "vehicle.current_speed": {
           "uuid":       "12000000-0001-000B-0004-000000000000",
           "type":       "byte",
           "display":    "raw",
           "start_pos":  3,
-          "length":     1
+          "length":     1,
+          "units":      "km/h"
         }
       }
     }
