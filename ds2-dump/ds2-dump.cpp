@@ -473,6 +473,7 @@ void DataCollection::dataLog()
     QFile file(QString("dpp-%1.csv").arg(QDateTime::currentDateTime().toString()));
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
+    QTextStream StdOut(stdout);
 
     QStringList headers, formats;
 
@@ -494,6 +495,11 @@ void DataCollection::dataLog()
     out << formats.join("\t") << endl;
     out.setRealNumberNotation(QTextStream::FixedNotation);
     out.setRealNumberPrecision(5);
+
+    StdOut << headers.join("\t") << endl;
+    StdOut << formats.join("\t") << endl;
+    StdOut.setRealNumberNotation(QTextStream::FixedNotation);
+    StdOut.setRealNumberPrecision(5);
 
     while (true) {
         QStringList outValues;
@@ -541,6 +547,7 @@ void DataCollection::dataLog()
         gettimeofday(&tv, NULL);
         double curTime = tv.tv_sec + (0.000001 * tv.tv_usec);
         out << curTime  << "\t" << outValues.join("\t") << endl;
+        StdOut << curTime  << "\t" << outValues.join("\t") << endl;
         usleep(750000); // 3/4th sec sleep
     }
     file.close();
