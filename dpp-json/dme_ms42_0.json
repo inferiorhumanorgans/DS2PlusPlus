@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       4,
-  "file_mtime":         "2014-09-13T20:35:19.0Z",
+  "file_version":       5,
+  "file_mtime":         "2014-09-22T00:21:13.0Z",
   "file_type":          "ecu",
   "uuid":               "12000000-0001-0000-0000-000000000000",
   "address":            "0x12",
@@ -258,6 +258,14 @@
           "display":    "int",
           "start_pos":  1,
           "length":     2
+        },
+        "input.throttle_pedal_angle": { // Expected: 0-120 degrees,
+          "uuid":       "12000000-0001-000B-0003-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  4,
+          "length":     2,
+          "rpn":        "N 0.0018223 *"
         },
         "vehicle.current_speed": {
           "uuid":       "12000000-0001-000B-0004-000000000000",

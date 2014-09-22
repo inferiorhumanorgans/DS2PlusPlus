@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       3,
-  "file_mtime":         "2014-09-18T22:19:49.0Z",
+  "file_version":       4,
+  "file_mtime":         "2014-09-22T00:21:13.0Z",
   "file_type":          "ecu",
   "uuid":               "00001111-0000-0000-0000-000000000000",
   "name":               "Basic module functionality",
@@ -63,7 +63,7 @@
         "supplier": {
           "uuid":       "00001111-0000-0001-0008-000000000000",
           "type":       "byte",
-          "display":    "string_table:6D084F33-7265-43E6-84F4-28F40D5A27A6",
+          "display":    "string_table:00002222-0001-0000-0000-000000000000",
           "start_pos":  11,
           "length":     1
         },

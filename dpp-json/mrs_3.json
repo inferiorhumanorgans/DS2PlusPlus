@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       1,
-  "file_mtime":         "2014-09-19T00:40:14.0Z",
+  "file_version":       2,
+  "file_mtime":         "2014-09-22T00:21:13.0Z",
   "file_type":          "ecu",
   "uuid":               "A4000000-0001-0000-0000-000000000000",
   "address":            "0xA4",
@@ -28,7 +28,7 @@
         "error_code.codes.0.description": {
           "uuid":       "A4000000-0001-0001-0002-000000000000",
           "type":       "byte",
-          "display":    "string_table:44583BBC-FE38-488A-A6F7-E7C29CC46093",
+          "display":    "string_table:00002222-0003-0000-0000-000000000000",
           "start_pos":  2,
           "length":     1
         },

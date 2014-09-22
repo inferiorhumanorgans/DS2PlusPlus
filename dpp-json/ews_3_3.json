@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       2,
-  "file_mtime":         "2014-09-18T22:19:49.0Z",
+  "file_version":       3,
+  "file_mtime":         "2014-09-22T00:21:13.0Z",
   "file_type":          "ecu",
   "uuid":               "44000000-0001-0000-0000-000000000000",
   "address":            "0x44",
@@ -35,7 +35,7 @@
         "error_code.codes.0.description": {
           "uuid":       "44000000-0001-0001-0003-000000000000",
           "type":       "byte",
-          "display":    "string_table:C70DCDA2-F952-4679-8FC5-217D4C144E2A",
+          "display":    "string_table:00002222-0002-0000-0000-000000000000",
           "start_pos":  2,
           "length":     1
         },
@@ -69,7 +69,7 @@
         "error_code.codes.1.description": {
           "uuid":       "44000000-0001-0001-0007-000000000000",
           "type":       "byte",
-          "display":    "string_table:C70DCDA2-F952-4679-8FC5-217D4C144E2A",
+          "display":    "string_table:00002222-0002-0000-0000-000000000000",
           "start_pos":  4,
           "length":     1
         },
@@ -103,7 +103,7 @@
         "error_code.codes.2.description": {
           "uuid":       "44000000-0001-0001-000B-000000000000",
           "type":       "byte",
-          "display":    "string_table:C70DCDA2-F952-4679-8FC5-217D4C144E2A",
+          "display":    "string_table:00002222-0002-0000-0000-000000000000",
           "start_pos":  6,
           "length":     1
         },
