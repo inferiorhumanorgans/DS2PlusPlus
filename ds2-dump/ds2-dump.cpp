@@ -86,6 +86,9 @@ void DataCollection::run()
     QCommandLineOption datalogOption(QStringList() << "D" << "data-log", "Create a CSV log, write until interrupted.", "ecu-jobs-and-results");
     parser->addOption(datalogOption);
 
+    QCommandLineOption rawQueryOption(QStringList() << "Q" << "query", "Send packet to ECU, print raw output.", "query");
+    parser->addOption(rawQueryOption);
+
     parser->process(*QCoreApplication::instance());
 
     try {
@@ -150,12 +153,18 @@ void DataCollection::run()
             return;
         }
 
-        if (!parser->isSet("ecu") && !parser->isSet("data-log") && !parser->isSet("reload")) {
+        if (!parser->isSet("ecu") && !parser->isSet("data-log") && !parser->isSet("reload") && !parser->isSet("query")) {
             throw CommandlineArgumentException("A valid ECU family or address is required to proceed further.");
         }
 
         if (parser->isSet("run-operation")) {
             runOperation();
+            emit finished();
+            return;
+        }
+
+        if (parser->isSet("query")) {
+            rawQuery();
             emit finished();
             return;
         }
@@ -370,6 +379,16 @@ void DataCollection::probeAll()
         qOut << qSetFieldWidth(1)  << endl;
     }
     return;
+}
+
+void DataCollection::rawQuery()
+{
+    using namespace DS2PlusPlus;
+
+    DS2PacketPtr queryPacket(new DS2Packet(parser->value("query")));
+    DS2PacketPtr responsePacket =  dbm->query(queryPacket);
+
+    qOut << "Response: " << responsePacket << endl;
 }
 
 void DataCollection::runOperation()

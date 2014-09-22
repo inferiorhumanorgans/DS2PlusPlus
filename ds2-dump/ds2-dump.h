@@ -47,6 +47,7 @@ public slots:
     void listOperations();
     void runOperation();
     void dataLog();
+    void rawQuery();
 
 protected:
     void serialSetup(QSharedPointer<QCommandLineParser> parser);
