@@ -456,6 +456,13 @@ void DataCollection::runOperation()
     }
 }
 
+class DataLogEntry {
+public:
+    QString ecuName;
+    QString jobName;
+    QStringList results;
+};
+
 void DataCollection::dataLog()
 {
     using namespace DS2PlusPlus;
@@ -463,7 +470,7 @@ void DataCollection::dataLog()
     // ECU:job-1:result,result,result
     QStringList logSpecs = parser->values("data-log");
     QMap<QString, DS2PlusPlus::ControlUnitPtr> ecus;
-    QMap<QString, QMap<QString, QStringList> > jobs;
+    QMap<QString, DataLogEntry> jobs;
 
     foreach (const QString &spec, logSpecs) {
         QStringList currentSpec = spec.split(":");
@@ -474,6 +481,7 @@ void DataCollection::dataLog()
 
         QString ecuName = currentSpec.at(0);
         QString jobName = currentSpec.at(1);
+        QString key = QString("%1:%2").arg(ecuName, jobName);
         QStringList resultsList = currentSpec.at(2).split(",");
 
         if (!ecus.contains(ecuName)) {
@@ -483,9 +491,11 @@ void DataCollection::dataLog()
             }
             ecus.insert(ecuName, ourEcu);
         }
-
-
-        jobs[ecuName][jobName].append(resultsList);
+        if (!jobs.contains(key)) {
+            jobs[key].ecuName = ecuName;
+            jobs[key].jobName = jobName;
+        }
+        jobs[key].results.append(resultsList);
     }
 
 
@@ -496,78 +506,76 @@ void DataCollection::dataLog()
 
     QStringList headers, formats;
 
-    headers << "Time";
-    formats << "s";
+    foreach (const DataLogEntry &entry, jobs.values()) {
+        headers << QString("%1:%2 Time").arg(entry.ecuName).arg(entry.jobName);
+        formats << "s";
 
-    foreach (const QString &ecuName, ecus.keys()) {
-        QMap<QString, QStringList> ourJobs = jobs[ecuName];
-        foreach (const QString &jobName, ourJobs.keys()) {
-            QStringList ourResults = ourJobs[jobName];
-            foreach (const QString &resultName, ourResults) {
-                headers << QString("%1:%2:%3").arg(ecuName).arg(jobName).arg(resultName);
-                Result r = ecus[ecuName]->operations()[jobName]->results()[resultName];
-                formats << r.units();
-            }
+        foreach (const QString &resultName, entry.results) {
+            Result r = ecus[entry.ecuName]->operations()[entry.jobName]->results()[resultName];
+            headers << QString("%1:%2:%3").arg(entry.ecuName).arg(entry.jobName).arg(resultName);
+            formats << r.units();
         }
     }
 
     out << headers.join("\t") << endl;
     out << formats.join("\t") << endl;
-    out.setRealNumberNotation(QTextStream::FixedNotation);
-    out.setRealNumberPrecision(5);
 
     StdOut << headers.join("\t") << endl;
     StdOut << formats.join("\t") << endl;
-    StdOut.setRealNumberNotation(QTextStream::FixedNotation);
-    StdOut.setRealNumberPrecision(5);
+
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    double startTime = tv.tv_sec + (0.000001 * tv.tv_usec);
 
     while (true) {
         QStringList outValues;
-        foreach (const QString &ecuName, ecus.keys()) {
-            DS2PlusPlus::ControlUnitPtr ourEcu = ecus[ecuName];
-            QMap<QString, QStringList> ourJobs = jobs[ecuName];
+        foreach (const DataLogEntry &entry, jobs.values()) {
+            DS2PlusPlus::ControlUnitPtr ourEcu = ecus[entry.ecuName];
 
-            foreach (const QString &jobName, ourJobs.keys()) {
-                QStringList ourResults = ourJobs[jobName];
+            QStringList ourResults = entry.results;
 
-                DS2Response ourResponse = ourEcu->executeOperation(jobName);
+            gettimeofday(&tv, NULL);
+            double execTime = tv.tv_sec + (0.000001 * tv.tv_usec);
+            double curTime = execTime - startTime;
 
-                foreach (const QString &resultName, ourResults) {
-                    QVariant ourResult = ourResponse.value(resultName);
-                    switch (ourResult.type()) {
-                    case QMetaType::Short:
-                    case QMetaType::Int:
-                    case QMetaType::Long:
-                    case QMetaType::LongLong:
-                        outValues << QString::number(ourResult.toLongLong());
-                        break;
-                    case QMetaType::UShort:
-                    case QMetaType::UInt:
-                    case QMetaType::ULong:
-                    case QMetaType::ULongLong:
-                        outValues << QString::number(ourResult.toULongLong());
-                        break;
-                    case QMetaType::Double:
-                    case QMetaType::Float:
-                        outValues << QString::number(ourResult.toDouble(), 'f', 5);
-                        break;
-                    case QMetaType::QString:
-                        outValues << ourResult.toString();
-                        break;
-                    default:
-                        outValues << "";
-                        break;
-                    }
+            DS2Response ourResponse = ourEcu->executeOperation(entry.jobName);
+
+            outValues << QString::number(curTime, 'f', 5);
+
+            foreach (const QString &resultName, ourResults) {
+                QVariant ourResult = ourResponse.value(resultName);
+                switch (ourResult.type()) {
+                case QMetaType::Short:
+                case QMetaType::Int:
+                case QMetaType::Long:
+                case QMetaType::LongLong:
+                    outValues << QString::number(ourResult.toLongLong());
+                    break;
+                case QMetaType::UShort:
+                case QMetaType::UInt:
+                case QMetaType::ULong:
+                case QMetaType::ULongLong:
+                    outValues << QString::number(ourResult.toULongLong());
+                    break;
+                case QMetaType::Double:
+                case QMetaType::Float:
+                    outValues << QString::number(ourResult.toDouble(), 'f', 5);
+                    break;
+                case QMetaType::QString:
+                    outValues << ourResult.toString();
+                    break;
+                default:
+                    outValues << "";
+                    break;
                 }
-                usleep(200000); // 1/5th sec sleep
             }
-        }
 
-        struct timeval tv;
-        gettimeofday(&tv, NULL);
-        double curTime = tv.tv_sec + (0.000001 * tv.tv_usec);
-        out << curTime  << "\t" << outValues.join("\t") << endl;
-        StdOut << curTime  << "\t" << outValues.join("\t") << endl;
+            usleep(200000); // 1/5th sec sleep
+        }
+        QString outputLine = outValues.join("\t");
+        out << outputLine << endl;
+        StdOut << outputLine << endl;
+
         usleep(750000); // 3/4th sec sleep
     }
     file.close();
