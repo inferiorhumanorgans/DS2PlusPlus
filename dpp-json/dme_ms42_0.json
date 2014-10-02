@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       5,
-  "file_mtime":         "2014-09-22T00:21:13.0Z",
+  "file_version":       6,
+  "file_mtime":         "2014-10-02T02:00:03.0Z",
   "file_type":          "ecu",
   "uuid":               "12000000-0001-0000-0000-000000000000",
   "address":            "0x12",
@@ -299,6 +299,565 @@
           "start_pos":  3,
           "length":     1,
           "units":      "km/h"
+        }
+      }
+    },
+    "dtc_load_bank1": { // Nos. 0-7
+      "uuid":           "12000000-0001-000C-0000-000000000000",
+      "command":        ["0x04", "0x01"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "12000000-0001-000C-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.dtc": {
+          "uuid":       "12000000-0001-000C-0002-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.description": {
+          "uuid":       "12000000-0001-000C-0003-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-0004-0000-0000-000000000000",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.attributes": {
+          "uuid":       "12000000-0001-000C-0004-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  3,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.frequency": {
+          "uuid":       "12000000-0001-000C-0005-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  4,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000C-0006-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  5,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.last_occurrence": {
+          "uuid":       "12000000-0001-000C-000B-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  10,
+          "length":     2,
+          "rpn":        "65536 N - 10 /",
+          "units":      "hours ago"
+        },
+        "error_code.codes.1.dtc": {
+          "uuid":       "12000000-0001-000C-0012-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  12
+        },
+        "error_code.codes.1.description": {
+          "uuid":       "12000000-0001-000C-0013-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  12
+        },
+        "error_code.codes.1.attributes": {
+          "uuid":       "12000000-0001-000C-0014-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  13
+        },
+        "error_code.codes.1.frequency": {
+          "uuid":       "12000000-0001-000C-0015-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  14
+        },
+        "error_code.codes.1.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000C-0016-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  15
+        },
+        "error_code.codes.1.last_occurrence": {
+          "uuid":       "12000000-0001-000C-001B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  20
+        },
+        "error_code.codes.2.dtc": {
+          "uuid":       "12000000-0001-000C-0022-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  22
+        },
+        "error_code.codes.2.description": {
+          "uuid":       "12000000-0001-000C-0023-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  22
+        },
+        "error_code.codes.2.attributes": {
+          "uuid":       "12000000-0001-000C-0024-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  23
+        },
+        "error_code.codes.2.frequency": {
+          "uuid":       "12000000-0001-000C-0025-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  24
+        },
+        "error_code.codes.2.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000C-0026-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  25
+        },
+        "error_code.codes.2.last_occurrence": {
+          "uuid":       "12000000-0001-000C-002B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  30
+        },
+        "error_code.codes.3.dtc": {
+          "uuid":       "12000000-0001-000C-0032-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  32
+        },
+        "error_code.codes.3.description": {
+          "uuid":       "12000000-0001-000C-0033-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  32
+        },
+        "error_code.codes.3.attributes": {
+          "uuid":       "12000000-0001-000C-0034-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  33
+        },
+        "error_code.codes.3.frequency": {
+          "uuid":       "12000000-0001-000C-0035-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  34
+        },
+        "error_code.codes.3.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000C-0036-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  35
+        },
+        "error_code.codes.3.last_occurrence": {
+          "uuid":       "12000000-0001-000C-003B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  40
+        },
+        "error_code.codes.4.dtc": {
+          "uuid":       "12000000-0001-000C-0042-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  42
+        },
+        "error_code.codes.4.description": {
+          "uuid":       "12000000-0001-000C-0043-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  42
+        },
+        "error_code.codes.4.attributes": {
+          "uuid":       "12000000-0001-000C-0044-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  43
+        },
+        "error_code.codes.4.frequency": {
+          "uuid":       "12000000-0001-000C-0045-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  44
+        },
+        "error_code.codes.4.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000C-0046-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  45
+        },
+        "error_code.codes.4.last_occurrence": {
+          "uuid":       "12000000-0001-000C-004B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  50
+        },
+        "error_code.codes.5.dtc": {
+          "uuid":       "12000000-0001-000C-0052-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  52
+        },
+        "error_code.codes.5.description": {
+          "uuid":       "12000000-0001-000C-0053-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  52
+        },
+        "error_code.codes.5.attributes": {
+          "uuid":       "12000000-0001-000C-0054-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  53
+        },
+        "error_code.codes.5.frequency": {
+          "uuid":       "12000000-0001-000C-0055-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  54
+        },
+        "error_code.codes.5.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000C-0056-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  55
+        },
+        "error_code.codes.5.last_occurrence": {
+          "uuid":       "12000000-0001-000C-005B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  60
+        },
+        "error_code.codes.6.dtc": {
+          "uuid":       "12000000-0001-000C-0062-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  62
+        },
+        "error_code.codes.6.description": {
+          "uuid":       "12000000-0001-000C-0063-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  62
+        },
+        "error_code.codes.6.attributes": {
+          "uuid":       "12000000-0001-000C-0064-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  63
+        },
+        "error_code.codes.6.frequency": {
+          "uuid":       "12000000-0001-000C-0065-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  64
+        },
+        "error_code.codes.6.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000C-0066-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  65
+        },
+        "error_code.codes.6.last_occurrence": {
+          "uuid":       "12000000-0001-000C-006B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  70
+        },
+        "error_code.codes.7.dtc": {
+          "uuid":       "12000000-0001-000C-0072-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  72
+        },
+        "error_code.codes.7.description": {
+          "uuid":       "12000000-0001-000C-0073-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  72
+        },
+        "error_code.codes.7.attributes": {
+          "uuid":       "12000000-0001-000C-0074-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  73
+        },
+        "error_code.codes.7.frequency": {
+          "uuid":       "12000000-0001-000C-0075-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  74
+        },
+        "error_code.codes.7.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000C-0076-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  75
+        },
+        "error_code.codes.7.last_occurrence": {
+          "uuid":       "12000000-0001-000C-007B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  80
+        }
+      }
+    },
+    "dtc_load_bank2": { // Nos. 8-14
+      "uuid":           "12000000-0001-000D-0000-000000000000",
+      "command":        ["0x04", "0x09"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "12000000-0001-000D-0001-000000000000",
+          "parent_id":  "12000000-0001-000C-0001-000000000000"
+        },
+        "error_code.codes.0.dtc": {
+          "uuid":       "12000000-0001-000D-0002-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000"
+        },
+        "error_code.codes.0.description": {
+          "uuid":       "12000000-0001-000D-0003-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000"
+        },
+        "error_code.codes.0.attributes": {
+          "uuid":       "12000000-0001-000D-0004-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000"
+        },
+        "error_code.codes.0.frequency": {
+          "uuid":       "12000000-0001-000D-0005-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000"
+        },
+        "error_code.codes.0.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000D-0006-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000"
+        },
+        "error_code.codes.0.last_occurrence": {
+          "uuid":       "12000000-0001-000D-000B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000"
+        },
+        "error_code.codes.1.dtc": {
+          "uuid":       "12000000-0001-000D-0012-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  12
+        },
+        "error_code.codes.1.description": {
+          "uuid":       "12000000-0001-000D-0013-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  12
+        },
+        "error_code.codes.1.attributes": {
+          "uuid":       "12000000-0001-000D-0014-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  13
+        },
+        "error_code.codes.1.frequency": {
+          "uuid":       "12000000-0001-000D-0015-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  14
+        },
+        "error_code.codes.1.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000D-0016-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  15
+        },
+        "error_code.codes.1.last_occurrence": {
+          "uuid":       "12000000-0001-000D-001B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  20
+        },
+        "error_code.codes.2.dtc": {
+          "uuid":       "12000000-0001-000D-0022-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  22
+        },
+        "error_code.codes.2.description": {
+          "uuid":       "12000000-0001-000D-0023-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  22
+        },
+        "error_code.codes.2.attributes": {
+          "uuid":       "12000000-0001-000D-0024-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  23
+        },
+        "error_code.codes.2.frequency": {
+          "uuid":       "12000000-0001-000D-0025-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  24
+        },
+        "error_code.codes.2.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000D-0026-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  25
+        },
+        "error_code.codes.2.last_occurrence": {
+          "uuid":       "12000000-0001-000D-002B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  30
+        },
+        "error_code.codes.3.dtc": {
+          "uuid":       "12000000-0001-000D-0032-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  32
+        },
+        "error_code.codes.3.description": {
+          "uuid":       "12000000-0001-000D-0033-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  32
+        },
+        "error_code.codes.3.attributes": {
+          "uuid":       "12000000-0001-000D-0034-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  33
+        },
+        "error_code.codes.3.frequency": {
+          "uuid":       "12000000-0001-000D-0035-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  34
+        },
+        "error_code.codes.3.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000D-0036-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  35
+        },
+        "error_code.codes.3.last_occurrence": {
+          "uuid":       "12000000-0001-000D-003B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  40
+        },
+        "error_code.codes.4.dtc": {
+          "uuid":       "12000000-0001-000D-0042-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  42
+        },
+        "error_code.codes.4.description": {
+          "uuid":       "12000000-0001-000D-0043-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  42
+        },
+        "error_code.codes.4.attributes": {
+          "uuid":       "12000000-0001-000D-0044-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  43
+        },
+        "error_code.codes.4.frequency": {
+          "uuid":       "12000000-0001-000D-0045-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  44
+        },
+        "error_code.codes.4.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000D-0046-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  45
+        },
+        "error_code.codes.4.last_occurrence": {
+          "uuid":       "12000000-0001-000D-004B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  50
+        },
+        "error_code.codes.5.dtc": {
+          "uuid":       "12000000-0001-000D-0052-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  52
+        },
+        "error_code.codes.5.description": {
+          "uuid":       "12000000-0001-000D-0053-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  52
+        },
+        "error_code.codes.5.attributes": {
+          "uuid":       "12000000-0001-000D-0054-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  53
+        },
+        "error_code.codes.5.frequency": {
+          "uuid":       "12000000-0001-000D-0055-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  54
+        },
+        "error_code.codes.5.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000D-0056-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  55
+        },
+        "error_code.codes.5.last_occurrence": {
+          "uuid":       "12000000-0001-000D-005B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  60
+        },
+        "error_code.codes.6.dtc": {
+          "uuid":       "12000000-0001-000D-0062-000000000000",
+          "parent_id":  "12000000-0001-000C-0002-000000000000",
+          "start_pos":  62
+        },
+        "error_code.codes.6.description": {
+          "uuid":       "12000000-0001-000D-0063-000000000000",
+          "parent_id":  "12000000-0001-000C-0003-000000000000",
+          "start_pos":  62
+        },
+        "error_code.codes.6.attributes": {
+          "uuid":       "12000000-0001-000D-0064-000000000000",
+          "parent_id":  "12000000-0001-000C-0004-000000000000",
+          "start_pos":  63
+        },
+        "error_code.codes.6.frequency": {
+          "uuid":       "12000000-0001-000D-0065-000000000000",
+          "parent_id":  "12000000-0001-000C-0005-000000000000",
+          "start_pos":  64
+        },
+        "error_code.codes.6.drive_cycles_until_clear": {
+          "uuid":       "12000000-0001-000D-0066-000000000000",
+          "parent_id":  "12000000-0001-000C-0006-000000000000",
+          "start_pos":  65
+        },
+        "error_code.codes.6.last_occurrence": {
+          "uuid":       "12000000-0001-000D-006B-000000000000",
+          "parent_id":  "12000000-0001-000C-000B-000000000000",
+          "start_pos":  70
+        }
+      }
+    },
+    "lambda_adaptation_status": {
+      "uuid":           "12000000-0001-000E-0000-000000000000",
+      "command":        ["0x91", "0x91"],
+      "results": {
+        "lambda.bank1.additive_factor": {
+          "uuid":       "12000000-0001-000E-0001-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  1,
+          "length":     2,
+          "rpn":        "N 0.004 * 131.072 -",
+          "units":      "ms"
+        },
+        "lambda.bank2.additive_factor": {
+          "uuid":       "12000000-0001-000E-0002-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  5,
+          "length":     2,
+          "rpn":        "N 0.004 * 131.072 -",
+          "units":      "ms"
+        },
+        "lambda.bank1.multiplicative_factor": {
+          "uuid":       "12000000-0001-000E-0003-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  3,
+          "length":     2,
+          "rpn":        "N 0.001526 * 50 -",
+          "units":      "%"
+        },
+        "lambda.bank2.multiplicative_factor": {
+          "uuid":       "12000000-0001-000E-0004-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  7,
+          "length":     2,
+          "rpn":        "N 0.001526 * 50 -",
+          "units":      "%"
+        }
+      }
+    },
+    "knock_sensor_bank1_voltage": {
+      "uuid":           "12000000-0001-000F-0000-000000000000",
+      "command":        ["0x0B", "0x02", "0x0E", "0x00", "0x00", "0x17"],
+      "results": {
+        "knock_sensor.bank1.voltage": {
+          "uuid":       "12000000-0001-000F-0001-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  1,
+          "length":     2,
+          "rpn":        "N 0.004887 *",
+          "units":      "V"          
+        }
+      }
+    },
+    "knock_sensor_bank2_voltage": {
+      "uuid":           "12000000-0001-0010-0000-000000000000",
+      "command":        ["0x0B", "0x02", "0x0E", "0x00", "0x00", "0x18"],
+      "results": {
+        "knock_sensor.bank2.voltage": {
+          "uuid":       "12000000-0001-0010-0001-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  1,
+          "length":     2,
+          "rpn":        "N 0.004887 *",
+          "units":      "V"          
         }
       }
     }
