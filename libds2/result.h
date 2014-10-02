@@ -30,7 +30,7 @@ namespace DS2PlusPlus {
     class Result
     {
     public:
-        Result () {}
+        Result () : _startPosition(-1) {}
 
         void setName(const QString &aName);
         const QString name() const;
