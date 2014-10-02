@@ -169,7 +169,7 @@ namespace DS2PlusPlus {
         char getCharFrom6BitInt(quint8 n);
         char decode_vin_char(int start, const QByteArray &bytes);
 
-        template <typename X> X runRpnForResult(const DS2PacketPtr aPacket, const Result &aResult, X aValue);
+        template <typename X> X runRpnForResult(const Result &aResult, X aValue);
 
     protected:
         quint32 _dppVersion;

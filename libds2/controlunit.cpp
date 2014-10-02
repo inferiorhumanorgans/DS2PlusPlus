@@ -302,18 +302,18 @@ namespace DS2PlusPlus {
 
                 if (result.displayFormat() == "int") {
                     if (result.isType("signed_short")) {
-                        qint64 value = runRpnForResult<float>(packet, result, static_cast<qint16>(ourNumber));
+                        qint64 value = runRpnForResult<float>(result, static_cast<qint16>(ourNumber));
                         ret.insert(result.name(), QVariant(value));
                     } else {
-                        quint64 value = runRpnForResult<float>(packet, result, ourNumber);
+                        quint64 value = runRpnForResult<float>(result, ourNumber);
                         ret.insert(result.name(), QVariant(value));
                     }
                 } else if (result.displayFormat() == "float") {
                     double ourFloat;
                     if (result.isType("signed_short")) {
-                        ourFloat = runRpnForResult<float>(packet, result, static_cast<qint16>(ourNumber));
+                        ourFloat = runRpnForResult<float>(result, static_cast<qint16>(ourNumber));
                     } else {
-                        ourFloat = runRpnForResult<float>(packet, result, ourNumber);
+                        ourFloat = runRpnForResult<float>(result, ourNumber);
                     }
 
                     ret.insert(result.name(), QVariant(ourFloat));
@@ -499,7 +499,7 @@ namespace DS2PlusPlus {
       return '!';
     }
 
-    template <typename T> T ControlUnit::runRpnForResult(const DS2PacketPtr aPacket, const Result &aResult, T aValue)
+    template <typename T> T ControlUnit::runRpnForResult(const Result &aResult, T aValue)
     {
         if (!aResult.rpn().isEmpty()) {
             QList<T> stack;
@@ -508,44 +508,45 @@ namespace DS2PlusPlus {
                     bool ok;
                     quint64 theNum = command.toULongLong(&ok, 16);
                     if (ok) {
-                        stack.push_front(theNum);
+                        stack.push_back(theNum);
                     } else {
                         throw std::invalid_argument("Argh, tried to parse an invalid hex string");
                     }
                 } else if (command == "+")  {
                     T a, b;
-                    a = stack.takeFirst();
-                    b = stack.takeFirst();
+                    a = stack.takeLast();
+                    b = stack.takeLast();
                     stack.push_back(b + a);
                 } else if (command == "-")  {
                     T a, b;
-                    a = stack.takeFirst();
-                    b = stack.takeFirst();
+                    a = stack.takeLast();
+                    b = stack.takeLast();
+                    qDebug() << b << " - " << a;
                     stack.push_back(b - a);
                 } else if (command == "/")  {
                     T a, b;
-                    a = stack.takeFirst();
-                    b = stack.takeFirst();
+                    a = stack.takeLast();
+                    b = stack.takeLast();
                     stack.push_back(b / a);
                 } else if (command == "*")  {
                     T a, b;
-                    a = stack.takeFirst();
-                    b = stack.takeFirst();
+                    a = stack.takeLast();
+                    b = stack.takeLast();
                     stack.push_back(b * a);
                 } else if (command == "&")  {
                     T a, b;
-                    a = stack.takeFirst();
-                    b = stack.takeFirst();
+                    a = stack.takeLast();
+                    b = stack.takeLast();
                     stack.push_back(static_cast<quint64>(b) & static_cast<quint64>(a));
                 } else if (command == ">>") {
                     T a, b;
-                    a = stack.takeFirst();
-                    b = stack.takeFirst();
+                    a = stack.takeLast();
+                    b = stack.takeLast();
                     stack.push_back(static_cast<quint64>(b) >> static_cast<quint64>(a));
                 } else if (command == "<<") {
                     T a, b;
-                    a = stack.takeFirst();
-                    b = stack.takeFirst();
+                    a = stack.takeLast();
+                    b = stack.takeLast();
                     stack.push_back(static_cast<quint64>(b) << static_cast<quint64>(a));
                 } else if (command == "N")  {
                     stack.push_back(aValue);
@@ -562,7 +563,7 @@ namespace DS2PlusPlus {
                     }
 
                     if (ok) {
-                        stack.push_front(theNum);
+                        stack.push_back(theNum);
                     } else {
                         QString errorString("Argh, tried to parse an invalid decimal string: %1");
                         throw std::invalid_argument(qPrintable(errorString.arg(command)));
@@ -588,7 +589,7 @@ namespace DS2PlusPlus {
             byte = (byte & aResult.mask()) & 0xff;
         }
 
-        qint64 num = runRpnForResult<qint64>(aPacket, aResult, byte);
+        qint64 num = runRpnForResult<qint64>(aResult, byte);
 
         if (aResult.displayFormat() == "hex_string") {
             QString hex;
@@ -614,7 +615,7 @@ namespace DS2PlusPlus {
 
             return QVariant(tableName);
         } else if (aResult.displayFormat() == "float") {
-            double value = runRpnForResult<double>(aPacket, aResult, static_cast<quint8>(byte));
+            double value = runRpnForResult<double>(aResult, static_cast<quint8>(byte));
             return QVariant(value);
         } else if (aResult.displayFormat() == "enum") {
             return QVariant(aResult.stringForLevel(byte));
