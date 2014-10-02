@@ -143,7 +143,6 @@ namespace DS2PlusPlus {
         while (!parent_id.isEmpty()) {
             QHash<QString, QVariant> theRecord = _manager->findModuleRecordByUuid(parent_id);
             if (theRecord.isEmpty()) {
-                qDebug() << "Find parent failed";
                 throw std::runtime_error("Find parent failed");
             }
 
@@ -164,7 +163,7 @@ namespace DS2PlusPlus {
             }
 
             if (getenv("DPP_TRACE")) {
-                qDebug() << "Module: " << parent_id << " (from: " << aUuid << ")";
+                qErr << "Module: " << parent_id << " (from: " << aUuid << ")" << endl;
             }
 
             QSharedPointer<QSqlTableModel> operationsTable(_manager->operationsTable());
@@ -182,7 +181,7 @@ namespace DS2PlusPlus {
                 if (_operations.contains(opName)) {
                     op = _operations.value(opName);
                     if (getenv("DPP_TRACE")) {
-                        qDebug() << "\tMerging operation: " << opName << " we've a higher priority implementation";
+                        qErr << "\tMerging operation: " << opName << " we've a higher priority implementation" << endl;
                     }
 
                     // If we've not yet set the command from a higher priority operation, use this one.
@@ -191,7 +190,7 @@ namespace DS2PlusPlus {
                     }
                 } else {
                     if (getenv("DPP_TRACE")) {
-                        qDebug() << "\tProcessing job " << opName;
+                        qErr << "\tProcessing job " << opName << endl;
                     }
                     op = OperationPtr(new Operation(opUuid, _address, opName, opCommand));
                 }
@@ -236,7 +235,7 @@ namespace DS2PlusPlus {
                         }
                     } else {
                         if (getenv("DPP_TRACE")) {
-                            qDebug() << "\t\tAdding result: " << result.name();
+                                qErr << "\t\tAdding result: " << result.name() << endl;
                         }
                         op->insertResult(result.name(), result);
                     }
