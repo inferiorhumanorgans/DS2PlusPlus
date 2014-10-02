@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       1,
-  "file_mtime":         "2014-09-16T00:43:13.0Z",
+  "file_version":       2,
+  "file_mtime":         "2014-10-02T02:00:03.0Z",
   "file_type":          "ecu",
   "uuid":               "57000000-0001-0000-0000-000000000000",
   "address":            "0x57",
@@ -14,6 +14,20 @@
   "coding_index":       "0x01",
   "endian":             "big",
   "operations": {
+    "analog_status": {
+      "uuid":           "57000000-0001-0001-0000-000000000000",
+      "command":        ["0x0b", "0x01"],
+      "results": {
+        "ignition_terminal.87": {
+          "uuid":       "57000000-0001-0001-0003-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  3,
+          "length":     1,
+          "units":      "V"
+        }
+      }
+    },
     "steering_status": {
       "uuid":           "57000000-0001-0002-0000-000000000000",
       "command":        ["0x1b", "0x01"],
