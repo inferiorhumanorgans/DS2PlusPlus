@@ -195,50 +195,86 @@ namespace DS2PlusPlus {
                     op = OperationPtr(new Operation(opUuid, _address, opName, opCommand));
                 }
 
-                QSharedPointer<QSqlTableModel> results(_manager->resultsTable());
-                results->setFilter(QString("operation_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(opUuid)));
-                results->select();
+                QString curOpUuid = opUuid;
+                QSqlRecord curOpRecord = opRecord;
+                while (!curOpUuid.isEmpty()) {
+                    QSharedPointer<QSqlTableModel> results(_manager->resultsTable());
+                    results->setFilter(QString("operation_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(curOpUuid)));
+                    results->select();
 
-                for (int j=0; j < results->rowCount(); j++) {
-                    QSqlRecord resultRecord = results->record(j);
-                    Result result;
-                    result.setName(resultRecord.value("name").toString());
-                    result.setUuid(resultRecord.value("uuid").toString());
-                    result.setType(resultRecord.value("type").toString());
-                    result.setDisplayFormat(resultRecord.value("display").toString());
-                    result.setStartPosition(resultRecord.value("start_pos").toInt());
-                    result.setLength(resultRecord.value("length").toInt());
-                    result.setMask(resultRecord.value("mask").toString());
-                    result.setRpn(resultRecord.value("rpn").toString());
-                    result.setUnits(resultRecord.value("units").toString());
+                    for (int j=0; j < results->rowCount(); j++) {
+                        QSqlRecord resultRecord = results->record(j);
+                        QString ourUuid = DPP_V1_Parser::rawUuidToString(resultRecord.value("uuid").toByteArray());
+                        Result result;
 
-                    QJsonParseError jsonError;
-                    QHash<QString, QString> ourLevels;
-                    QByteArray jsonByteArray(qPrintable(resultRecord.value("levels").toString()));
-                    QJsonDocument levelsDoc = QJsonDocument::fromJson(jsonByteArray, &jsonError);
-                    QJsonObject ourLevelsJson = levelsDoc.object();
+                        QString resultId = ourUuid;
+                        while (!resultId.isEmpty()) {
+                            if (ourUuid == resultId) {
+                                result.setName(resultRecord.value("name").toString());
+                                result.setUuid(resultRecord.value("uuid").toString());
+                            }
 
-                    QJsonObject::Iterator levelsIterator = ourLevelsJson.begin();
-                    while (levelsIterator != ourLevelsJson.end()) {
-                        QJsonValue level = levelsIterator.value();
-                        if (level.isString()) {
-                            ourLevels.insert(levelsIterator.key(), levelsIterator.value().toString());
+                            if (result.startPosition() == -1) {
+                                result.setStartPosition(resultRecord.value("start_pos").toInt());
+                            }
+
+                            if (result.type().isEmpty()) {
+                                result.setType(resultRecord.value("type").toString());
+                                result.setDisplayFormat(resultRecord.value("display").toString());
+                                result.setLength(resultRecord.value("length").toInt());
+                                result.setMask(resultRecord.value("mask").toString());
+                                result.setRpn(resultRecord.value("rpn").toString());
+                                result.setUnits(resultRecord.value("units").toString());
+
+                                QJsonParseError jsonError;
+                                QHash<QString, QString> ourLevels;
+                                QByteArray jsonByteArray(qPrintable(resultRecord.value("levels").toString()));
+                                QJsonDocument levelsDoc = QJsonDocument::fromJson(jsonByteArray, &jsonError);
+                                QJsonObject ourLevelsJson = levelsDoc.object();
+
+                                QJsonObject::Iterator levelsIterator = ourLevelsJson.begin();
+                                while (levelsIterator != ourLevelsJson.end()) {
+                                    QJsonValue level = levelsIterator.value();
+                                    if (level.isString()) {
+                                        ourLevels.insert(levelsIterator.key(), levelsIterator.value().toString());
+                                    }
+                                    levelsIterator++;
+                                }
+
+                                result.setLevels(ourLevels);
+                            }
+
+                            resultId = DPP_V1_Parser::rawUuidToString(resultRecord.value("parent_id").toByteArray());
+                            if (resultId.isEmpty()) {
+                                break;
+                            }
+                            QSharedPointer<QSqlTableModel> subResults(_manager->resultsTable());
+                            subResults->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(resultId)));
+                            subResults->select();
+                            resultRecord = subResults->record(0);
                         }
-                        levelsIterator++;
-                    }
 
-                    result.setLevels(ourLevels);
-
-                    if (op->results().contains(result.name())) {
-                        if (getenv("DPP_TRACE")) {
-                            qDebug() << "\t\tSkipping result " << result.name() << " as we've a higher priority implementation";
-                        }
-                    } else {
-                        if (getenv("DPP_TRACE")) {
+                        if (op->results().contains(result.name())) {
+                            if (getenv("DPP_TRACE")) {
+                                qErr << "\t\tSkipping result " << result.name() << " as we've a higher priority implementation" << endl;
+                            }
+                        } else {
+                            if (getenv("DPP_TRACE")) {
                                 qErr << "\t\tAdding result: " << result.name() << endl;
+                            }
+                            op->insertResult(result.name(), result);
                         }
-                        op->insertResult(result.name(), result);
                     }
+
+                    curOpUuid = DPP_V1_Parser::rawUuidToString(curOpRecord.value("parent_id").toByteArray());
+                    if (curOpUuid.isEmpty()) {
+                        break;
+                    }
+
+                    QSharedPointer<QSqlTableModel> curOpsTable(_manager->operationsTable());
+                    curOpsTable->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(curOpUuid)));
+                    curOpsTable->select();
+                    curOpRecord = curOpsTable->record(0);
                 }
 
                 _operations.insert(opName, op);

@@ -294,7 +294,7 @@ namespace DS2PlusPlus {
         QString uuid(getQStringFromJson(ourOperation["uuid"]));
         QString module_id(getQStringFromJson(moduleJSON["uuid"]));
 
-        QString parent_id = getQStringFromJson(ourOperation["parent"]);
+        QString parent_id = getQStringFromJson(ourOperation["parent_id"]);
 
         if (_knownUuids.contains(uuid)) {
             Json::Value ourKey = operationIt.key();
@@ -386,14 +386,18 @@ namespace DS2PlusPlus {
 
         resultRecord.setValue("uuid",         stringToUuidVariant(uuid));
         resultRecord.setValue("operation_id", stringToUuidVariant(getQStringFromJson(operationJSON["uuid"])));
+        resultRecord.setValue("parent_id",    stringToUuidVariant(getQStringFromJson(ourResult["parent_id"])));
         resultRecord.setValue("name",         aResultIterator.key().asCString());
         resultRecord.setValue("type",         getQStringFromJson(ourResult["type"]));
         resultRecord.setValue("display",      getQStringFromJson(ourResult["display"]));
         resultRecord.setValue("start_pos",    ourResult["start_pos"].asInt());
-        resultRecord.setValue("length",       ourResult["length"].asInt());
         resultRecord.setValue("mask",         getQStringFromJson(ourResult["mask"]));
         resultRecord.setValue("rpn",          getQStringFromJson(ourResult["rpn"]));
         resultRecord.setValue("units",        getQStringFromJson(ourResult["units"]));
+
+        if (!ourResult["length"].isNull()) {
+            resultRecord.setValue("length",       ourResult["length"].asInt());
+        }
 
         Json::FastWriter writer;
         std::string levelsString = writer.write(ourResult["levels"]);

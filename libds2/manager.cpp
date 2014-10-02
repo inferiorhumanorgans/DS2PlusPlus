@@ -694,7 +694,7 @@ namespace DS2PlusPlus {
                                       "command   BLOB,\n"                                \
                                       "parent_id BLOB,\n"                                \
                                       "UNIQUE (module_id, name),\n"                      \
-                                      "CHECK ((CASE WHEN command IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1)," \
+                                      "CHECK ((CASE WHEN command IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) >= 1)," \
                                       "CHECK (uuid <> '')\n"                             \
                                       ");"                                               \
                                  );
@@ -712,16 +712,20 @@ namespace DS2PlusPlus {
                                       "uuid         BLOB UNIQUE NOT NULL PRIMARY KEY,\n" \
                                       "operation_id BLOB NOT NULL,\n"           \
                                       "name         VARCHAR NOT NULL,\n"        \
-                                      "type         VARCHAR NOT NULL,\n"        \
-                                      "display      VARCHAR NOT NULL,\n"        \
+                                      "type         VARCHAR,\n"        \
+                                      "display      VARCHAR,\n"        \
                                       "start_pos    INTEGER NOT NULL,\n"        \
-                                      "length       INTEGER NOT NULL,\n"        \
+                                      "length       INTEGER,\n"        \
                                       "mask         INTEGER,\n"                 \
                                       "levels       VARCHAR,\n"                 \
                                       "rpn          VARCHAR,\n"                 \
                                       "units        VARCHAR,\n"                 \
+                                      "parent_id    BLOB,\n"                    \
                                       "UNIQUE (operation_id, name),\n"          \
-                                      "CHECK (uuid <> '')\n"                    \
+                                      "CHECK (uuid <> ''),\n"                   \
+                                      "CHECK ((CASE WHEN type IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1),\n" \
+                                      "CHECK ((CASE WHEN display IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1),\n" \
+                                      "CHECK ((CASE WHEN length IS NOT NULL THEN 1 ELSE 0 END + CASE WHEN parent_id IS NOT NULL THEN 1 ELSE 0 END) = 1)\n" \
                                       ");"                                      \
                                   );
             if (!ret) {
