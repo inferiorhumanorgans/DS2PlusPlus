@@ -50,7 +50,7 @@ namespace DS2PlusPlus {
     quint8 ControlUnit::addressForFamily(const QString &aFamily)
     {
         if (_familyDictionary.isEmpty()) {
-            _familyDictionary.insert("AIC",     0xE8); // Rain sensor
+            _familyDictionary.insert("AIC",     0xE8); // Rain sensor? Automatic Interval Control?
             _familyDictionary.insert("DME",     0x12); // Digital Motor Electronics
             _familyDictionary.insert("DDE",     0x12); // Digital Diesel Electronics
             _familyDictionary.insert("DSC",     0x56); // Dynamic Stability Control
@@ -61,9 +61,16 @@ namespace DS2PlusPlus {
             _familyDictionary.insert("LSZ",     0xd0); // Light Switching Center / Lichtschaltzentrum
             _familyDictionary.insert("LWS",     0x57); // Steering Angle Sensor / Lenkwinkelsensor
             _familyDictionary.insert("MRS",     0xA4); // Multiple Restraint System
+            _familyDictionary.insert("MFL",     0x50); // Multi function steering wheel?
+            _familyDictionary.insert("PDC",     0x60); // Park distance control?
             _familyDictionary.insert("RADIO",   0x68); // Radio
+            _familyDictionary.insert("RDC",     0x70); // Tire pressure monitoring system?
             _familyDictionary.insert("RLS",     0xE8); // Rain and light sensor
+            _familyDictionary.insert("SHD",     0x08); // Sunroof?
             _familyDictionary.insert("SMG",     0x32); // Sequential M Gearbox
+            _familyDictionary.insert("SPMFT",   0x9B); // Driver's side mirror module
+            _familyDictionary.insert("SPMBT",   0x51); // Pax side mirror module
+            _familyDictionary.insert("SZM",     0xF5); // Center Console Switching Center?
             _familyDictionary.insert("ZKE",     0x00); // Central Body Electronics / Zentrale Karosserieelektronik
         }
 
