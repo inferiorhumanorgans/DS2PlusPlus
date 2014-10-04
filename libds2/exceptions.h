@@ -2,6 +2,7 @@
 #define EXCEPTIONS_H
 
 #include <stdexcept>
+#include <iostream>
 
 namespace DS2PlusPlus {
     class TimeoutException : public std::ios_base::failure {
