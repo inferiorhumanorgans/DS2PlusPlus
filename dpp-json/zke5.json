@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       4,
-  "file_mtime":         "2014-10-04T11:18:02.0Z",
+  "file_version":       5,
+  "file_mtime":         "2014-10-04T19:53:14.0Z",
   "file_type":          "ecu",
   "uuid":               "00000000-0001-0000-0000-000000000000",
   "address":            "0x00",
@@ -382,6 +382,60 @@
           "uuid":       "00000000-0001-0003-00D4-000000000000",
           "parent_id":  "00000000-0001-0003-0004-000000000000",
           "start_pos":  31
+        }
+      }
+    },
+    "dtc_shadow_count": {
+      "uuid":           "00000000-0001-0004-0000-000000000000",
+      "command":        ["0x14", "0x00"],
+      "results": {
+        "error_code.shadow_count": {
+          "uuid":       "00000000-0001-0004-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "int"          
+        }
+      }
+    },
+    "dtc_shadow_load_bank1": {
+      "uuid":           "00000000-0001-0005-0000-000000000000",
+      "command":        ["0x14", "0x00"],
+      "results": {
+        "error_code.shadow_count": {
+          "uuid":       "00000000-0001-0005-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.shadow.0.dtc": {
+          "uuid":       "00000000-0001-0005-0002-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.shadow.0.description": {
+          "uuid":       "00000000-0001-0005-0003-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-0005-0000-0000-000000000000",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.shadow.1.dtc": {
+          "uuid":       "00000000-0001-0005-0004-000000000000",
+          "parent_id":  "00000000-0001-0005-0002-000000000000",
+          "start_pos":  4
+        },
+        "error_code.shadow.1.description": {
+          "uuid":       "00000000-0001-0005-0005-000000000000",
+          "parent_id":  "00000000-0001-0005-0003-000000000000",
+          "start_pos":  4
         }
       }
     }
