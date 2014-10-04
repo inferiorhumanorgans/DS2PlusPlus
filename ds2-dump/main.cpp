@@ -30,7 +30,7 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    app.setApplicationVersion("0.3.1");
+    app.setApplicationVersion("0.3.2");
     app.setOrganizationDomain("inferiorhumanorgans.com");
     app.setOrganizationName("Inferior Human Organs, Inc.");
 
