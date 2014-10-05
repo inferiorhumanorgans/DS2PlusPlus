@@ -130,8 +130,10 @@ namespace DS2PlusPlus {
             QCommandLineOption androidHack("dpp-dir", "Specify location of DPP database", "dpp-dir");
             aParser->addOption(androidHack);
 
+#ifdef Q_OS_ANDROID
             QCommandLineOption androidHack2("android-native", "Fix Android", "android-native");
             aParser->addOption(androidHack2);
+#endif
         } else {
             initializeManager();
         }
@@ -139,10 +141,10 @@ namespace DS2PlusPlus {
 
     void Manager::initializeManager()
     {
-        // Check to make sure our directory
-        // So we can have multiple connections...
+        // Create a random UUID so we can have multiple connections to the database...
         QString connName(QUuid::createUuid().toString());
 
+#ifdef Q_OS_ANDROID
         if (!_cliParser.isNull() and _cliParser->isSet("android-native")) {
             qDebug() << "Driver dir is: " << _cliParser->value("android-native");
             QPluginLoader plug(_cliParser->value("android-native") + "/libqsqlite.so");
@@ -152,8 +154,11 @@ namespace DS2PlusPlus {
 
             _db = QSqlDatabase::addDatabase(sqlPlugin->create("QSQLITE"), connName);
         } else {
+#endif
             _db = QSqlDatabase::addDatabase("QSQLITE", connName);
+#ifdef Q_OS_ANDROID
         }
+#endif
 
         if (!_cliParser.isNull() and _cliParser->isSet("dpp-dir")) {
             this->_dppDir = _cliParser->value("dpp-dir");
