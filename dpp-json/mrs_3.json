@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       3,
-  "file_mtime":         "2014-10-02T02:00:03.0Z",
+  "file_version":       4,
+  "file_mtime":         "2014-10-05T03:56:39.0Z",
   "file_type":          "ecu",
   "uuid":               "A4000000-0001-0000-0000-000000000000",
   "address":            "0xA4",
@@ -103,6 +103,324 @@
           "units":      "string"
         }
       }      
+    },
+    "status": {
+      "uuid":           "A4000000-0001-000C-0000-000000000000",
+      "command":        ["0x0B"],
+      "results": {
+        "mrs.circuit.airbag.driver.stage1": {
+          "uuid":       "A4000000-0001-000C-0001-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x01", // 1 << 0
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.belt_tensioner.driver": {
+          "uuid":       "A4000000-0001-000C-0002-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x02", // 1 << 1
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.belt_tensioner.passenger": {
+          "uuid":       "A4000000-0001-000C-0003-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x04", // 1 << 2
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.passenger.stage1": {
+          "uuid":       "A4000000-0001-000C-0004-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x08", // 1 << 3
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.side.front_left": {
+          "uuid":       "A4000000-0001-000C-0005-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x10", // 1 << 4
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.side.front_right": {
+          "uuid":       "A4000000-0001-000C-0006-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x20", // 1 << 5
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.side.rear_left": {
+          "uuid":       "A4000000-0001-000C-0007-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x40", // 1 << 6
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.side.rear_right": {
+          "uuid":       "A4000000-0001-000C-0008-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x80", // 1 << 7
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.head.front_left": { // ITS
+          "uuid":       "A4000000-0001-000C-0009-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
+          "mask":       "0x01", // 1 << 0
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.head.front_right": {  // ITS
+          "uuid":       "A4000000-0001-000C-000A-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
+          "mask":       "0x02", // 1 << 1
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.battery.plug1": {
+          "uuid":       "A4000000-0001-000C-000B-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
+          "mask":       "0x04", // 1 << 2
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.passenger.stage2": {
+          "uuid":       "A4000000-0001-000C-000C-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
+          "mask":       "0x08", // 1 << 3
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.driver.stage2": {
+          "uuid":       "A4000000-0001-000C-000D-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
+          "mask":       "0x10", // 1 << 4
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.head.rear_left": {
+          "uuid":       "A4000000-0001-000C-000E-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
+          "mask":       "0x20", // 1 << 5
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.airbag.head.rear_right": {
+          "uuid":       "A4000000-0001-000C-000F-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
+          "mask":       "0x40", // 1 << 6
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "mrs.circuit.battery.plug2": {
+          "uuid":       "A4000000-0001-000C-0010-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
+          "mask":       "0x80", // 1 << 7
+          "levels": {
+            "yes":      "ok",
+            "no":       "fault"
+          },
+          "units":      "string"
+        },
+        "seat.passenger.occupied": {
+          "uuid":       "A4000000-0001-000C-0011-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x01", // 1 << 0
+          "levels": {
+            "yes":      "unoccupied",
+            "no":       "occupied"
+          },
+          "units":      "string"
+        },
+        "seatbelt.driver": {
+          "uuid":       "A4000000-0001-000C-0012-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x02", // 1 << 1
+          "levels": {
+            "yes":      "buckled",
+            "no":       "unbuckled"
+          },
+          "units":      "string"
+        },
+        "seatbelt.passenger": {
+          "uuid":       "A4000000-0001-000C-0013-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x04", // 1 << 2
+          "levels": {
+            "yes":      "buckled",
+            "no":       "unbuckled"
+          },
+          "units":      "string"
+        },
+        "mrs.error.sbe_x": {
+          "uuid":       "A4000000-0001-000C-0014-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x08", // 1 << 3
+          "levels": {
+            "yes":      "no",
+            "no":       "error_present"
+          },
+          "units":      "string"
+        },
+        "mrs.error.sacsr": {
+          "uuid":       "A4000000-0001-000C-0015-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x10", // 1 << 4
+          "levels": {
+            "yes":      "no",
+            "no":       "error_present"
+          },
+          "units":      "string"
+        },
+        "mrs.error.sacsl": {
+          "uuid":       "A4000000-0001-000C-0016-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x20", // 1 << 5
+          "levels": {
+            "yes":      "no",
+            "no":       "error_present"
+          },
+          "units":      "string"
+        },
+        "seat.passenger.child_seat": {
+          "uuid":       "A4000000-0001-000C-0017-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x40", // 1 << 6
+          "levels": {
+            "yes":      "not_present",
+            "no":       "present"
+          },
+          "units":      "string"
+        },
+        "seat.passenger.oop": {
+          "uuid":       "A4000000-0001-000C-0018-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x80", // 1 << 7
+          "levels": {
+            "yes":      "not_oop",
+            "no":       "oop"
+          },
+          "units":      "string"
+        }
+      }
     }
   }
 }
