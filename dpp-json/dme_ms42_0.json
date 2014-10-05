@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       7,
-  "file_mtime":         "2014-10-04T19:53:14.0Z",
+  "file_version":       8,
+  "file_mtime":         "2014-10-05T18:23:40.0Z",
   "file_type":          "ecu",
   "uuid":               "12000000-0001-0000-0000-000000000000",
   "address":            "0x12",
@@ -922,6 +922,84 @@
           "length":     2,
           "rpn":        "N 0.004887 *",
           "units":      "V"          
+        }
+      }
+    },
+    "vanos_status": {
+      "uuid":           "12000000-0001-0014-0000-000000000000",
+      "command":        ["0x0B", "0x90"],
+      "results": {
+        "vanos.intake.actual": {
+          "uuid":       "12000000-0001-0014-0001-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  1,
+          "length":     1,
+          "rpn":        "N 0.375 * 60 +",
+          "units":      "°TDC"
+        },
+        "vanos.intake.target": {
+          "uuid":       "12000000-0001-0014-0002-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "rpn":        "N 0.375 * 60 +",
+          "units":      "°TDC"
+        },
+        "vanos.intake.reference": {
+          "uuid":       "12000000-0001-0014-0003-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  3,
+          "length":     1,
+          "rpn":        "N 0.375 * 60 +",
+          "units":      "°ATDC"
+        },
+        "vanos.intake.adaptation": {
+          "uuid":       "12000000-0001-0014-0004-000000000000",
+          "type":       "signed_byte",
+          "display":    "float",
+          "start_pos":  4,
+          "length":     1,
+          "rpn":        "N 0.37779 *",
+          "units":      "°TDC"
+        },
+        "vanos.exhaust.actual": {
+          "uuid":       "12000000-0001-0014-0005-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  7,
+          "length":     1,
+          "rpn":        "-60 N 0.375 * -",
+          "units":      "°TDC"
+        },
+        "vanos.exhaust.target": {
+          "uuid":       "12000000-0001-0014-0006-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  8,
+          "length":     1,
+          "rpn":        "-60 N 0.375 * -",
+          "units":      "°TDC"
+        },
+        "vanos.exhaust.reference": {
+          "uuid":       "12000000-0001-0014-0007-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  9,
+          "length":     1,
+          "rpn":        "-60 N 0.375 * -",
+          "units":      "°TDC"
+        },
+        "vanos.exhaust.adaptation": {
+          "uuid":       "12000000-0001-0014-0008-000000000000",
+          "type":       "signed_byte",
+          "display":    "float",
+          "start_pos":  10,
+          "length":     1,
+          "rpn":        "N 0.37779 *",
+          "units":      "°TDC"
         }
       }
     }
