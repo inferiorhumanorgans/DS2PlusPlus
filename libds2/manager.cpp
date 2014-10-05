@@ -320,6 +320,8 @@ namespace DS2PlusPlus {
 
     DS2PacketPtr Manager::query(DS2PacketPtr aPacket)
     {
+        bool slowEcu = (aPacket->address() == 0xA4); // Slow down even more for the air bag control unit.  UGH.
+
         if (!fd_is_valid(_fd)) {
             throw std::ios_base::failure("Serial port is not open.");
         }
@@ -336,7 +338,7 @@ namespace DS2PlusPlus {
         }
 
         // Read the echo back.  We should check to see if it matches, maybe...
-        usleep(80000);
+        usleep(slowEcu ? 250000 : 80000);
         if (readBytes(_fd, ourBA.size()).size() != ourBA.size()) {
             throw std::ios_base::failure("Error reading the echo echo echo echo...");
         }
@@ -347,7 +349,7 @@ namespace DS2PlusPlus {
 
         QByteArray inputArray;
         inputArray = readBytes(_fd, 2);
-        usleep(12500);
+        usleep(slowEcu ? 250000 : 12500);
 
         if (inputArray.length() != 2) {
             QString errorString = QString("Wanted length 2, got: %1").arg(inputArray.length());
