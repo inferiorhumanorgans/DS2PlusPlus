@@ -286,6 +286,10 @@ namespace DS2PlusPlus {
     DS2Response ControlUnit::executeOperation(const QString &name)
     {
         const OperationPtr ourOp(_operations.value(name));
+        if (ourOp.isNull()) {
+            throw std::invalid_argument(qPrintable(QString("Operation '%1' could not be found in ECU %2").arg(name).arg(_uuid)));
+        }
+
         DS2PacketPtr ourOutgoingPacket(ourOp->queryPacket());
         DS2PacketPtr ourIncomingPacket(_manager->query(ourOutgoingPacket));
 
