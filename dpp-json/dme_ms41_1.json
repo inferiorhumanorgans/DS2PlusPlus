@@ -1,0 +1,203 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2014-10-11T23:09:43.0Z",
+  "file_type":          "ecu",
+  "uuid":               "12000000-0003-0000-0000-000000000000",
+  "address":            "0x12",
+  "family":             "DME",
+  "name":               "Siemens MS 41.1 (M52, S52-USA)",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        1437806,
+  "hardware_number":    "0x11",
+  "software_number":    "0x60",
+  "coding_index":       "0x01",
+  "endian":             "big",
+  "operations": {
+    "identify":  {
+      "uuid":           "12000000-0003-0001-0000-000000000000",
+      "command":        ["0x00"],
+      "results": {
+        "part_number": {
+          "uuid":       "12000000-0003-0001-0001-000000000000",
+          "type":       "string",
+          "display":    "int",
+          "start_pos":  1,
+          "length":     7,
+          "units":      "int"
+        },
+        "hardware_number": {
+          "uuid":       "12000000-0003-0001-0002-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  8,
+          "length":     2,
+          "units":      "string"
+        },
+        "coding_index": {
+          "uuid":       "12000000-0003-0001-0003-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  10,
+          "length":     2,
+          "units":      "string"
+        },
+        "diag_index": {
+          "uuid":       "12000000-0003-0001-0004-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  12,
+          "length":     2,
+          "units":      "string"
+        },
+        "bus_index": {
+          "uuid":       "12000000-0003-0001-0005-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  14,
+          "length":     2,
+          "units":      "string"
+        },
+        "build_date.week": {
+          "uuid":       "12000000-0003-0001-0006-000000000000",
+          "type":       "string",
+          "display":    "int",
+          "start_pos":  16,
+          "length":     2,
+          "units":      "week"
+        },
+        "build_date.year": {
+          "uuid":       "12000000-0003-0001-0007-000000000000",
+          "type":       "string",
+          "display":    "int",
+          "start_pos":  18,
+          "length":     2,
+          "units":      "year"
+        },
+        "supplier": {
+          "uuid":       "12000000-0003-0001-0008-000000000000",
+          "type":       "string",
+          "display":    "string",
+          "start_pos":  20,
+          "length":     6,
+          "units":      "string"
+        },
+        "software_number": {
+          "uuid":       "12000000-0003-0001-0009-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  30,
+          "length":     2,
+          "units":      "string"
+        }
+      }
+    },
+    "precat_o2_bank1_voltage": {
+      "uuid":           "12000000-0003-0002-0000-000000000000",
+      "command":        ["0x0B", "0x02", "0x0E", "0x00", "0x00", "0x01"],
+      "results": {
+        "voltage.precat_o2.bank1": {
+          "uuid":       "12000000-0003-0002-0001-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "rpn":        "N 0.0193 *",
+          "units":      "V"
+        }
+      }
+    },
+    "precat_o2_bank2_voltage": {
+      "uuid":           "12000000-0003-0003-0000-000000000000",
+      "command":        ["0x0B", "0x02", "0x0E", "0x00", "0x00", "0x02"],
+      "results": {
+        "voltage.precat_o2.bank2": {
+          "uuid":       "12000000-0003-0003-0001-000000000000",
+          "parent_id":  "12000000-0003-0002-0001-000000000000",
+          "start_pos":  2
+        }
+      }
+    },
+    "precat_o2_bank1_heater_voltage": {
+      "uuid":           "12000000-0003-0004-0000-000000000000",
+      "command":        ["0x0B", "0x02", "0x0E", "0x00", "0x00", "0x02"],
+      "results": {
+        "voltage.precat_o2_heater.bank1": {
+          "uuid":       "12000000-0003-0004-0001-000000000000",
+          "parent_id":  "12000000-0003-0003-0001-000000000000",
+          "start_pos":  2
+        }
+      }
+    },
+    "knock_sensor_cylinder_1_voltage": {
+      "uuid":           "12000000-0003-0005-0000-000000000000",
+      "command":        ["0x06", "0x00", "0x00", "0xDA", "0x64", "0x02"],
+      "results": {
+        "knock_sensor.cylinder_1.voltage": {
+          "uuid":       "12000000-0003-0005-0001-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  1,
+          "length":     1,
+          "rpn":        "N 0.02 *",
+          "units":      "V"          
+        }
+      }
+    },
+    "knock_sensor_cylinder_2_voltage": {
+      "uuid":           "12000000-0003-0006-0000-000000000000",
+      "command":        ["0x06", "0x00", "0x00", "0xDA", "0x68", "0x02"],
+      "results": {
+        "knock_sensor.cylinder_2.voltage": {
+          "uuid":       "12000000-0003-0006-0001-000000000000",
+          "parent_id":  "12000000-0003-0005-0001-000000000000",
+          "start_pos":  1
+        }
+      }
+    },
+    "knock_sensor_cylinder_3_voltage": {
+      "uuid":           "12000000-0003-0007-0000-000000000000",
+      "command":        ["0x06", "0x00", "0x00", "0xDA", "0x66", "0x02"],
+      "results": {
+        "knock_sensor.cylinder_3.voltage": {
+          "uuid":       "12000000-0003-0007-0001-000000000000",
+          "parent_id":  "12000000-0003-0005-0001-000000000000",
+          "start_pos":  1
+        }
+      }
+    },
+    "knock_sensor_cylinder_4_voltage": {
+      "uuid":           "12000000-0003-0008-0000-000000000000",
+      "command":        ["0x06", "0x00", "0x00", "0xDA", "0x69", "0x02"],
+      "results": {
+        "knock_sensor.cylinder_4.voltage": {
+          "uuid":       "12000000-0003-0008-0001-000000000000",
+          "parent_id":  "12000000-0003-0005-0001-000000000000",
+          "start_pos":  1
+        }
+      }
+    },
+    "knock_sensor_cylinder_5_voltage": {
+      "uuid":           "12000000-0003-0009-0000-000000000000",
+      "command":        ["0x06", "0x00", "0x00", "0xDA", "0x65", "0x02"],
+      "results": {
+        "knock_sensor.cylinder_5.voltage": {
+          "uuid":       "12000000-0003-0009-0001-000000000000",
+          "parent_id":  "12000000-0003-0005-0001-000000000000",
+          "start_pos":  1
+        }
+      }
+    },
+    "knock_sensor_cylinder_6_voltage": {
+      "uuid":           "12000000-0003-000A-0000-000000000000",
+      "command":        ["0x06", "0x00", "0x00", "0xDA", "0x63", "0x02"],
+      "results": {
+        "knock_sensor.cylinder_6.voltage": {
+          "uuid":       "12000000-0003-000A-0001-000000000000",
+          "parent_id":  "12000000-0003-0005-0001-000000000000",
+          "start_pos":  1
+        }
+      }
+    }
+  }
+}
