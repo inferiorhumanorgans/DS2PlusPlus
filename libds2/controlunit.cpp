@@ -326,7 +326,7 @@ namespace DS2PlusPlus {
                 //qDebug() << "Skipping out of range result (" << result.uuid << "/" << result.name;
                 continue;
             }
-            if (result.isType("byte")) {
+            if (result.isType("byte") || result.isType("signed_byte")) {
                 ret.insert(result.name(), resultByteToVariant(packet, result));
             } else if (result.isType("short") || result.isType("signed_short")) {
                 if (result.length() != 2) {
@@ -563,7 +563,6 @@ namespace DS2PlusPlus {
                     T a, b;
                     a = stack.takeLast();
                     b = stack.takeLast();
-                    qDebug() << b << " - " << a;
                     stack.push_back(b - a);
                 } else if (command == "/")  {
                     T a, b;
@@ -657,7 +656,12 @@ namespace DS2PlusPlus {
 
             return QVariant(tableName);
         } else if (aResult.displayFormat() == "float") {
-            double value = runRpnForResult<double>(aResult, static_cast<quint8>(byte));
+            double value;
+            if (aResult.type() == "signed_byte") {
+                value = runRpnForResult<double>(aResult, static_cast<qint8>(byte));
+            } else {
+                value = runRpnForResult<double>(aResult, static_cast<quint8>(byte));
+            }
             return QVariant(value);
         } else if (aResult.displayFormat() == "enum") {
             return QVariant(aResult.stringForLevel(byte));
