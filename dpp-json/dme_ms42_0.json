@@ -1,12 +1,12 @@
 {
   "dpp_version":        1,
-  "file_version":       8,
-  "file_mtime":         "2014-10-05T18:23:40.0Z",
+  "file_version":       9,
+  "file_mtime":         "2014-10-12T19:15:27.0Z",
   "file_type":          "ecu",
   "uuid":               "12000000-0001-0000-0000-000000000000",
   "address":            "0x12",
   "family":             "DME",
-  "name":               "Siemens MS 42.0",
+  "name":               "Siemens MS 42.0 (M52TU)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        7500255,
   "hardware_number":    "0x15",
@@ -925,6 +925,25 @@
         }
       }
     },
+    "exhaust_variant": {
+      "uuid":           "12000000-0001-0013-0000-000000000000",
+      "command":        ["0x0B", "0x94"],
+      "results": {
+        "engine.exhaust_variant": {
+          "uuid":       "12000000-0001-0013-0001-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  1,
+          "length":     1,
+          "mask":       "0x04", // 1 << 2
+          "levels": {
+            "yes":      "catalyst",
+            "no":       "non_catalyst"
+          },
+          "units":      "string"
+        }
+      }
+    },
     "vanos_status": {
       "uuid":           "12000000-0001-0014-0000-000000000000",
       "command":        ["0x0B", "0x90"],
@@ -1000,6 +1019,15 @@
           "length":     1,
           "rpn":        "N 0.37779 *",
           "units":      "°TDC"
+        },
+        "vanos.temperature_mode": {
+          "uuid":       "12000000-0001-0014-0009-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  13,
+          "length":     1,
+          "rpn":        "N 0.7961 * 48 -",
+          "units":      "°C"
         }
       }
     }
