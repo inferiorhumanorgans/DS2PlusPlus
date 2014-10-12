@@ -9,12 +9,15 @@
     },
     "result_type": {
         "enum": [
-          "boolean",
           "string",
-          "byte",
+          "6bit-string",
           "hex_string",
+          "boolean",
+          "byte",
+          "signed_byte",
           "short",
-          "6bit-string"
+          "signed_short",
+          "short_vin"
         ]
     },
     "display_type": {
@@ -32,6 +35,9 @@
       "type": "object",
       "properties": {
         "uuid": {
+          "$ref": "#/definitions/uuid"
+        },
+        "parent_id": {
           "$ref": "#/definitions/uuid"
         },
         "type": {
@@ -59,14 +65,18 @@
         "levels": {
           "type": "object"
         },
-        "factor_a": {
-          "type": "number"
+        "rpn": {
+          "type": "string"
         },
-        "factor_b": {
-          "type": "number"
+        "units": {
+          "type": "string"
         }
       },
-      "required": ["uuid", "type", "display", "start_pos", "length"],
+      "required": ["uuid"],
+      "anyOf": [
+        {"required": ["parent_id"]},
+        {"required": ["type", "display", "start_pos", "length", "units"]}
+      ],
       "additionalProperties": false
     },
     "ecu_operation": {
@@ -75,11 +85,11 @@
         "uuid": {
           "$ref": "#/definitions/uuid"
         },
+        "parent_id": {
+          "$ref": "#/definitions/uuid"
+        },
         "command": {
           "type": "array"
-        },
-        "parent": {
-          "type": "string"
         },
         "results": {
           "patternProperties": {
@@ -89,10 +99,10 @@
           }
         }
       },
-      "required": ["uuid", "results"],
+      "required": ["uuid"],
       "anyOf": [
-        {"required": ["parent"]},
-        {"required": ["command"]}
+        {"required": ["parent_id"]},
+        {"required": ["command", "results"]}
       ],
       "additionalProperties": false
     },

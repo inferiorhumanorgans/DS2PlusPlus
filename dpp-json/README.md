@@ -83,17 +83,14 @@ An integer representing the location of this result within the DS2 packet.  Offs
 ####`length`####
 An integer representing the length of the data within the DS2 packet.  Must be suitable given the `type` property given.  `byte` and `boolean` *MUST* be 1.  `short` *MUST* be 2.  `string` and `hex_string` *MUST* be greater than 0.
 
+####`units`####
+A string describing the units of measure.  A value of `string` indicates that the result is not an ordinal value, and that no label is appropriate (ex: VIN).  A value of `int` indicates that the units are unknown, irrelevant, that the result value is unlikely to change, or that the result value is not ordinal -- no units shall be shown.  A value of `boolean` indicates that no units are to be displayed, that the result value is likely ordinal, but that it may be expected to change (and may be useful for data logging).
+
 ####`mask`####
 For the `boolean` type, a string representing a byte in hexadecimal form that represents the bitmask used to determine the boolean value.
 
 ####`levels`####
 For `byte` types with `enum` display formats and `boolean` types, levels is a hash representing the various options.  For `boolean` types the keys *MUST* be `yes` and `no`.  For `enum` types, the values must be strings representing the various bitmaks.  Additionally `all` and `else` and `none` are supported by `enum` values.
-
-####`factor_a`####
-A floating point number representing the multiplicative factor used to resolve floating point values from the DS2 packet.  Required for `float` display types.
-
-####`factor_b`####
-A floating point number representing the additive factor used to resolve floating point values from the DS2 packet.  Optional for `float` display types.  Default is 0.
 
 ####`rpn`####
 A space delimited string representing a series of Reverse Polish Notation commands to run.  Base 16 numbers are supported (starts with 0x) as are base 10.  The following commands are supported:
