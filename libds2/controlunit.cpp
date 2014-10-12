@@ -138,15 +138,15 @@ namespace DS2PlusPlus {
 
         _operations.clear();
 
-        QString parent_id = aUuid;
+        QString moduleParent = aUuid;
         // Add a "find root UUID" method to dbm
-        while (!parent_id.isEmpty()) {
-            QHash<QString, QVariant> theRecord = _manager->findModuleRecordByUuid(parent_id);
+        while (!moduleParent.isEmpty()) {
+            QHash<QString, QVariant> theRecord = _manager->findModuleRecordByUuid(moduleParent);
             if (theRecord.isEmpty()) {
                 throw std::runtime_error("Find parent failed");
             }
 
-            if (aUuid == parent_id) {
+            if (aUuid == moduleParent) {
                 _dppVersion = theRecord.value("dpp_version").toInt();
                 _fileVersion = theRecord.value("file_version").toInt();
                 _uuid = DPP_V1_Parser::rawUuidToString(theRecord.value("uuid").toByteArray());
@@ -163,11 +163,11 @@ namespace DS2PlusPlus {
             }
 
             if (getenv("DPP_TRACE")) {
-                qErr << "Module: " << parent_id << " (from: " << aUuid << ")" << endl;
+                qErr << "Module: " << moduleParent << " (from: " << aUuid << ")" << endl;
             }
 
             QSharedPointer<QSqlTableModel> operationsTable(_manager->operationsTable());
-            operationsTable->setFilter(QString("module_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(parent_id)));
+            operationsTable->setFilter(QString("module_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(moduleParent)));
             operationsTable->select();
             for (int i=0; i < operationsTable->rowCount(); i++) {
                 QSqlRecord opRecord = operationsTable->record(i);
@@ -175,22 +175,34 @@ namespace DS2PlusPlus {
                 QString opName = opRecord.value("name").toString();
                 QString opUuid = DPP_V1_Parser::rawUuidToString(opRecord.value("uuid").toByteArray());
                 QString opModule = DPP_V1_Parser::rawUuidToString(opRecord.value("module_id").toByteArray());
+                QString opParent = DPP_V1_Parser::rawUuidToString(opRecord.value("parent_id").toByteArray());
                 QByteArray opCommand = opRecord.value("command").toByteArray();
 
                 OperationPtr op;
                 if (_operations.contains(opName)) {
                     op = _operations.value(opName);
-                    if (getenv("DPP_TRACE")) {
-                        qErr << "\tMerging operation: " << opName << " we've a higher priority implementation" << endl;
-                    }
+#if 0
+                    if (op->parentId() == opUuid) {
+                        if (getenv("DPP_TRACE")) {
+                            qErr << "\tMerging operation: '" << opName << "' (" << opUuid << ")" << endl;
+                            qErr << "\t\tParent ID: " << op->uuid() << endl;
+                        }
 
-                    // If we've not yet set the command from a higher priority operation, use this one.
-                    if (op->command().isEmpty()) {
-                        op->setCommand(opCommand);
+                        // If we've not yet set the command from a higher priority operation, use this one.
+                        if (op->command().isEmpty()) {
+                            op->setCommand(opCommand);
+                        }
+                    } else
+#endif
+                    {
+                        if (getenv("DPP_TRACE")) {
+                            qErr << "\tSkipping operation: '" << opName << "' (" << opUuid << ")" << endl;
+                        }
+                        continue;
                     }
                 } else {
                     if (getenv("DPP_TRACE")) {
-                        qErr << "\tProcessing job " << opName << endl;
+                        qErr << "\tAdding operation: '" << opName << "' (" << opUuid << ")" << endl;
                     }
                     op = OperationPtr(new Operation(opUuid, _address, opName, opCommand));
                 }
@@ -279,7 +291,7 @@ namespace DS2PlusPlus {
 
                 _operations.insert(opName, op);
             }
-            parent_id = DPP_V1_Parser::rawUuidToString(theRecord.value("parent_id").toByteArray());
+            moduleParent = DPP_V1_Parser::rawUuidToString(theRecord.value("parent_id").toByteArray());
         }
     }
 
