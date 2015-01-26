@@ -559,6 +559,10 @@ namespace DS2PlusPlus {
 
     template <typename T> T ControlUnit::runRpnForResult(const Result &aResult, T aValue)
     {
+        if (getenv("RPN_TRACE")) {
+            qDebug() << "RPN IS: " << aResult.rpn() << " " << aValue;
+        }
+
         if (!aResult.rpn().isEmpty()) {
             QList<T> stack;
             foreach (const QString &command, aResult.rpn()) {
