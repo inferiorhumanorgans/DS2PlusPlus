@@ -38,7 +38,7 @@
 #include "ds2-dump.h"
 
 DataCollection::DataCollection(QObject *parent) :
-    QObject(parent), qOut(stdout), qErr(stderr), ecuAddress(0)
+    QObject(parent), qOut(stdout), qErr(stderr)
 {
 }
 
@@ -127,14 +127,17 @@ void DataCollection::run()
                 ecuUuid = ecuString;
             } else {
                 bool ok;
+                quint8 ourAddress;
                 if (ecuString.startsWith("0x")) {
-                    ecuAddress = ecuString.toUShort(&ok, 16);
+                    ourAddress=ecuString.toUShort(&ok, 16);
                 } else {
-                    ecuAddress = ecuString.toUShort(&ok, 10);
+                    ourAddress=ecuString.toUShort(&ok, 10);
                 }
-                if (!ok) {
-                    ecuAddress = ControlUnit::addressForFamily(ecuString.toUpper());
-                    if (ecuAddress == static_cast<quint8>(-99)) {
+                if (ok) {
+                    ecuAddressList << ourAddress;
+                } else {
+                    ecuAddressList << ControlUnit::addressForFamily(ecuString.toUpper());
+                    if (ecuAddressList.isEmpty()) {
                         throw CommandlineArgumentException("Please specify a valid positive integer or an ECU family name for the ECU address.");
                     }
                 }
@@ -170,16 +173,24 @@ void DataCollection::run()
         }
 
         if (parser->isSet("probe")) {
-            DS2PlusPlus::ControlUnitPtr autoDetect(dbm->findModuleAtAddress(ecuAddress));
+            DS2PlusPlus::ControlUnitPtr autoDetect;
+
+            foreach (quint8 ecuAddress, ecuAddressList) {
+                try {
+                    autoDetect = DS2PlusPlus::ControlUnitPtr(dbm->findModuleAtAddress(ecuAddress));
+                } catch(DS2PlusPlus::TimeoutException) {
+                    continue;
+                }
+                if (!autoDetect.isNull()) {
+                    break;
+                }
+            }
+
             if (!autoDetect.isNull()) {
-                qOut << QString("At 0x%1 we think we have: %2").arg(ecuAddress, 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
+                qOut << QString("At 0x%1 we think we have: %2").arg(autoDetect->address(), 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
                 DS2Response ourResponse = autoDetect->executeOperation("identify");
                 qOut << "Identity:" << endl << DS2ResponseToJsonString(ourResponse) << endl;
             } else {
-                DS2PacketPtr anIdentPacket(new DS2Packet(ecuAddress, QByteArray(1, 0)));
-                DS2PacketPtr aResponsePacket = dbm->query(anIdentPacket);
-
-                qOut << "Couldn't find a match, got this response: " << endl << aResponsePacket << endl;
             }
             emit finished();
             return;
@@ -331,7 +342,18 @@ void DataCollection::probeAll()
         }
 
         usleep(100000);
-        DS2Response ourResponse = autoDetect->executeOperation("identify");
+        DS2Response ourResponse;
+        try {
+            if (getenv("DPP_TRACE")) {
+                qDebug() << "Running identify";
+            }
+
+            ourResponse = autoDetect->executeOperation("identify");
+        } catch(DS2PlusPlus::TimeoutException exception) {
+            qDebug() << "Timeout (identify)";
+            continue;
+        }
+
         qOut << qSetFieldWidth(12) << left << (autoDetect->isRoot() ? ControlUnit::familyForAddress(address) : autoDetect->family());
         qOut << qSetFieldWidth(40) << left << (autoDetect->isRoot() ? "Unknown" : autoDetect->name());
         qOut << qSetFieldWidth(15) << left << ourResponse.value("part_number").toString();
@@ -350,28 +372,39 @@ void DataCollection::probeAll()
             notes.append("CI mismatch");
         }
 
+        DS2Response ourVin;
         if (autoDetect->operations().contains("vehicle_id")) {
             usleep(250000);
-            DS2Response ourVin = autoDetect->executeOperation("vehicle_id");
-            if (ourVin.contains("vin")) {
-                notes.append(QString("vin=%1").arg(ourVin.value("vin").toString()));
+            try {
+                ourVin = autoDetect->executeOperation("vehicle_id");
+                if (ourVin.contains("vin")) {
+                    notes.append(QString("vin=%1").arg(ourVin.value("vin").toString()));
+                }
+            } catch(DS2PlusPlus::TimeoutException exception) {
             }
         } else if (autoDetect->operations().contains("vehicle_id_short")) {
             usleep(250000);
-            DS2Response ourVin = autoDetect->executeOperation("vehicle_id_short");
-            if (ourVin.contains("short_vin")) {
-                notes.append(QString("vin=%1").arg(ourVin.value("short_vin").toString()));
+            try {
+                DS2Response ourVin = autoDetect->executeOperation("vehicle_id_short");
+                if (ourVin.contains("short_vin")) {
+                    notes.append(QString("vin=%1").arg(ourVin.value("short_vin").toString()));
+                }
+            } catch(DS2PlusPlus::TimeoutException exception) {
             }
         }
 
         if (autoDetect->operations().contains("dtc_count")) {
             usleep(250000);
-            DS2Response ourFaultCountResponse = autoDetect->executeOperation("dtc_count");
-            if (ourFaultCountResponse.contains("error_code.count")) {
-                quint64 ourFaultCount = ourFaultCountResponse.value("error_code.count").toULongLong();
-                if (ourFaultCount > 0) {
-                    notes.append(QString("faults=%1").arg(ourFaultCount));
+            try {
+                DS2Response ourFaultCountResponse;
+                ourFaultCountResponse = autoDetect->executeOperation("dtc_count");
+                if (ourFaultCountResponse.contains("error_code.count")) {
+                    quint64 ourFaultCount = ourFaultCountResponse.value("error_code.count").toULongLong();
+                    if (ourFaultCount > 0) {
+                        notes.append(QString("faults=%1").arg(ourFaultCount));
+                    }
                 }
+            } catch(DS2PlusPlus::TimeoutException exception) {
             }
         }
 
@@ -409,10 +442,15 @@ void DataCollection::runOperation()
             return;
         }
 
-        autoDetect = dbm->findModuleAtAddress(ecuAddress);
+        foreach(quint8 ecuAddress, ecuAddressList) {
+            autoDetect = dbm->findModuleAtAddress(ecuAddress);
+            if (!autoDetect.isNull()) {
+                break;
+            }
+        }
     } else {
         autoDetect = ControlUnitPtr(new ControlUnit(ecuUuid, &(*dbm)));
-        ecuAddress = autoDetect->address();
+        ecuAddressList << autoDetect->address();
 
         if (parser->isSet("input-packet")) {
             ourPacket = DS2PacketPtr(new DS2Packet(parser->value("input-packet")));
@@ -423,7 +461,7 @@ void DataCollection::runOperation()
 
     if (!autoDetect.isNull()) {
         QString ourJob = parser->value("run-operation");
-        qOut << QString("At 0x%1 we think we have: %2").arg(ecuAddress, 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
+        qOut << QString("At 0x%1 we think we have: %2").arg(autoDetect->address(), 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
 
         bool ok;
         quint64 iterations;
@@ -485,7 +523,14 @@ void DataCollection::dataLog()
         QStringList resultsList = currentSpec.at(2).split(",");
 
         if (!ecus.contains(ecuName)) {
-            DS2PlusPlus::ControlUnitPtr ourEcu(dbm->findModuleAtAddress(ControlUnit::addressForFamily(ecuName)));
+            DS2PlusPlus::ControlUnitPtr ourEcu;
+            QList<quint8> ecuAddresses = ControlUnit::addressForFamily(ecuName);
+            foreach(quint8 address, ecuAddresses) {
+                ourEcu = DS2PlusPlus::ControlUnitPtr(dbm->findModuleAtAddress(address));
+                if (!ourEcu.isNull()) {
+                    break;
+                }
+            }
             if (ourEcu.isNull()) {
                 throw std::runtime_error(qPrintable(QString("Could not locate ECU at %1").arg(ecuName)));
             }

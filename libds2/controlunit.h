@@ -47,7 +47,7 @@ namespace DS2PlusPlus {
 
         ControlUnit(const QString &aUuid = QString::null, Manager *aParent = 0);
 
-        static quint8 addressForFamily(const QString &aFamily);
+        static QList<quint8> addressForFamily(const QString &aFamily);
         static const QString familyForAddress(quint8 anAddress);
         static const QStringList knownFamilies();
         static const QList<quint8> knownAddresses();
@@ -185,7 +185,7 @@ namespace DS2PlusPlus {
         quint8 _matchFlags;
 
         Manager *_manager;
-        static QHash<QString, quint8> _familyDictionary;
+        static QHash<QString, QList<quint8> > _familyDictionary;
     };
 
     typedef QSharedPointer<ControlUnit> ControlUnitPtr;

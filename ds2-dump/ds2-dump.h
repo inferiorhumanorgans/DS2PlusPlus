@@ -55,7 +55,7 @@ protected:
     QTextStream qOut, qErr;
     QSharedPointer<QCommandLineParser> parser;
     QString ecuUuid;
-    quint8 ecuAddress;
+    QList<quint8> ecuAddressList;
 };
 
 #endif // DATACOLLECTION_H
