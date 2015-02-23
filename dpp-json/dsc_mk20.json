@@ -8,7 +8,7 @@
   "family":             "DSC",
   "name":               "ATE Dynamic Stability Control III Mk20",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
-  "part_number":        6753598,
+  "part_number":        [6753598],
   "hardware_number":    "0x02",
   "software_number":    "0x54",
   "coding_index":       "0x09",

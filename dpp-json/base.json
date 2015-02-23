@@ -6,6 +6,7 @@
   "uuid":               "00001111-0000-0000-0000-000000000000",
   "name":               "Basic module functionality",
   "parent_id":          null,
+  "protocol":           "DS2",
   "operations": {
     "identify":  {
       "uuid":           "00001111-0000-0001-0000-000000000000",

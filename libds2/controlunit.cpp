@@ -42,8 +42,6 @@
 #include "manager.h"
 #include "dpp_v1_parser.h"
 
-#define qIntList(x) (QList<quint8>() << x)
-
 namespace DS2PlusPlus {
 
     QHash<QString, QList<quint8> > ControlUnit::_familyDictionary;
@@ -52,28 +50,33 @@ namespace DS2PlusPlus {
     QList<quint8> ControlUnit::addressForFamily(const QString &aFamily)
     {
         if (_familyDictionary.isEmpty()) {
-            _familyDictionary.insert("AIC",     qIntList(0xE8)); // Rain sensor? Automatic Interval Control?
-            _familyDictionary.insert("DME",     qIntList(0xB8)); // Digital Motor Electronics (also 0xB8?)
-            _familyDictionary.insert("DDE",     qIntList(0x12)); // Digital Diesel Electronics
-            _familyDictionary.insert("DSC",     qIntList(0x56)); // Dynamic Stability Control
-            _familyDictionary.insert("EGS",     qIntList(0x32)); // Electronic Transmission Control - Electronische Getriebe Steuerung
-            _familyDictionary.insert("EWS",     qIntList(0x44)); // Electronic Immobiliser / Elektronische Wegfahrsperre
-            _familyDictionary.insert("IHKA",    qIntList(0x5B)); // Auto Climate Control / Integrierte Heizung Kühlung?
-            _familyDictionary.insert("KOMBI",   qIntList(0x80)); // Instrument Cluster
-            _familyDictionary.insert("LSZ",     qIntList(0xD0)); // Light Switching Center / Lichtschaltzentrum
-            _familyDictionary.insert("LWS",     qIntList(0x57)); // Steering Angle Sensor / Lenkwinkelsensor
-            _familyDictionary.insert("MRS",     qIntList(0xA4)); // Multiple Restraint System
-            _familyDictionary.insert("MFL",     qIntList(0x50)); // Multi function steering wheel?
-            _familyDictionary.insert("PDC",     qIntList(0x60)); // Park distance control?
-            _familyDictionary.insert("RADIO",   qIntList(0x68)); // Radio
-            _familyDictionary.insert("RDC",     qIntList(0x70)); // Tire pressure monitoring system?
-            _familyDictionary.insert("RLS",     qIntList(0xE8)); // Rain and light sensor
-            _familyDictionary.insert("SHD",     qIntList(0x08)); // Sunroof?
-            _familyDictionary.insert("SMG",     qIntList(0x32)); // Sequential M Gearbox
-            _familyDictionary.insert("SPMFT",   qIntList(0x9B)); // Driver's side mirror module
-            _familyDictionary.insert("SPMBT",   qIntList(0x51)); // Pax side mirror module
-            _familyDictionary.insert("SZM",     qIntList(0xF5)); // Center Console Switching Center?
-            _familyDictionary.insert("ZKE",     qIntList(0x00)); // Central Body Electronics / Zentrale Karosserieelektronik
+            _familyDictionary.insert("AIC",     QList<quint8>() << 0xE8        ); // Rain sensor? Automatic Interval Control?
+            _familyDictionary.insert("DME",     QList<quint8>() << 0x12        ); // Digital Motor Electronics
+            _familyDictionary.insert("DDE",     QList<quint8>() << 0x12        ); // Digital Diesel Electronics
+            _familyDictionary.insert("DSC",     QList<quint8>() << 0x56        ); // Dynamic Stability Control
+            _familyDictionary.insert("EHC",     QList<quint8>() << 0xAC << 0x82); // Elektronische Hohenstands Control / Electronic Height Control (EHC,EHC2,EHC2N,EHC2N2=AC, EHC2RR=82
+            _familyDictionary.insert("EGS",     QList<quint8>() << 0x32        ); // Electronic Transmission Control - Electronische Getriebe Steuerung
+            _familyDictionary.insert("EWS",     QList<quint8>() << 0x44        ); // Electronic Immobiliser / Elektronische Wegfahrsperre
+            _familyDictionary.insert("IHKA",    QList<quint8>() << 0x5B        ); // Auto Climate Control / Integrierte Heizung Kühlung?
+            _familyDictionary.insert("IKE",     QList<quint8>() << 0x80        ); // Instrument Cluster
+            _familyDictionary.insert("KOMBI",   QList<quint8>() << 0x80        ); // Instrument Cluster
+            _familyDictionary.insert("LCM",     QList<quint8>() << 0xD0        ); // Light Switching Center / Lichtschaltzentrum
+//            _familyDictionary.insert("LRA",     QList<quint8>() << 0xXX        ); // Vertical Headlight Aiming
+            _familyDictionary.insert("LSZ",     QList<quint8>() << 0xD0        ); // Light Switching Center / Lichtschaltzentrum
+            _familyDictionary.insert("LWS",     QList<quint8>() << 0x57        ); // Steering Angle Sensor / Lenkwinkelsensor
+            _familyDictionary.insert("MID",     QList<quint8>() << 0xC0        ); // Multi Information Display
+            _familyDictionary.insert("MFL",     QList<quint8>() << 0x50        ); // Multi function steering wheel?
+            _familyDictionary.insert("MRS",     QList<quint8>() << 0xA4        ); // Multiple Restraint System
+            _familyDictionary.insert("PDC",     QList<quint8>() << 0x60        ); // Park distance control?
+            _familyDictionary.insert("RADIO",   QList<quint8>() << 0x68        ); // Radio
+            _familyDictionary.insert("RDC",     QList<quint8>() << 0x70        ); // Tire pressure monitoring system?
+            _familyDictionary.insert("RLS",     QList<quint8>() << 0xE8        ); // Rain and light sensor
+            _familyDictionary.insert("SHD",     QList<quint8>() << 0x08        ); // Sunroof?
+            _familyDictionary.insert("SMG",     QList<quint8>() << 0x32        ); // Sequential M Gearbox
+            _familyDictionary.insert("SPMFT",   QList<quint8>() << 0x9B        ); // Driver's side mirror module
+            _familyDictionary.insert("SPMBT",   QList<quint8>() << 0x51        ); // Pax side mirror module
+            _familyDictionary.insert("SZM",     QList<quint8>() << 0xF5        ); // Center Console Switching Center?
+            _familyDictionary.insert("ZKE",     QList<quint8>() << 0x00        ); // Central Body Electronics / Zentrale Karosserieelektronik
         }
 
         if (_familyDictionary.contains(aFamily)) {
@@ -159,7 +162,13 @@ namespace DS2PlusPlus {
                 _address = theRecord.value("address").toChar().toLatin1();
                 _family = theRecord.value("family").toString();
                 _name = theRecord.value("name").toString();
-                _partNumber = theRecord.value("part_number").toULongLong();
+
+                QStringList partStrings = theRecord.value("part_number").toString().split("/");
+                _partNumbers = QSet<quint64>();
+                foreach (const QString &partNumber, partStrings) {
+                    _partNumbers.insert(partNumber.toULongLong());
+                }
+
                 _hardwareNumber = theRecord.value("hardware_num").toULongLong();
                 _softwareNumber = theRecord.value("software_num").toULongLong();
                 _codingIndex = theRecord.value("coding_index").toULongLong();
@@ -301,20 +310,20 @@ namespace DS2PlusPlus {
         }
     }
 
-    DS2Response ControlUnit::executeOperation(const QString &name)
+    PacketResponse ControlUnit::executeOperation(const QString &name)
     {
         const OperationPtr ourOp(_operations.value(name));
         if (ourOp.isNull()) {
             throw std::invalid_argument(qPrintable(QString("Operation '%1' could not be found in ECU %2").arg(name).arg(_uuid)));
         }
 
-        DS2PacketPtr ourOutgoingPacket(ourOp->queryPacket());
-        DS2PacketPtr ourIncomingPacket(_manager->query(ourOutgoingPacket));
+        BasePacketPtr ourOutgoingPacket(ourOp->queryPacket());
+        BasePacketPtr ourIncomingPacket(_manager->query(ourOutgoingPacket));
 
         return parseOperation(ourOp, ourIncomingPacket);
     }
 
-    DS2Response ControlUnit::parseOperation(const QString &name, const DS2PacketPtr packet)
+    PacketResponse ControlUnit::parseOperation(const QString &name, const BasePacketPtr packet)
     {
         const OperationPtr theOp = (_operations.value(name));
 
@@ -325,19 +334,20 @@ namespace DS2PlusPlus {
         return parseOperation(theOp, packet);
     }
 
-    DS2Response ControlUnit::parseOperation(const OperationPtr theOp, const DS2PacketPtr packet)
+    PacketResponse ControlUnit::parseOperation(const OperationPtr theOp, const BasePacketPtr packet)
     {
         if (theOp.isNull()) {
-            throw std::invalid_argument(qPrintable(QString("parseOperation requires a valid operation...")));
+            throw std::invalid_argument(qPrintable(QString("parseOperation requires a valid operation.")));
         }
+        qDebug() << "OP: " << theOp->name();
 
         QTextStream qOut(stdout);
         QTextStream qErr(stderr);
 
-        DS2Response ret;
+        PacketResponse ret;
 
-        if (packet->address() != address()) {
-            QString errorString = QString("WARNING: RECV'D PACKET FOR ECU AT 0x%1. OUR ADDR IS 0x%2").arg(packet->address(), 2, 16, QChar('0')).arg(address(), 2, 16, QChar('0'));
+        if (packet->targetAddress() != address()) {
+            QString errorString = QString("WARNING: RECV'D PACKET FOR ECU AT 0x%1. OUR ADDR IS 0x%2").arg(packet->targetAddress(), 2, 16, QChar('0')).arg(address(), 2, 16, QChar('0'));
             //qErr << errorString << endl;
         }
 
@@ -500,8 +510,8 @@ namespace DS2PlusPlus {
         return _operations;
     }
 
-    quint64 ControlUnit::partNumber() const {
-        return _partNumber;
+    QSet<quint64> ControlUnit::partNumbers() const {
+        return _partNumbers;
     }
 
     quint64 ControlUnit::hardwareNumber() const {
@@ -642,7 +652,7 @@ namespace DS2PlusPlus {
         return aValue;
     }
 
-    QVariant ControlUnit::resultByteToVariant(const DS2PacketPtr aPacket, const Result &aResult)
+    QVariant ControlUnit::resultByteToVariant(const BasePacketPtr aPacket, const Result &aResult)
     {
         QChar zeroPadding = QChar('0');
 
@@ -697,7 +707,7 @@ namespace DS2PlusPlus {
         }
     }
 
-    QVariant ControlUnit::resultHexStringToVariant(const DS2PacketPtr aPacket, const Result &aResult)
+    QVariant ControlUnit::resultHexStringToVariant(const BasePacketPtr aPacket, const Result &aResult)
     {
         QChar zeroPadding = QChar('0');
         QString hex;

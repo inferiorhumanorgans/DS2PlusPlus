@@ -8,7 +8,7 @@
   "family":             "MRS",
   "name":               "Multiple Restraint System v3",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
-  "part_number":        6905491,
+  "part_number":        [6905491],
   "hardware_number":    "0x01",
   "software_number":    "0x06",
   "coding_index":       "0x31",

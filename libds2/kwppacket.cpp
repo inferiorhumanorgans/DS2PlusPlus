@@ -1,42 +1,28 @@
-/*
- * This file is part of libds2
- * Copyright (C) 2014
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3.0 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to:
- * Free Software Foundation, Inc.
- * 51 Franklin Street, Fifth Floor
- * Boston, MA  02110-1301 USA
- *
- * Or see <http://www.gnu.org/licenses/>.
- */
+#include "kwppacket.h"
 
 #include <stdexcept>
 
 #include <QSharedPointer>
-
-#include "ds2packet.h"
+#include <QStringList>
 
 namespace DS2PlusPlus {
-    DS2Packet::DS2Packet(QObject *parent) :
+    KWPPacket::KWPPacket(QObject *parent) :
         BasePacket(parent)
     {
+        _hasSourceAddress = true;
+        _sourceAddress = static_cast<quint8>(0xF1);
     }
 
-    DS2Packet::DS2Packet(const QString &aPacketString)
+    KWPPacket::KWPPacket(quint8 aTargetAddress, quint8 aSourceAddress, const QByteArray &someData, QObject *aParent) :
+        BasePacket(aTargetAddress, aSourceAddress, someData, aParent)
+    {
+        _hasSourceAddress = true;
+    }
+
+    KWPPacket::KWPPacket(const QString &aPacketString)
     {
         if (aPacketString.isEmpty()) {
-            throw std::invalid_argument("Empty packet string is invalid");
+            throw std::invalid_argument("Packet string is empty");
         }
 
         QStringList ourArguments = aPacketString.split(" ");
@@ -45,7 +31,8 @@ namespace DS2PlusPlus {
             throw std::invalid_argument("Packet string is invalid");
         }
 
-        quint8 ourAddress = ourArguments.takeFirst().toUShort(NULL, 16);
+        quint8 ourTargetAddress = ourArguments.takeFirst().toUShort(NULL, 16);
+        quint8 ourSourceAddress = ourArguments.takeFirst().toUShort(NULL, 16);
         quint8 ourLength = ourArguments.takeFirst().toUShort(NULL, 16) - 2;
 
         QByteArray ourData;
@@ -53,7 +40,9 @@ namespace DS2PlusPlus {
             ourData.append(ourArguments.at(i).toUShort(NULL, 16));
         }
 
-        _targetAddress = ourAddress;
+        _hasSourceAddress = true;
+        _sourceAddress = ourSourceAddress;
+        _targetAddress = ourTargetAddress;
         _data = ourData;
 
         if ((ourLength - 1) == ourData.length()) {
@@ -73,13 +62,15 @@ namespace DS2PlusPlus {
         }
     }
 
-    unsigned char DS2Packet::checksum(const QByteArray &someData) const
+    unsigned char KWPPacket::checksum(const QByteArray &someData) const
     {
         QByteArray ourData(someData);
 
         if (ourData.isEmpty()) {
+            ourData.append(static_cast<quint8>(0xB8));
             ourData.append(_targetAddress);
-            ourData.append(_data.length() + 3);
+            ourData.append(static_cast<quint8>(_sourceAddress));
+            ourData.append(static_cast<quint8>(_data.length()));
             ourData.append(_data);
         }
 
@@ -91,13 +82,15 @@ namespace DS2PlusPlus {
         return ourChecksum;
     }
 
-    const QString DS2Packet::toByteString () const
+    const QString KWPPacket::toByteString () const
     {
         QStringList ret;
         QChar zeroPadding('0');
 
+        ret.append(QString("%1").arg(static_cast<quint8>(0xB8), 2, 16, zeroPadding));
         ret.append(QString("%1").arg(_targetAddress, 2, 16, zeroPadding));
-        ret.append(QString("%1").arg(_data.length() + 3, 2, 16, zeroPadding));
+        ret.append(QString("%1").arg(_sourceAddress, 2, 16, zeroPadding));
+        ret.append(QString("%1").arg(_data.length(), 2, 16, zeroPadding));
 
         for (int i=0; i < _data.length(); i++) {
             ret.append(QString("%1").arg(static_cast<quint8>(_data.at(i)), 2, 16, zeroPadding));

@@ -71,7 +71,7 @@ namespace DS2PlusPlus {
          * \param aName Name of the operation
          * \return
          */
-        virtual DS2Response executeOperation(const QString &aName);
+        virtual PacketResponse executeOperation(const QString &aName);
 
         /*!
          * \brief parseOperation looks up a named operation, parses and returns a DS2Packet (typically fetched from the car)
@@ -79,7 +79,7 @@ namespace DS2PlusPlus {
          * \param aPacket
          * \return
          */
-        virtual DS2Response parseOperation(const QString &aName, const DS2PacketPtr aPacket);
+        virtual PacketResponse parseOperation(const QString &aName, const BasePacketPtr aPacket);
 
         /*!
          * \brief parseOperation parses and returns a DS2Packet (typically fetched from the car) for an Operation object
@@ -87,7 +87,7 @@ namespace DS2PlusPlus {
          * \param aPacket
          * \return
          */
-        virtual DS2Response parseOperation(const OperationPtr anOperation, const DS2PacketPtr aPacket);
+        virtual PacketResponse parseOperation(const OperationPtr anOperation, const BasePacketPtr aPacket);
 
         /*!
          * \brief dppVersion
@@ -134,8 +134,8 @@ namespace DS2PlusPlus {
         const QString name() const;
         Q_PROPERTY(const QString name MEMBER _name READ name)
 
-        quint64 partNumber() const;
-        Q_PROPERTY(quint64 partNumber MEMBER _partNumber READ partNumber)
+        QSet<quint64> partNumbers() const;
+        Q_PROPERTY(QSet<quint64> partNumbers MEMBER _partNumbers READ partNumbers)
 
         quint64 hardwareNumber() const;
         Q_PROPERTY(quint64 hardwareNumber MEMBER _hardwareNumber READ hardwareNumber)
@@ -164,8 +164,8 @@ namespace DS2PlusPlus {
          *
          * Types handled include: integers, floats, and strings from a lookup table
          */
-        QVariant resultByteToVariant(const DS2PacketPtr aPacket, const Result &aResult);
-        QVariant resultHexStringToVariant(const DS2PacketPtr aPacket, const Result &aResult);
+        QVariant resultByteToVariant(const BasePacketPtr aPacket, const Result &aResult);
+        QVariant resultHexStringToVariant(const BasePacketPtr aPacket, const Result &aResult);
         char getCharFrom6BitInt(quint8 n);
         char decode_vin_char(int start, const QByteArray &bytes);
 
@@ -180,7 +180,8 @@ namespace DS2PlusPlus {
         QString _family;
         QString _name;
         QHash<QString, OperationPtr> _operations;
-        quint64 _partNumber, _hardwareNumber, _softwareNumber, _codingIndex;
+        QSet<quint64> _partNumbers;
+        quint64 _hardwareNumber, _softwareNumber, _codingIndex;
         bool _bigEndian;
         quint8 _matchFlags;
 

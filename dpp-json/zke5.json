@@ -8,7 +8,7 @@
   "family":             "ZKE",
   "name":               "Central Body Electronics v5",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
-  "part_number":        6907663,
+  "part_number":        [6907663],
   "hardware_number":    "0x11",
   "software_number":    "0x16",
   "coding_index":       "0x02",
@@ -441,3 +441,5 @@
     }
   }
 }
+
+// 00 09 A0 01 00 00 3D 21 B4 

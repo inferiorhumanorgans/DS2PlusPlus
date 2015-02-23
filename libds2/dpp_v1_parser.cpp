@@ -140,6 +140,7 @@ namespace DS2PlusPlus {
         moduleRecord.setValue("file_version", moduleJson["file_version"].asInt());
         moduleRecord.setValue("dpp_version", moduleJson["dpp_version"].asInt());
         moduleRecord.setValue("name", name);
+        moduleRecord.setValue("protocol", getQStringFromJson(moduleJson["protocol"]));
         moduleRecord.setValue("family", getQStringFromJson(moduleJson["family"]));
 
         QString ecuAddressString = getQStringFromJson(moduleJson["address"]);
@@ -168,8 +169,13 @@ namespace DS2PlusPlus {
         bool ok;
 
         if (!moduleJson["part_number"].isNull()) {
-            quint64 part_number = moduleJson["part_number"].asUInt64();
-            moduleRecord.setValue("part_number", part_number);
+            QStringList partNumbers;
+
+            for (Json::ArrayIndex i=0; i < moduleJson["part_number"].size(); i++) {
+                partNumbers << QString::number(moduleJson["part_number"][i].asUInt64(), 10);
+            }
+
+            moduleRecord.setValue("part_number", partNumbers.join("/"));
         }
 
         if (!moduleJson["hardware_number"].isNull()) {

@@ -95,10 +95,10 @@ namespace DS2PlusPlus
         void setFd(int aFd);
         int fd() const;
 
-        DS2PacketPtr query(DS2PacketPtr aPacket);
+        BasePacketPtr query(BasePacketPtr aPacket);
 
         ControlUnitPtr findModuleAtAddress(quint8 anAddress);
-        ControlUnitPtr findModuleByMatchingIdentPacket(const DS2PacketPtr packet);
+        ControlUnitPtr findModuleByMatchingIdentPacket(const BasePacketPtr packet);
 
         /*!
          * \brief findModuleRecordByUuid

@@ -188,8 +188,8 @@ void DataCollection::run()
 
             if (!autoDetect.isNull()) {
                 qOut << QString("At 0x%1 we think we have: %2").arg(autoDetect->address(), 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
-                DS2Response ourResponse = autoDetect->executeOperation("identify");
-                qOut << "Identity:" << endl << DS2ResponseToJsonString(ourResponse) << endl;
+                PacketResponse ourResponse = autoDetect->executeOperation("identify");
+                qOut << "Identity:" << endl << ResponseToJsonString(ourResponse) << endl;
             } else {
             }
             emit finished();
@@ -215,8 +215,26 @@ void DataCollection::listFamilies()
 
     QStringList families = ControlUnit::knownFamilies();
     families.sort();
-    qOut << "Known ECU families: " << families.join(", ") << endl;
 
+    qOut << "Known ECU families: " << families.join(", ") << endl << endl;
+    qOut.setFieldAlignment(QTextStream::AlignLeft);
+    qOut << qSetFieldWidth(8) << "Family" << qSetFieldWidth(25) << "Addresses" << qSetFieldWidth(1) << endl;
+
+    qOut.setPadChar('-');
+    qOut << qSetFieldWidth(33) << "-" << qSetFieldWidth(1) << endl;
+    qOut.setPadChar(' ');
+
+    foreach(const QString &family, families) {
+        qOut << qSetFieldWidth(8) << family;
+        QStringList textList;
+        QString stringVal;
+        foreach(quint8 address, ControlUnit::addressForFamily(family)) {
+            stringVal.sprintf("0x%02X", address);
+            textList << stringVal;
+        }
+        qOut << qSetFieldWidth(25) << textList.join(", ");
+        qOut << qSetFieldWidth(1) << endl;
+    }
     return;
 }
 
@@ -286,7 +304,15 @@ void DataCollection::listOperations()
 
     ControlUnitPtr ourEcu(new ControlUnit(ecuUuid));
     QHash<QString, OperationPtr> ourOperations = ourEcu->operations();
-    qOut << "Operations for: " << ourEcu->name() << " (" << ourEcu->uuid() << ")" << endl << endl;
+    qOut << "Operations for: " << ourEcu->name() << " (" << ourEcu->uuid() << ")" << endl;
+
+    QStringList partStrings;
+    QList<quint64> partNumbers = ourEcu->partNumbers().toList();
+    qSort(partNumbers);
+    foreach (quint64 partNumber, partNumbers) {
+        partStrings << QString::number(partNumber, 10);
+    }
+    qOut << "Part numbers:   " << partStrings.join(", ") << endl << endl;
 
     QHash<QString, QStringList> opsHash;
     foreach (const OperationPtr ourOp, ourOperations.values()) {
@@ -342,7 +368,7 @@ void DataCollection::probeAll()
         }
 
         usleep(100000);
-        DS2Response ourResponse;
+        PacketResponse ourResponse;
         try {
             if (getenv("DPP_TRACE")) {
                 qDebug() << "Running identify";
@@ -372,7 +398,7 @@ void DataCollection::probeAll()
             notes.append("CI mismatch");
         }
 
-        DS2Response ourVin;
+        PacketResponse ourVin;
         if (autoDetect->operations().contains("vehicle_id")) {
             usleep(250000);
             try {
@@ -385,7 +411,7 @@ void DataCollection::probeAll()
         } else if (autoDetect->operations().contains("vehicle_id_short")) {
             usleep(250000);
             try {
-                DS2Response ourVin = autoDetect->executeOperation("vehicle_id_short");
+                PacketResponse ourVin = autoDetect->executeOperation("vehicle_id_short");
                 if (ourVin.contains("short_vin")) {
                     notes.append(QString("vin=%1").arg(ourVin.value("short_vin").toString()));
                 }
@@ -396,7 +422,7 @@ void DataCollection::probeAll()
         if (autoDetect->operations().contains("dtc_count")) {
             usleep(250000);
             try {
-                DS2Response ourFaultCountResponse;
+                PacketResponse ourFaultCountResponse;
                 ourFaultCountResponse = autoDetect->executeOperation("dtc_count");
                 if (ourFaultCountResponse.contains("error_code.count")) {
                     quint64 ourFaultCount = ourFaultCountResponse.value("error_code.count").toULongLong();
@@ -418,8 +444,8 @@ void DataCollection::rawQuery()
 {
     using namespace DS2PlusPlus;
 
-    DS2PacketPtr queryPacket(new DS2Packet(parser->value("query")));
-    DS2PacketPtr responsePacket =  dbm->query(queryPacket);
+    BasePacketPtr queryPacket(new DS2Packet(parser->value("query")));
+    BasePacketPtr responsePacket =  dbm->query(queryPacket);
 
     qOut << "Response: " << responsePacket << endl;
 }
@@ -477,13 +503,13 @@ void DataCollection::runOperation()
         }
 
         for (quint64 i=0; i < iterations; i++) {
-            DS2Response ourResponse;
+            PacketResponse ourResponse;
             if (!ourPacket.isNull()) {
                 ourResponse = autoDetect->parseOperation(ourJob, ourPacket);
             } else {
                 ourResponse = autoDetect->executeOperation(ourJob);
             }
-            qOut << "\"" << ourJob << "\"" << ": " << DS2ResponseToJsonString(ourResponse) << endl;
+            qOut << "\"" << ourJob << "\"" << ": " << ResponseToJsonString(ourResponse) << endl;
             if ((i < iterations - 1) and (iterations > 1)) {
                 sleep(1);
             }
@@ -583,7 +609,7 @@ void DataCollection::dataLog()
             double execTime = tv.tv_sec + (0.000001 * tv.tv_usec);
             double curTime = execTime - startTime;
 
-            DS2Response ourResponse = ourEcu->executeOperation(entry.jobName);
+            PacketResponse ourResponse = ourEcu->executeOperation(entry.jobName);
 
             outValues << QString::number(curTime, 'f', 5);
 

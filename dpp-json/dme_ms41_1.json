@@ -8,7 +8,7 @@
   "family":             "DME",
   "name":               "Siemens MS 41.1 (M52, S52-USA)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
-  "part_number":        1437806,
+  "part_number":        [1437806],
   "hardware_number":    "0x11",
   "software_number":    "0x60",
   "coding_index":       "0x01",

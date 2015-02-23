@@ -51,6 +51,7 @@
 #include "exceptions.h"
 #include "manager.h"
 #include "dpp_v1_parser.h"
+#include "kwppacket.h"
 
 QByteArray readBytes(int fd, int length)
 {
@@ -323,15 +324,21 @@ namespace DS2PlusPlus {
         throw std::ios_base::failure(qPrintable(errorString));
     }
 
-    DS2PacketPtr Manager::query(DS2PacketPtr aPacket)
+    BasePacketPtr Manager::query(BasePacketPtr aPacket)
     {
-        bool slowEcu = (aPacket->address() == 0xA4); // Slow down even more for the air bag control unit.  UGH.
+        // TODO: Move this into the schema so we can set timing per ECU
+        bool slowEcu = (aPacket->targetAddress() == 0xA4); // Slow down even more for the air bag control unit.  UGH.
 
         if (!fd_is_valid(_fd)) {
             throw std::ios_base::failure("Serial port is not open.");
         }
 
-        DS2PacketPtr ret(new DS2Packet);
+        BasePacketPtr ret;
+        if (aPacket->hasSourceAddress()) {
+            ret = BasePacketPtr(new KWPPacket);
+        } else {
+            ret = BasePacketPtr(new DS2Packet);
+        }
 
         // Send query to the ECU
         QByteArray ourBA = static_cast<QByteArray>(*aPacket);
@@ -353,6 +360,12 @@ namespace DS2PlusPlus {
         quint8 length;
 
         QByteArray inputArray;
+        if (aPacket->hasSourceAddress()) {
+            inputArray = readBytes(_fd, 2);
+            usleep(slowEcu ? 250000 : 12500);
+            // Should be reading in 0xB8 as our header and F1 as our target address
+        }
+
         inputArray = readBytes(_fd, 2);
         usleep(slowEcu ? 250000 : 12500);
 
@@ -362,18 +375,24 @@ namespace DS2PlusPlus {
         }
 
         ecuAddress = inputArray.at(0);
-        ret->setAddress(ecuAddress);
+        ret->setTargetAddress(ecuAddress);
         length = inputArray.at(1);
 
-        if (length < 4) {
+        if ((length < 4) && (!aPacket->hasSourceAddress())) {
             QString errorString = QString("Ack. Got garbage data, length must be >= 4.  Got ECU: %1, LEN: %2").arg(QString::number(ecuAddress, 16)).arg(QString::number(length, 16));
             throw std::ios_base::failure(qPrintable(errorString));
         }
 
-        inputArray = readBytes(_fd, length - 2);
-
-        if (inputArray.length() != (length - 2)) {
-            qDebug() << "RUH ROH";
+        if (aPacket->hasSourceAddress()) {
+            inputArray = readBytes(_fd, length + 1);
+            if (inputArray.length() != (length + 1 )) {
+                qDebug() << "Packet specified length, but we read back a different amount of data.";
+            }
+        } else {
+            inputArray = readBytes(_fd, length - 2);
+            if (inputArray.length() != (length - 2)) {
+                qDebug() << "Packet specified length, but we read back a different amount of data.";
+            }
         }
 
         // Copy in all but the checksum.
@@ -397,33 +416,76 @@ namespace DS2PlusPlus {
     }
 
     ControlUnitPtr Manager::findModuleAtAddress(quint8 anAddress) {
-        DS2PacketPtr ourSentPacket(new DS2Packet(anAddress, QByteArray((int)1, (unsigned char)0x00)));
-        DS2PacketPtr ourReceivedPacket = query(ourSentPacket);
-        //qDebug() << "Our IDENT: " << *ourReceivedPacket;
+        if (getenv("DPP_TRACE")) {
+            qDebug() << "ControlUnitPtr Manager::findModuleAtAddress(" << anAddress << ")";
+        }
+
+        BasePacketPtr ourSentPacket(new DS2Packet(anAddress, QByteArray((int)1, (unsigned char)0x00)));
+        if (getenv("DPP_TRACE")) {
+            qDebug() << ">> IDENT: " << *ourSentPacket;
+        }
+
+        BasePacketPtr ourReceivedPacket;
+        try {
+            ourReceivedPacket = query(ourSentPacket);
+        } catch(DS2PlusPlus::TimeoutException) {
+            if (getenv("DPP_TRACE")) {
+                qDebug() << "Timeout reading DS2";
+            }
+        }
+
+        if (ourReceivedPacket.isNull()) {
+            if (anAddress == 0x12) {
+                qDebug() << "Let's try KWP-2000";
+                ourSentPacket = BasePacketPtr(new KWPPacket(anAddress, static_cast<unsigned char>(0xF1) /* laptop fixed addy*/, QByteArray((int)1, static_cast<unsigned char>(0xA2))));
+                try {
+                    ourReceivedPacket = query(ourSentPacket);
+                } catch(DS2PlusPlus::TimeoutException) {
+                    if (getenv("DPP_TRACE")) {
+                        qDebug() << "Timeout with KWP. :(";
+                    }
+                }
+            }
+        }
+
+        if (ourReceivedPacket.isNull()) {
+            if (getenv("DPP_TRACE")) {
+                qDebug() << "Read null";
+            }
+            return ControlUnitPtr();
+        }
+
+        if (getenv("DPP_TRACE")) {
+            qDebug() << "<< IDENT: " << *ourReceivedPacket;
+        }
+
         return findModuleByMatchingIdentPacket(ourReceivedPacket);
     }
 
-    ControlUnitPtr Manager::findModuleByMatchingIdentPacket(const DS2PacketPtr aPacket) {
+    ControlUnitPtr Manager::findModuleByMatchingIdentPacket(const BasePacketPtr aPacket) {
         ControlUnitPtr ret;
         QHash<QString, ControlUnitPtr> modules;
         QHash<QString, ControlUnitPtr>::Iterator moduleIt;
         quint8 fullMatch = ControlUnit::MatchNone;
         QString ourKey;
 
-        modules = findAllModulesByAddress(aPacket->address());
+        if (getenv("DPP_TRACE")) {
+            qDebug() << "Here";
+        }
+        modules = findAllModulesByAddress(aPacket->targetAddress());
         for (moduleIt = modules.begin(); moduleIt != modules.end(); ++moduleIt) {
             ControlUnitPtr ecu(moduleIt.value());
 
-            if (ecu->partNumber() == 0) {
+            if (ecu->partNumbers().isEmpty()) {
                 continue;
             }
 
-            DS2Response response(ecu->parseOperation("identify", aPacket));
+            PacketResponse response(ecu->parseOperation("identify", aPacket));
             if (getenv("DPP_TRACE")) {
                 qDebug() << "Checking " << ecu->name();
             }
 
-            if (response.value("part_number").toULongLong() == ecu->partNumber()) {
+            if (ecu->partNumbers().contains(response.value("part_number").toULongLong())) {
                 fullMatch |= ControlUnit::MatchAll;
                 ret = ecu;
                 ourKey = moduleIt.key();
@@ -670,12 +732,13 @@ namespace DS2PlusPlus {
                                       "dpp_version  INTEGER NOT NULL,\n"        \
                                       "file_version INTEGER NOT NULL,\n"        \
                                       "uuid         BLOB UNIQUE NOT NULL PRIMARY KEY,\n" \
+                                      "protocol     VARCHAR,\n"                 \
                                       "address      INTEGER,\n"                 \
                                       "family       VARCHAR,\n"                 \
                                       "name         VARCHAR NOT NULL,\n"        \
                                       "mtime        INTEGER NOT NULL,\n"        \
                                       "parent_id    VARCHAR,\n"                 \
-                                      "part_number  INTEGER,\n"                 \
+                                      "part_number  VARCHAR,\n"                 \
                                       "hardware_num INTEGER,\n"                 \
                                       "software_num INTEGER,\n"                 \
                                       "coding_index INTEGER,\n"                 \

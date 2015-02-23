@@ -18,7 +18,9 @@ SOURCES += \
            operation.cpp \
            result.cpp \
            manager.cpp \
-    dpp_v1_parser.cpp
+    dpp_v1_parser.cpp \
+    basepacket.cpp \
+    kwppacket.cpp
 
 HEADERS +=\
            ds2packet.h \
@@ -27,7 +29,9 @@ HEADERS +=\
            controlunit.h \
            manager.h \
     dpp_v1_parser.h \
-    exceptions.h
+    exceptions.h \
+    basepacket.h \
+    kwppacket.h
 
 unix {
     target.path = /usr/lib

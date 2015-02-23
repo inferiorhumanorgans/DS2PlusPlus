@@ -8,7 +8,7 @@
   "family":             "IHKA",
   "name":               "E46 Auto Climate Control",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
-  "part_number":        4106930,
+  "part_number":        [4106930],
   "hardware_number":    "0x22",
   "software_number":    "0x05",
   "coding_index":       "0x03",
