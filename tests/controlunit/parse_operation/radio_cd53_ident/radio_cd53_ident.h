@@ -24,7 +24,7 @@ namespace Test_ControlUnit {
             static const char cd53_ident[];
             DS2PlusPlus::DS2PacketPtr packet;
             DS2PlusPlus::ControlUnitPtr ecu;
-            DS2PlusPlus::DS2Response results;
+            DS2PlusPlus::PacketResponse results;
 
         private Q_SLOTS:
             void partNumber();

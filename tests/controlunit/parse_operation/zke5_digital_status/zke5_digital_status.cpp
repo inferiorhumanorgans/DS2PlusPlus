@@ -14,7 +14,7 @@ namespace Test_ControlUnit {
             ecu= ControlUnitPtr(new ControlUnit);
             ecu->loadByUuid("00000000-0001-0000-0000-000000000000");
             results = ecu->parseOperation("digital_status", packet);
-            qDebug() << DS2ResponseToJsonString(results) << endl;
+            qDebug() << ResponseToJsonString(results) << endl;
         }
 
         void ZKE5_Digital_Status::tailgate()

@@ -24,7 +24,7 @@ namespace Test_ControlUnit {
         {
             const char rpm_packet[] = {0xA0, 0x8C, 0x1D};
             DS2PacketPtr packet(PACKET_FROM_CHARS(ControlUnit::addressForFamily("KOMBI"), rpm_packet));
-            DS2Response results = ecu->parseOperation("canbus_rpm", packet);
+            PacketResponse results = ecu->parseOperation("canbus_rpm", packet);
             QVariant expectedValue((quint64)1181);
             QCOMPARE(results.value("rpm"), expectedValue);
         }

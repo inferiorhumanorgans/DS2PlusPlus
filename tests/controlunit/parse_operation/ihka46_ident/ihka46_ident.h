@@ -23,7 +23,7 @@ namespace Test_ControlUnit {
             static const char ihka_ident[];
             DS2PlusPlus::DS2PacketPtr packet;
             DS2PlusPlus::ControlUnitPtr json;
-            DS2PlusPlus::DS2Response results;
+            DS2PlusPlus::PacketResponse results;
 
         private Q_SLOTS:
             void partNumber();

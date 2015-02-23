@@ -24,7 +24,7 @@ namespace Test_ControlUnit {
             static const char lsz_status1[], lsz_status2[];
             DS2PlusPlus::DS2PacketPtr packet1, packet2;
             DS2PlusPlus::ControlUnitPtr ecu;
-            DS2PlusPlus::DS2Response results1, results2;
+            DS2PlusPlus::PacketResponse results1, results2;
 
         private Q_SLOTS:
             void flash_to_pass_voltage();
