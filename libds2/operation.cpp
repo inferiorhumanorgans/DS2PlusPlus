@@ -43,6 +43,16 @@ namespace DS2PlusPlus {
         return _name;
     }
 
+    const QString Operation::parentId() const
+    {
+        return _parentId;
+    }
+
+    void Operation::setParentId(const QString &parentId)
+    {
+        _parentId = parentId;
+    }
+
     const QStringList Operation::command() const
     {
         QStringList ret;

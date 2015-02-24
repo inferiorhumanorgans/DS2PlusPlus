@@ -196,7 +196,6 @@ namespace DS2PlusPlus {
                 OperationPtr op;
                 if (_operations.contains(opName)) {
                     op = _operations.value(opName);
-#if 0
                     if (op->parentId() == opUuid) {
                         if (getenv("DPP_TRACE")) {
                             qErr << "\tMerging operation: '" << opName << "' (" << opUuid << ")" << endl;
@@ -208,7 +207,6 @@ namespace DS2PlusPlus {
                             op->setCommand(opCommand);
                         }
                     } else
-#endif
                     {
                         if (getenv("DPP_TRACE")) {
                             qErr << "\tSkipping operation: '" << opName << "' (" << opUuid << ")" << endl;
@@ -220,6 +218,7 @@ namespace DS2PlusPlus {
                         qErr << "\tAdding operation: '" << opName << "' (" << opUuid << ")" << endl;
                     }
                     op = OperationPtr(new Operation(opUuid, _address, opName, opCommand));
+                    op->setParentId(opParent);
                 }
 
                 QString curOpUuid = opUuid;

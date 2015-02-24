@@ -40,7 +40,11 @@ namespace DS2PlusPlus {
         const QString uuid() const;
         const QString moduleId() const;
 
+        const QString parentId() const;
+        void setParentId(const QString &parentId);
+
         const QString name() const;
+
         const QStringList command() const;
         void setCommand(const QByteArray &aCommand);
 
@@ -52,7 +56,7 @@ namespace DS2PlusPlus {
         DS2Packet *queryPacket() const;
 
     protected:
-        QString _uuid, _name;
+        QString _uuid, _name, _parentId;
         quint8 _controlUnitAddress;
         QByteArray _command;
         QHash<QString, Result> _results;
