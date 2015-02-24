@@ -57,7 +57,7 @@ namespace DS2PlusPlus {
     {
         QStringList ret;
         for (int i=0; i < _command.length(); i++) {
-            ret.append(QString("0x%1").arg(_command.at(i), 2, 16, QChar('0')));
+            ret.append(QString("0x%1").arg(static_cast<quint8>(_command.at(i)), 2, 16, QChar('0')));
         }
 
         return ret;
