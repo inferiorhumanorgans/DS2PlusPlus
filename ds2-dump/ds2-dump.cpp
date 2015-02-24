@@ -89,9 +89,20 @@ void DataCollection::run()
     QCommandLineOption rawQueryOption(QStringList() << "Q" << "query", "Send packet to ECU, print raw output.", "query");
     parser->addOption(rawQueryOption);
 
+    QCommandLineOption outputFormatOption(QStringList() << "F" << "format", "Output format.  Either text, verbose, or json.", "format", "text");
+    parser->addOption(outputFormatOption);
+
     parser->process(*QCoreApplication::instance());
 
     try {
+        if (parser->isSet("format")) {
+            QStringList validFormats;
+            validFormats << "text" << "verbose" << "json";
+            if (!validFormats.contains(parser->value("format"))) {
+                throw CommandlineArgumentException("Format must be one of: text, verbose, json.");
+            }
+        }
+
         if (!parser->isSet("reload") && !parser->isSet("families") && !parser->isSet("ecus") && !parser->isSet("operations")) {
             if (!parser->isSet("input-packet")) {
                 if (!parser->isSet("port")) {
@@ -304,7 +315,7 @@ void DataCollection::listOperations()
 
     ControlUnitPtr ourEcu(new ControlUnit(ecuUuid));
     QHash<QString, OperationPtr> ourOperations = ourEcu->operations();
-    qOut << "Operations for: " << ourEcu->name() << " (" << ourEcu->uuid() << ")" << endl;
+    qOut << "Control Unit: " << ourEcu->name() << " (" << ourEcu->uuid() << ")" << endl;
 
     QStringList partStrings;
     QList<quint64> partNumbers = ourEcu->partNumbers().toList();
@@ -312,7 +323,7 @@ void DataCollection::listOperations()
     foreach (quint64 partNumber, partNumbers) {
         partStrings << QString::number(partNumber, 10);
     }
-    qOut << "Part numbers:   " << partStrings.join(", ") << endl << endl;
+    qOut << "Part numbers: " << partStrings.join(", ") << endl << endl;
 
     QHash<QString, QStringList> opsHash;
     foreach (const OperationPtr ourOp, ourOperations.values()) {
@@ -328,12 +339,82 @@ void DataCollection::listOperations()
 
     QStringList opNames = opsHash.keys();
     opNames.sort();
-    foreach (const QString &ourOpName, opNames) {
-        qOut << qSetFieldWidth(11) << left << "Operation:";
-        qOut << qSetFieldWidth(1)  << ourOpName << endl;
-        qOut << qSetFieldWidth(11) << "Returns:";
-        qOut << qSetFieldWidth(1)  << opsHash[ourOpName].join(", ") << endl;
-        qOut << endl;
+
+    if (parser->value("format") == "json") {
+        qOut << "JSON";
+    } else if (parser->value("format") == "text") {
+        foreach (const QString &ourOpName, opNames) {
+            qOut << qSetFieldWidth(14) << left << "Operation:";
+            qOut << qSetFieldWidth(1)  << ourOpName << endl;
+
+            qOut << qSetFieldWidth(14) << left << "Command:";
+            qOut << ourEcu->operations()[ourOpName]->command().join(", ");
+            qOut << qSetFieldWidth(1) << endl;
+
+            qOut << qSetFieldWidth(14) << "Returns:";
+            qOut << qSetFieldWidth(1)  << opsHash[ourOpName].join(", ") << endl;
+            qOut << endl;
+        }
+    } else if (parser->value("format") == "verbose") {
+        foreach (const QString &ourOpName, opNames) {
+            qOut << qSetFieldWidth(14) << left << "Operation:";
+            qOut << qSetFieldWidth(1)  << ourOpName << endl;
+
+            qOut << qSetFieldWidth(14) << left << "Command:";
+            qOut << ourEcu->operations()[ourOpName]->command().join(", ");
+            qOut << qSetFieldWidth(1) << endl;
+
+            qOut << qSetFieldWidth(14) << "Returns:" << left << "Data Type" << "Name";
+            qOut << qSetFieldWidth(1)  << endl;
+
+            qOut << qSetFieldWidth(14) << " " << qSetPadChar('-') << "-" << qSetFieldWidth(50) << "-" << qSetPadChar(' ') << qSetFieldWidth(1) << endl;
+
+            foreach (const QString &aResultName, opsHash[ourOpName]) {
+                Result result = ourEcu->operations()[ourOpName]->results()[aResultName];
+
+                qOut << qSetFieldWidth(14) << left << " ";
+                qOut << qSetFieldWidth(14) << left;
+
+                if (result.type() == "byte") {
+                    if (result.displayFormat().startsWith("string_table:")) {
+                        qOut << "string";
+                    } else if (result.displayFormat() == "raw") {
+                        qOut << "integer (dec)";
+                    } else if (result.displayFormat() == "hex_string") {
+                        qOut << "integer (hex)";
+                    } else if (result.displayFormat() == "hex_int") {
+                        qOut << "integer (dec)";
+                    } else if (result.displayFormat() == "float") {
+                        qOut << "decimal";
+                    } else {
+                        qOut << "byte " << result.displayFormat();
+                    }
+                } else if (result.type() == "boolean") {
+                    if (result.displayFormat() == "string") {
+                        qOut << "string (bool)";
+                    } else {
+                        qOut << "boolean";
+                    }
+                } else if (result.type() == "hex_string") {
+                    if (result.displayFormat() == "int") {
+                        qOut << "integer (dec)";
+                    } else {
+                        qOut << result.displayFormat();
+                    }
+                } else if (result.type() == "signed_byte") {
+                    qOut << "int (signed)";
+                } else if (result.type() == "6bit-string") {
+                    qOut << "string";
+                } else {
+                    qOut << result.type();
+                }
+
+                qOut << qSetFieldWidth(14) << left << aResultName;
+                qOut << qSetFieldWidth(1)  << endl;
+            }
+
+            qOut << qSetFieldWidth(1)  << endl;
+        }
     }
 }
 
