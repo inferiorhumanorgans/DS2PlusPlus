@@ -105,4 +105,16 @@ namespace DS2PlusPlus {
 
         return ret.join(" ");
     }
+
+    const QByteArray DS2Packet::toByteArray() const
+    {
+        QByteArray ret;
+
+        ret.append(_targetAddress);
+        ret.append(_data.length() + 3);
+        ret.append(_data);
+        ret.append(checksum(ret));
+
+        return ret;
+    }
 }

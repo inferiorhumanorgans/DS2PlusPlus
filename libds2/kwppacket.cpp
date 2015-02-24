@@ -98,4 +98,21 @@ namespace DS2PlusPlus {
 
         return ret.join(" ");
     }
+
+    const QByteArray KWPPacket::toByteArray() const
+    {
+        QByteArray ret;
+
+        ret.append(0xB8);
+        ret.append(_targetAddress);
+        ret.append(_sourceAddress);
+        ret.append(_data.length());
+
+        ret.append(_data);
+        ret.append(checksum(ret));
+
+//        ret.data()[1] = 0x12;
+
+        return ret;
+    }
 }

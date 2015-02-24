@@ -146,23 +146,7 @@ namespace DS2PlusPlus {
 
     BasePacket::operator const QByteArray () const
     {
-        QByteArray ret;
-
-        if (_hasSourceAddress) {
-            ret.append(0xB8);
-            ret.append(_targetAddress);
-            ret.append(_sourceAddress);
-            ret.append(_data.length());
-        } else {
-            ret.append(_targetAddress);
-            ret.append(_data.length() + 3);
-        }
-        ret.append(_data);
-        ret.append(checksum(ret));
-
-        if (_hasSourceAddress) {
-            ret.data()[1] = 0x12;
-        }
+        QByteArray ret = this->toByteArray();
 
         if (getenv("DPP_DEBUG_CONVERSION")) {
             for (int i=0; i < ret.length(); i++) {

@@ -69,6 +69,8 @@ namespace DS2PlusPlus {
         operator const QByteArray() const;
 
     protected:
+        virtual const QByteArray toByteArray() const = 0;
+
         bool _hasSourceAddress;
         quint8 _sourceAddress, _targetAddress;
         QByteArray _data;

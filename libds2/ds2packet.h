@@ -44,6 +44,9 @@ namespace DS2PlusPlus
         virtual unsigned char checksum(const QByteArray &data = QByteArray()) const;
 
         virtual const QString toByteString () const;
+
+    protected:
+        virtual const QByteArray toByteArray() const;
     };
     typedef QSharedPointer<DS2Packet> DS2PacketPtr;
 }
