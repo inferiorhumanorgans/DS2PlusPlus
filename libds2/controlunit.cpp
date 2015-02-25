@@ -349,7 +349,6 @@ namespace DS2PlusPlus {
         if (theOp.isNull()) {
             throw std::invalid_argument(qPrintable(QString("parseOperation requires a valid operation.")));
         }
-        qDebug() << "OP: " << theOp->name();
 
         QTextStream qOut(stdout);
         QTextStream qErr(stderr);
