@@ -1,0 +1,18 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2015-01-25T23:45:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "32000000-0001-0000-0000-000000000000",
+  "address":            "0x32",
+  "family":             "EGS",
+  "name":               "Bosch GS 8.60.2 (E38/E39)",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [7353036],
+  "hardware_number":    "0x2B",
+  "software_number":    "0x17",
+  "coding_index":       "0x00",
+  "endian":             "big",
+  "operations": {
+  }
+}

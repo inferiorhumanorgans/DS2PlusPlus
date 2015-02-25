@@ -1,0 +1,60 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2015-01-25T00:32:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "AC000000-0002-0000-0000-000000000000",
+  "address":            "0xAC",
+  "family":             "EHC",
+  "name":               "Electronic Height Control, 2-Axle (2N2)",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [1234567],
+  "hardware_number":    "0x44",
+  "software_number":    "0x43",
+  "coding_index":       "0x01",
+  "endian":             "little",
+  "operations": {
+    "sensor_status": {
+      "uuid":           "AC000001-0002-0001-0000-000000000000",
+      "command":        ["0x0b", "0x00"],
+      "results": {
+        "height.front.left": {
+          "uuid":       "AC000001-0002-0001-0001-000000000000",
+          "type":       "byte",
+          "display":    "int",
+          "start_pos":  3,
+          "length":     1,
+          "rpn":        "N 32 *",
+          "units":      "mm"
+        },
+        "height.front.right": {
+          "uuid":       "AC000001-0002-0001-0002-000000000000",
+          "type":       "byte",
+          "display":    "int",
+          "start_pos":  5,
+          "length":     1,
+          "rpn":        "N 32 *",
+          "units":      "mm"
+        },
+        "height.rear.left": {
+          "uuid":       "AC000001-0002-0001-0003-000000000000",
+          "type":       "byte",
+          "display":    "int",
+          "start_pos":  7,
+          "length":     1,
+          "rpn":        "N 32 *",
+          "units":      "mm"
+        },
+        "height.rear.right": {
+          "uuid":       "AC000001-0002-0001-0004-000000000000",
+          "type":       "byte",
+          "display":    "int",
+          "start_pos":  9,
+          "length":     1,
+          "rpn":        "N 32 *",
+          "units":      "mm"
+        }
+      }
+    }
+  }
+}
