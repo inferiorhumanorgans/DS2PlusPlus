@@ -484,7 +484,7 @@ void DataCollection::probeAll()
                 qOut << endl;
             }
 
-            autoDetect = DS2PlusPlus::ControlUnitPtr (dbm->findModuleAtAddress(address));
+            autoDetect = DS2PlusPlus::ControlUnitPtr(dbm->findModuleAtAddress(address));
         } catch(DS2PlusPlus::TimeoutException) {
             if (parser->value("format") == "verbose") {
                 qOut << QString("-- Uncaught timeout for ECU at 0x%1").arg(address, 2, 16, QChar('0')) << endl;
@@ -509,7 +509,7 @@ void DataCollection::probeAll()
                 qOut << QString(">> Interrogating ECU at 0x%1 for additional details").arg(address, 2, 16, QChar('0')) << endl;
             }
             ourResponse = autoDetect->executeOperation("identify");
-        } catch(DS2PlusPlus::TimeoutException exception) {
+        } catch(DS2PlusPlus::TimeoutException) {
             if (parser->value("format") == "verbose") {
                 qOut << QString("-- Uncaught timeout for ECU at 0x%1").arg(address, 2, 16, QChar('0')) << endl;
             }
@@ -537,7 +537,7 @@ void DataCollection::probeAll()
                 if (ourVin.contains("vin")) {
                     notes.append(QString("vin=%1").arg(ourVin.value("vin").toString()));
                 }
-            } catch(DS2PlusPlus::TimeoutException exception) {
+            } catch(DS2PlusPlus::TimeoutException) {
             }
         } else if (autoDetect->operations().contains("vehicle_id_short")) {
             usleep(250000);
@@ -546,7 +546,7 @@ void DataCollection::probeAll()
                 if (ourVin.contains("short_vin")) {
                     notes.append(QString("vin=%1").arg(ourVin.value("short_vin").toString()));
                 }
-            } catch(DS2PlusPlus::TimeoutException exception) {
+            } catch(DS2PlusPlus::TimeoutException) {
             }
         }
 
@@ -561,7 +561,7 @@ void DataCollection::probeAll()
                         notes.append(QString("faults=%1").arg(ourFaultCount));
                     }
                 }
-            } catch(DS2PlusPlus::TimeoutException exception) {
+            } catch(DS2PlusPlus::TimeoutException) {
             }
         }
 
