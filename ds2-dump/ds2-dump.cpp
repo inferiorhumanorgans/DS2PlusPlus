@@ -323,7 +323,21 @@ void DataCollection::listOperations()
     foreach (quint64 partNumber, partNumbers) {
         partStrings << QString::number(partNumber, 10);
     }
-    qOut << "Part numbers: " << partStrings.join(", ") << endl << endl;
+    qOut << "Part numbers: " << partStrings.join(", ") << endl;
+    qOut << "Protocol:     ";
+    switch (ourEcu->protocol()) {
+    case BasePacket::ProtocolDS2:
+        qOut << "DS2";
+        break;
+    case BasePacket::ProtocolKWP:
+        qOut << "KWP-2000";
+        break;
+    default:
+        qOut << "Unknown";
+        break;
+    }
+    qOut << endl;
+    qOut << endl;
 
     QHash<QString, QStringList> opsHash;
     foreach (const OperationPtr ourOp, ourOperations.values()) {
