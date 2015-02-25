@@ -1,0 +1,18 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2015-01-25T00:32:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "68000000-0002-0000-0000-000000000000",
+  "address":            "0x68",
+  "family":             "RADIO",
+  "name":               "Business CD (E39/E53)",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [6961218],
+  "hardware_number":    "0x44",
+  "software_number":    "0x43",
+  "coding_index":       "0x01",
+  "endian":             "little",
+  "operations": {
+  }
+}

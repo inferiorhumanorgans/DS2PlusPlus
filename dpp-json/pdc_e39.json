@@ -1,0 +1,18 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2015-01-25T00:32:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "60000000-0001-0000-0000-000000000000",
+  "address":            "0x60",
+  "family":             "PDC",
+  "name":               "Park Distance Control (E39)",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [6904010],
+  "hardware_number":    "0x2B",
+  "software_number":    "0x17",
+  "coding_index":       "0x00",
+  "endian":             "big",
+  "operations": {
+  }
+}

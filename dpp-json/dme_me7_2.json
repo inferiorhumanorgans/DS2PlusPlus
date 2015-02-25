@@ -1,0 +1,125 @@
+{
+  "dpp_version":        1,
+  "file_version":       2,
+  "file_mtime":         "2015-02-23T04:20:44.0Z",
+  "file_type":          "ecu",
+  "uuid":               "12000000-0004-0000-0000-000000000000",
+  "address":            "0x12",
+  "family":             "DME",
+  "name":               "Bosch Motronic 7.2 (M62TU)",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "protocol":           "KWP0",
+  "part_number":        [7508698],
+  "hardware_number":    "0x11",
+  "software_number":    "0x60",
+  "coding_index":       "0x01",
+  "endian":             "big",
+  "operations": {
+    "identify":  {
+      "uuid":           "12000000-0004-0001-0000-000000000000",
+      "command":        ["0xA2"],
+      "results": {
+        "part_number": {
+          "uuid":       "12000000-0004-0001-0001-000000000000",
+          "type":       "string",
+          "display":    "int",
+          "start_pos":  1,
+          "length":     7,
+          "units":      "int"
+        },
+        "hardware_number": {
+          "uuid":       "12000000-0004-0001-0002-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  8,
+          "length":     2,
+          "units":      "string"
+        },
+        "coding_index": {
+          "uuid":       "12000000-0004-0001-0003-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  10,
+          "length":     2,
+          "units":      "string"
+        },
+        "diag_index": {
+          "uuid":       "12000000-0004-0001-0004-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  12,
+          "length":     2,
+          "units":      "string"
+        },
+        "bus_index": {
+          "uuid":       "12000000-0004-0001-0005-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  14,
+          "length":     2,
+          "units":      "string"
+        },
+        "build_date.week": {
+          "uuid":       "12000000-0004-0001-0006-000000000000",
+          "type":       "string",
+          "display":    "int",
+          "start_pos":  16,
+          "length":     2,
+          "units":      "week"
+        },
+        "build_date.year": {
+          "uuid":       "12000000-0004-0001-0007-000000000000",
+          "type":       "string",
+          "display":    "int",
+          "start_pos":  18,
+          "length":     2,
+          "units":      "year"
+        },
+        "supplier": {
+          "uuid":       "12000000-0004-0001-0008-000000000000",
+          "type":       "string",
+          "display":    "string",
+          "start_pos":  20,
+          "length":     6,
+          "units":      "string"
+        },
+        "software_number": {
+          "uuid":       "12000000-0004-0001-0009-000000000000",
+          "type":       "string",
+          "display":    "hex_string",
+          "start_pos":  30,
+          "length":     2,
+          "units":      "string"
+        }
+      }
+    },
+    "dtc_count":  {
+      "uuid":           "12000000-0004-0002-0000-000000000000",
+      "command":        ["0xA2", "0x00"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "12000000-0004-0002-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "int"
+        }
+      }
+    },
+    "dtc_load_bank1":  {
+      "uuid":           "12000000-0004-0003-0000-000000000000",
+      "command":        ["0xA2", "0x00"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "12000000-0004-0003-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "int"
+        }
+      }
+    }
+  }
+}
