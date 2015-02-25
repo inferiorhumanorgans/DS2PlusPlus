@@ -8,7 +8,7 @@ namespace Test_ControlUnit {
         DME_MS420_VIN::DME_MS420_VIN()
         {
             using namespace DS2PlusPlus;
-            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("DME"), dme_vin));
+            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("DME").first(), dme_vin));
             ecu = ControlUnitPtr(new ControlUnit);
             ecu->loadByUuid("12000000-0001-0000-0000-000000000000");
             results = ecu->parseOperation("vehicle_id", packet);

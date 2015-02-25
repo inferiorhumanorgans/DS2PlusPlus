@@ -8,7 +8,7 @@ namespace Test_ControlUnit {
         IHKA46_Ident::IHKA46_Ident()
         {
             using namespace DS2PlusPlus;
-            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("IHKA"), ihka_ident));
+            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("IHKA").first(), ihka_ident));
             json = ControlUnitPtr(new DS2PlusPlus::ControlUnit);
             json->loadByUuid("5B000000-0001-0000-0000-000000000000");
             results = json->parseOperation("identify", packet);

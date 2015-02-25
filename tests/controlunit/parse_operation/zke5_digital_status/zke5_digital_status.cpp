@@ -10,7 +10,7 @@ namespace Test_ControlUnit {
 
         ZKE5_Digital_Status::ZKE5_Digital_Status()
         {
-            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("ZKE"), zke_status));
+            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("ZKE").first(), zke_status));
             ecu= ControlUnitPtr(new ControlUnit);
             ecu->loadByUuid("00000000-0001-0000-0000-000000000000");
             results = ecu->parseOperation("digital_status", packet);

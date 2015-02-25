@@ -8,7 +8,7 @@ namespace Test_ControlUnit {
         DME_MS420_Ident::DME_MS420_Ident()
         {
             using namespace DS2PlusPlus;
-            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("DME"), dme_ident));
+            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("DME").first(), dme_ident));
             ecu = ControlUnitPtr(new ControlUnit);
             //json.loadByUUID(ControlUnit::ROOT_UUID);
             ecu->loadByUuid("12000000-0001-0000-0000-000000000000");

@@ -8,7 +8,7 @@ namespace Test_ControlUnit {
         KOMBI46_Ident::KOMBI46_Ident()
         {
             using namespace DS2PlusPlus;
-            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("KOMBI"), kombi_ident));
+            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("KOMBI").first(), kombi_ident));
             ecu = ControlUnitPtr(new ControlUnit);
             ecu->loadByUuid(ControlUnit::ROOT_UUID);
             results = ecu->parseOperation("identify", packet);

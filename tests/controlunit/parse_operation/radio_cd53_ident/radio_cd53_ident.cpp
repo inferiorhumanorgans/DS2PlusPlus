@@ -9,7 +9,7 @@ namespace Test_ControlUnit {
 
         RADIO_CD53_Ident::RADIO_CD53_Ident()
         {
-            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("RADIO"), cd53_ident));
+            packet = DS2PacketPtr(PACKET_FROM_CHARS(ControlUnit::addressForFamily("RADIO").first(), cd53_ident));
             ecu = ControlUnitPtr(new ControlUnit);
             ecu->loadByUuid("68000000-0001-0000-0000-000000000000");
             results = ecu->parseOperation("identify", packet);
