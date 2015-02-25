@@ -322,12 +322,20 @@ namespace DS2PlusPlus {
 
     PacketResponse ControlUnit::executeOperation(const QString &name)
     {
+        QTextStream qOut(stdout);
+        QTextStream qErr(stderr);
+
         const OperationPtr ourOp(_operations.value(name));
         if (ourOp.isNull()) {
             throw std::invalid_argument(qPrintable(QString("Operation '%1' could not be found in ECU %2").arg(name).arg(_uuid)));
         }
 
         BasePacketPtr ourOutgoingPacket(ourOp->queryPacket());
+
+        if (getenv("DPP_TRACE")) {
+            qErr << ">> " << ourOp->name() << ": " << ourOp->command().join(" ") << endl;
+        }
+
         BasePacketPtr ourIncomingPacket(_manager->query(ourOutgoingPacket));
 
         return parseOperation(ourOp, ourIncomingPacket);
