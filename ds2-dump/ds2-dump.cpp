@@ -436,28 +436,60 @@ void DataCollection::probeAll()
 {
     using namespace DS2PlusPlus;
 
+    qOut << "-- Probing all known ECUs" << endl;
+
     QList<quint8> addresses = ControlUnit::knownAddresses();
 
-    int totalLen = 12+40+15+20+40;
-    qOut << qSetFieldWidth(12) << left << "Family";
-    qOut << qSetFieldWidth(40) << left << "Name";
-    qOut << qSetFieldWidth(15) << left << "Part Number";
-    qOut << qSetFieldWidth(20) << left << "Manufacturer";
-    qOut << qSetFieldWidth(40) << left << "Notes";
-    qOut << qSetFieldWidth(1)  << endl;
-    qOut << qSetFieldWidth(totalLen) << qSetPadChar('-') << "" << qSetFieldWidth(1) << qSetPadChar(' ') << endl;
+    QList<QStringList> output;
+    QList<quint32> colWidths = QList<quint32>() << 0 << 0 << 0 << 0 << 0;
 
+    output << (QStringList() << "Family" << "Name" << "Part Number" << "Manufacturer" << "Notes");
+    for (int i=0; i < 5; i++) {
+        colWidths[i] = qMax(colWidths[i], static_cast<quint32>(output[0][i].length()));
+    }
+
+    int ecuPosition = 0;
     foreach (quint8 address, addresses) {
+        QStringList currentOutput;
+        currentOutput << "" << "" << "" << "" << "";
+
         usleep(100000);
 
         DS2PlusPlus::ControlUnitPtr autoDetect;
         try {
+            if (parser->value("format") == "text") {
+                qOut << qSetFieldWidth(0) << "\r";
+            }
+            qOut << qSetFieldWidth(80) << qSetPadChar(' ') << left << QString(">> Probing ECU at 0x%1 (%2), %3/%4 %5%")
+                    .arg(address, 2, 16, QChar('0'))
+                    .arg(ControlUnit::familyForAddress(address))
+                    .arg(ecuPosition)
+                    .arg(addresses.count())
+                    .arg(
+                        static_cast<quint32>((ecuPosition++ / static_cast<double>(addresses.length())) * 100)
+                    );
+
+            if (parser->value("format") == "text") {
+                qOut << qSetFieldWidth(0) << "\r";
+                qOut.flush();
+            } else if (parser->value("format") == "text") {
+                qOut << endl;
+            }
+
             autoDetect = DS2PlusPlus::ControlUnitPtr (dbm->findModuleAtAddress(address));
-        } catch(DS2PlusPlus::TimeoutException exception) {
+        } catch(DS2PlusPlus::TimeoutException) {
+            if (parser->value("format") == "verbose") {
+                qOut << QString("-- Uncaught timeout for ECU at 0x%1").arg(address, 2, 16, QChar('0')) << endl;
+            }
+
             continue;
         }
 
         if (autoDetect.isNull()) {
+            if (parser->value("format") == "verbose") {
+                qOut << "-- Unable to identify ECU, trying identify based on root ECU definition." << endl;
+            }
+
             autoDetect = ControlUnitPtr(new ControlUnit(ControlUnit::ROOT_UUID, &(*dbm)));
             autoDetect->setAddress(address);
         }
@@ -465,20 +497,16 @@ void DataCollection::probeAll()
         usleep(100000);
         PacketResponse ourResponse;
         try {
-            if (getenv("DPP_TRACE")) {
-                qDebug() << "Running identify";
+            if (parser->value("format") == "verbose") {
+                qOut << QString(">> Interrogating ECU at 0x%1 for additional details").arg(address, 2, 16, QChar('0')) << endl;
             }
-
             ourResponse = autoDetect->executeOperation("identify");
         } catch(DS2PlusPlus::TimeoutException exception) {
-            qDebug() << "Timeout (identify)";
+            if (parser->value("format") == "verbose") {
+                qOut << QString("-- Uncaught timeout for ECU at 0x%1").arg(address, 2, 16, QChar('0')) << endl;
+            }
             continue;
         }
-
-        qOut << qSetFieldWidth(12) << left << (autoDetect->isRoot() ? ControlUnit::familyForAddress(address) : autoDetect->family());
-        qOut << qSetFieldWidth(40) << left << (autoDetect->isRoot() ? "Unknown" : autoDetect->name());
-        qOut << qSetFieldWidth(15) << left << ourResponse.value("part_number").toString();
-        qOut << qSetFieldWidth(20) << left << ourResponse.value("supplier").toString();
 
         QStringList notes;
         if (autoDetect->matchFlags() & ControlUnit::MatchSWMismatch) {
@@ -529,9 +557,38 @@ void DataCollection::probeAll()
             }
         }
 
-        qOut << qSetFieldWidth(40) << left << notes.join(", ");
-        qOut << qSetFieldWidth(1)  << endl;
+        currentOutput[0] = (autoDetect->isRoot() ? ControlUnit::familyForAddress(address) : autoDetect->family());
+        currentOutput[1] = (autoDetect->isRoot() ? "Unknown" : autoDetect->name());
+        currentOutput[2] = ourResponse.value("part_number").toString();
+        currentOutput[3] = ourResponse.value("supplier").toString();
+        currentOutput[4] = notes.join(", ");
+
+        for (int i=0; i < 5; i++) {
+            colWidths[i] = qMax(colWidths[i], static_cast<quint32>(currentOutput[i].length()));
+        }
+
+        output << currentOutput;
     }
+
+    for (int i=0; i < 5; i++) {
+        qOut << qSetFieldWidth(colWidths[i] + 2) << left << qSetPadChar(' ') << output[0][i];
+    }
+    qOut << qSetFieldWidth(0) << qSetPadChar(' ') << endl;
+
+    for (int i=0; i < 5; i++) {
+        qOut << qSetFieldWidth(colWidths[i] + 2) << left << qSetPadChar('-') << '-';
+    }
+    qOut << qSetFieldWidth(0) << qSetPadChar(' ') << endl;
+
+    output.takeFirst();
+
+    foreach (const QStringList &row, output) {
+        for (int i=0; i < 5; i++) {
+            qOut << qSetFieldWidth(colWidths[i] + 2) << left << qSetPadChar(' ') << row[i];
+        }
+        qOut << qSetFieldWidth(0) << qSetPadChar(' ') << endl;
+    }
+
     return;
 }
 
