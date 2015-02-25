@@ -200,7 +200,9 @@ void DataCollection::run()
                 if (!autoDetect.isNull()) {
                     break;
                 }
+                usleep(5000);
             }
+            usleep(5000);
 
             if (!autoDetect.isNull()) {
                 qOut << QString("At 0x%1 we think we have: %2").arg(autoDetect->address(), 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
