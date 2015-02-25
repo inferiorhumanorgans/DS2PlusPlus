@@ -228,7 +228,7 @@ namespace DS2PlusPlus {
                     if (getenv("DPP_TRACE")) {
                         qErr << "\tAdding operation: '" << opName << "' (" << opUuid << ")" << endl;
                     }
-                    op = OperationPtr(new Operation(opUuid, _address, opName, opCommand, this->protocol()));
+                    op = OperationPtr(new Operation(opUuid, _address, opName, opCommand, _protocol));
                     op->setParentId(opParent);
                 }
 
