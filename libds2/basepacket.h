@@ -23,6 +23,13 @@ namespace DS2PlusPlus {
     {
         Q_OBJECT
     public:
+        typedef enum {
+            ProtocolNone    = 0x00,
+            ProtocolDS2     = 0x01,
+            ProtocolKWP     = 0x02,
+            ProtocolUnknown = 0x04
+        } ProtocolType;
+
         explicit BasePacket(QObject *parent = 0);
 
         /*!
@@ -64,6 +71,7 @@ namespace DS2PlusPlus {
         float fetchFloat(quint16 aPosition, float aMultiplicativeFactor, int anAdditiveFactor = 0) const;
         QString fetchString(quint16 aPosition, quint16 aLength) const;
 
+        virtual ProtocolType protocol() const = 0;
         virtual const QString toByteString() const = 0;
 
         operator const QByteArray() const;

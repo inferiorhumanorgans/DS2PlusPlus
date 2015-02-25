@@ -149,6 +149,9 @@ namespace DS2PlusPlus {
         bool bigEndian() const;
         Q_PROPERTY(bool bigEndian MEMBER _bigEndian READ bigEndian)
 
+        BasePacket::ProtocolType protocol() const;
+        Q_PROPERTY(BasePacket::ProtocolType protocol MEMBER _protocol READ protocol)
+
         QHash<QString, OperationPtr> operations() const;
 
         quint8 matchFlags() const;
@@ -184,6 +187,7 @@ namespace DS2PlusPlus {
         quint64 _hardwareNumber, _softwareNumber, _codingIndex;
         bool _bigEndian;
         quint8 _matchFlags;
+        BasePacket::ProtocolType _protocol;
 
         Manager *_manager;
         static QHash<QString, QList<quint8> > _familyDictionary;

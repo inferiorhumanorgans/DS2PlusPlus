@@ -25,11 +25,13 @@
 
 #include "controlunit.h"
 #include "operation.h"
+#include "ds2packet.h"
+#include "kwppacket.h"
 
 namespace DS2PlusPlus {
 
-    Operation::Operation (const QString &aUuid, quint8 aControlUnitAddress, const QString &aName, const QByteArray &aCommand)
-        : _uuid(aUuid), _name(aName), _controlUnitAddress(aControlUnitAddress), _command(aCommand)
+    Operation::Operation (const QString &aUuid, quint8 aControlUnitAddress, const QString &aName, const QByteArray &aCommand, BasePacket::ProtocolType aProtocol)
+        : _uuid(aUuid), _name(aName), _controlUnitAddress(aControlUnitAddress), _command(aCommand), _protocol(aProtocol)
     {
     }
 
@@ -78,9 +80,24 @@ namespace DS2PlusPlus {
         _results.insert(aName, aResult);
     }
 
-    DS2Packet *Operation::queryPacket() const
+    BasePacket::ProtocolType Operation::protocol() const
     {
-       return new DS2Packet(_controlUnitAddress, _command);
+        return _protocol;
+    }
+
+    BasePacket *Operation::queryPacket() const
+    {
+        switch (_protocol) {
+        case BasePacket::ProtocolDS2:
+            return new DS2Packet(_controlUnitAddress, _command);
+            break;
+        case BasePacket::ProtocolKWP:
+            return new KWPPacket(_controlUnitAddress, 0xF1, _command);
+            break;
+        default:
+            throw std::invalid_argument("Invalid protocol.");
+            break;
+        }
     }
 
     void Operation::setAddress(quint8 anAddress)

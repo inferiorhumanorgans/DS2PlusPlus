@@ -334,10 +334,15 @@ namespace DS2PlusPlus {
         }
 
         BasePacketPtr ret;
-        if (aPacket->hasSourceAddress()) {
-            ret = BasePacketPtr(new KWPPacket);
-        } else {
+        switch (aPacket->protocol()) {
+        case BasePacket::ProtocolDS2:
             ret = BasePacketPtr(new DS2Packet);
+            break;
+        case BasePacket::ProtocolKWP:
+            ret = BasePacketPtr(new KWPPacket);
+            break;
+        default:
+            throw std::invalid_argument("Unrecognized protocol type.");
         }
 
         // Send query to the ECU
@@ -406,7 +411,7 @@ namespace DS2PlusPlus {
 #endif
 
         if (ret->checksum() != realChecksum) {
-            qDebug() << "Checksum mismatch...";
+            qDebug() << QString("Checksum mismatch at ECU: %1").arg(ecuAddress, 2, 16, QChar('0'));
         }
 
         if (getenv("DPP_TRACE_QUERY")) {
@@ -420,9 +425,9 @@ namespace DS2PlusPlus {
             qDebug() << "ControlUnitPtr Manager::findModuleAtAddress(" << anAddress << ")";
         }
 
-        BasePacketPtr ourSentPacket(new DS2Packet(anAddress, QByteArray((int)1, (unsigned char)0x00)));
+        BasePacketPtr ourSentPacket(new DS2Packet(anAddress, QByteArray((int)1, static_cast<quint8>(0x00))));
         if (getenv("DPP_TRACE")) {
-            qDebug() << ">> IDENT: " << *ourSentPacket;
+            qDebug() << ">> QUERY: " << *ourSentPacket;
         }
 
         BasePacketPtr ourReceivedPacket;
@@ -430,19 +435,22 @@ namespace DS2PlusPlus {
             ourReceivedPacket = query(ourSentPacket);
         } catch(DS2PlusPlus::TimeoutException) {
             if (getenv("DPP_TRACE")) {
-                qDebug() << "Timeout reading DS2";
+                qDebug() << "-- Timeout reading DS2";
             }
         }
 
         if (ourReceivedPacket.isNull()) {
             if (anAddress == 0x12) {
-                qDebug() << "Let's try KWP-2000";
+                if (getenv("DPP_TRACE")) {
+                    qDebug() << "-- Let's try KWP-2000";
+                }
+
                 ourSentPacket = BasePacketPtr(new KWPPacket(anAddress, static_cast<unsigned char>(0xF1) /* laptop fixed addy*/, QByteArray((int)1, static_cast<unsigned char>(0xA2))));
                 try {
                     ourReceivedPacket = query(ourSentPacket);
                 } catch(DS2PlusPlus::TimeoutException) {
                     if (getenv("DPP_TRACE")) {
-                        qDebug() << "Timeout with KWP. :(";
+                        qDebug() << "-- Timeout with KWP.";
                     }
                 }
             }

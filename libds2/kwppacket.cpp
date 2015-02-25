@@ -82,6 +82,11 @@ namespace DS2PlusPlus {
         return ourChecksum;
     }
 
+    BasePacket::ProtocolType KWPPacket::protocol() const
+    {
+        return ProtocolKWP;
+    }
+
     const QString KWPPacket::toByteString () const
     {
         QStringList ret;

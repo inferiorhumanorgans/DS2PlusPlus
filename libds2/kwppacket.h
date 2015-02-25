@@ -24,6 +24,8 @@ namespace DS2PlusPlus {
          * \return
          */
         virtual unsigned char checksum(const QByteArray &data = QByteArray()) const;
+
+        virtual ProtocolType protocol() const;
         virtual const QString toByteString () const;
 
     protected:

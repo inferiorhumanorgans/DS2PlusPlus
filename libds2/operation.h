@@ -29,13 +29,13 @@
 #include <QHash>
 
 #include <result.h>
-#include <ds2packet.h>
+#include <basepacket.h>
 
 namespace DS2PlusPlus {
     class Operation
     {
     public:
-        Operation (const QString &aUuid, quint8 aControlUnitAddress, const QString &aName, const QByteArray &aCommand);
+        Operation (const QString &aUuid, quint8 aControlUnitAddress, const QString &aName, const QByteArray &aCommand, BasePacket::ProtocolType aProtocol = BasePacket::ProtocolDS2);
 
         const QString uuid() const;
         const QString moduleId() const;
@@ -53,13 +53,16 @@ namespace DS2PlusPlus {
 
         void setAddress(quint8 anAddress);
 
-        DS2Packet *queryPacket() const;
+        BasePacket::ProtocolType protocol() const;
+
+        BasePacket *queryPacket() const;
 
     protected:
         QString _uuid, _name, _parentId;
         quint8 _controlUnitAddress;
         QByteArray _command;
         QHash<QString, Result> _results;
+        BasePacket::ProtocolType _protocol;
     };
 
     typedef QSharedPointer<Operation> OperationPtr;

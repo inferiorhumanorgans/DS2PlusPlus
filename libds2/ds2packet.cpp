@@ -91,6 +91,11 @@ namespace DS2PlusPlus {
         return ourChecksum;
     }
 
+    BasePacket::ProtocolType DS2Packet::protocol() const
+    {
+        return ProtocolDS2;
+    }
+
     const QString DS2Packet::toByteString () const
     {
         QStringList ret;

@@ -129,7 +129,7 @@ namespace DS2PlusPlus {
     }
 
     ControlUnit::ControlUnit(const QString &aUuid, Manager *aParent) :
-        QObject(aParent), _manager(aParent)
+        QObject(aParent), _protocol(BasePacket::ProtocolDS2), _manager(aParent)
     {
         if (_manager == NULL) {
             _manager = new Manager();
@@ -162,6 +162,17 @@ namespace DS2PlusPlus {
                 _address = theRecord.value("address").toChar().toLatin1();
                 _family = theRecord.value("family").toString();
                 _name = theRecord.value("name").toString();
+
+                QString ourProtocol = theRecord.value("protocol").toString();
+                if (ourProtocol == "DS2") {
+                    _protocol = BasePacket::ProtocolDS2;
+                } else if (ourProtocol == "KWP0") {
+                    _protocol = BasePacket::ProtocolKWP;
+                } else if (ourProtocol.isEmpty()) {
+                    // Skip for now, hope it comes in via the parent.
+                } else {
+                    throw std::invalid_argument(qPrintable(QString("Invalid protocol.  ECU=%1, protocol=%2").arg(_uuid).arg(ourProtocol)));
+                }
 
                 QStringList partStrings = theRecord.value("part_number").toString().split("/");
                 _partNumbers = QSet<quint64>();
@@ -217,7 +228,7 @@ namespace DS2PlusPlus {
                     if (getenv("DPP_TRACE")) {
                         qErr << "\tAdding operation: '" << opName << "' (" << opUuid << ")" << endl;
                     }
-                    op = OperationPtr(new Operation(opUuid, _address, opName, opCommand));
+                    op = OperationPtr(new Operation(opUuid, _address, opName, opCommand, this->protocol()));
                     op->setParentId(opParent);
                 }
 
@@ -727,5 +738,10 @@ namespace DS2PlusPlus {
             QString ourError = QObject::tr("Unknown display format for hex_string type: %1").arg(aResult.displayFormat());
             throw std::runtime_error(qPrintable(ourError));
         }
+    }
+
+    BasePacket::ProtocolType ControlUnit::protocol() const
+    {
+        return _protocol;
     }
 }
