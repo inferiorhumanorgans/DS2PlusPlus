@@ -29,6 +29,18 @@ namespace DS2PlusPlus {
 
     }
 
+    QString BasePacket::prettyPrintPartNumber(const QString &aPartNumber)
+    {
+        QString ourPartNumber = aPartNumber;
+        bool partNumberIsNumeric;
+
+        if (ourPartNumber.length() == 7 and ourPartNumber.toULongLong(&partNumberIsNumeric) == aPartNumber.toULongLong() and partNumberIsNumeric == true) {
+            ourPartNumber = QString("%1.%2.%3").arg(ourPartNumber.mid(0, 1)).arg(ourPartNumber.mid(1, 3)).arg(ourPartNumber.mid(4, 3));
+        }
+
+        return ourPartNumber;
+    }
+
     float BasePacket::fetchFloat(quint16 aPosition, float aMultiplicativeFactor, int anAdditiveFactor) const
     {
         return (static_cast<quint8>(_data.at(aPosition)) * aMultiplicativeFactor) + anAdditiveFactor;

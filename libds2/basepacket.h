@@ -48,6 +48,8 @@ namespace DS2PlusPlus {
          */
         BasePacket(quint8 aTargetAddress, quint8 aSourceAddress, const QByteArray &someData, QObject *aParent = 0);
 
+        static QString prettyPrintPartNumber(const QString &aPartNumber);
+
         quint8 targetAddress() const;
         void setTargetAddress(quint8 anAddress);
         Q_PROPERTY(quint8 targetAddress MEMBER _targetAddress READ targetAddress WRITE setTargetAddress)

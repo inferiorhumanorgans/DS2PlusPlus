@@ -567,7 +567,7 @@ void DataCollection::probeAll()
 
         currentOutput[0] = (autoDetect->isRoot() ? ControlUnit::familyForAddress(address) : autoDetect->family());
         currentOutput[1] = (autoDetect->isRoot() ? "Unknown" : autoDetect->name());
-        currentOutput[2] = ourResponse.value("part_number").toString();
+        currentOutput[2] = BasePacket::prettyPrintPartNumber(ourResponse.value("part_number").toString());
         currentOutput[3] = ourResponse.value("supplier").toString();
         currentOutput[4] = notes.join(", ");
 
