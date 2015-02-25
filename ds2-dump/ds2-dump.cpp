@@ -188,6 +188,11 @@ void DataCollection::run()
 
             foreach (quint8 ecuAddress, ecuAddressList) {
                 try {
+                    // Progress info
+                    qOut << qSetFieldWidth(80) << qSetPadChar(' ') << left << QString(">> Probing ECU at 0x%1 (%2)")
+                            .arg(ecuAddress, 2, 16, QChar('0'))
+                            .arg(ControlUnit::familyForAddress(ecuAddress)) << qSetFieldWidth(0) << endl;
+
                     autoDetect = DS2PlusPlus::ControlUnitPtr(dbm->findModuleAtAddress(ecuAddress));
                 } catch(DS2PlusPlus::TimeoutException) {
                     continue;
