@@ -31,6 +31,7 @@
 #include <QDate>
 
 #include <ds2packet.h>
+#include <kwppacket.h>
 #include <manager.h>
 #include <controlunit.h>
 #include <exceptions.h>
@@ -614,7 +615,7 @@ void DataCollection::runOperation()
     using namespace DS2PlusPlus;
 
     ControlUnitPtr autoDetect;
-    DS2PacketPtr ourPacket;
+    BasePacketPtr ourPacket;
 
     if (parser->isSet("input-packet")) {
         qOut << "Reading from packet specified on command line." << endl << endl;
@@ -638,7 +639,12 @@ void DataCollection::runOperation()
         ecuAddressList << autoDetect->address();
 
         if (parser->isSet("input-packet")) {
-            ourPacket = DS2PacketPtr(new DS2Packet(parser->value("input-packet")));
+            QString packetString = parser->value("input-packet");
+            try {
+                ourPacket = BasePacketPtr(new KWPPacket(packetString));
+            } catch (std::domain_error) {
+                ourPacket = BasePacketPtr(new DS2Packet(packetString));
+            }
         } else {
             qDebug() << "No Input packet specified";
         }

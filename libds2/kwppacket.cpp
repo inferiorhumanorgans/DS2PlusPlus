@@ -31,9 +31,16 @@ namespace DS2PlusPlus {
             throw std::invalid_argument("Packet string is invalid");
         }
 
+        // Chop off initial header, balk if it's not the rightheader
+        QString kwpHeader = ourArguments.takeFirst();
+        bool isNumber;
+        if (kwpHeader.toULongLong(&isNumber, 16) != 0xB8 or isNumber != true) {
+            throw std::domain_error("This is not a KWP packet.");
+        }
+
         quint8 ourTargetAddress = ourArguments.takeFirst().toUShort(NULL, 16);
         quint8 ourSourceAddress = ourArguments.takeFirst().toUShort(NULL, 16);
-        quint8 ourLength = ourArguments.takeFirst().toUShort(NULL, 16) - 2;
+        quint8 ourLength = ourArguments.takeFirst().toUShort(NULL, 16) + 1;
 
         QByteArray ourData;
         for (int i=0; i < ourArguments.length(); i++) {
