@@ -119,12 +119,6 @@ namespace DS2PlusPlus {
         QObject(parent), _dppDir(QString::null), _fd(fd), _cliParser(aParser)
     {
         if (!_cliParser.isNull()) {
-            // We should really check to see if the user has already defined this, and if so we should whine.
-            QCommandLineOption targetDirectoryOption(QStringList() << "p" << "port",
-                      "Read from serial port <port>.",
-                      "port");
-            aParser->addOption(targetDirectoryOption);
-
             QCommandLineOption jsonDirOption("dpp-source-dir", "Specify location of DPP-JSON files", "dpp-source-dir");
             aParser->addOption(jsonDirOption);
 
@@ -135,6 +129,13 @@ namespace DS2PlusPlus {
             QCommandLineOption androidHack2("android-native", "Fix Android", "android-native");
             aParser->addOption(androidHack2);
 #endif
+
+            // We should really check to see if the user has already defined this, and if so we should whine.
+            QCommandLineOption devicePathOption(QStringList() << "d" << "port" << "device",
+                      "Read from specified device.",
+                      "device");
+            aParser->addOption(devicePathOption);
+
         } else {
             initializeManager();
         }

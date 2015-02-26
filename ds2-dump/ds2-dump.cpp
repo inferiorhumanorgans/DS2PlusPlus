@@ -60,28 +60,28 @@ void DataCollection::run()
     QCommandLineOption setEcuOption(QStringList() << "e" << "ecu", "The ECU to operate on (family name, numerical address, or UUID).", "ecu");
     parser->addOption(setEcuOption);
 
-    QCommandLineOption listFamiliesOption(QStringList() << "f" << "families", "Print the known ECU families.");
-    parser->addOption(listFamiliesOption);
+    QCommandLineOption setFamilyOption(QStringList() << "f" << "family", "The ECU family to operate on (family name).", "family");
+    parser->addOption(setFamilyOption);
 
-    QCommandLineOption listEcuOption(QStringList() << "c" << "ecus", "Print the known ECUs for a given family.", "family");
+    QCommandLineOption setOperationOption(QStringList() << "j" << "operation", "The operation to run.", "operation");
+    parser->addOption(setOperationOption);
+
+    QCommandLineOption listEcuOption(QStringList() << "E" << "list-ecus", "Print the known ECUs for a given family.");
     parser->addOption(listEcuOption);
 
-    QCommandLineOption listOperationsOption(QStringList() << "o" << "operations", "Print the known operations for a given ECU.  ECU UUID must be specified with --ecu.");
+    QCommandLineOption listFamiliesOption(QStringList() << "F" << "list-families", "Print the known ECU families.");
+    parser->addOption(listFamiliesOption);
+
+    QCommandLineOption listOperationsOption(QStringList() << "J" << "list-operations", "Print the known operations for a given ECU.  ECU UUID must be specified.");
     parser->addOption(listOperationsOption);
 
-    QCommandLineOption iterateOption(QStringList() << "n" << "iterate", "Iterate <n> number of times.", "n");
-    parser->addOption(iterateOption);
-
-    QCommandLineOption textPacketOption(QStringList() << "i" << "input-packet", "Treat this argument as a packet instead of reading from the serial port.  Base 16, space delimited.", "input-packet");
-    parser->addOption(textPacketOption);
-
-    QCommandLineOption detectEcuOption(QStringList() << "P" << "probe", "Probe an ECU at <ecu> for its identity.");
+    QCommandLineOption detectEcuOption(QStringList() << "P" << "probe", "Probe an ECU for its identity.");
     parser->addOption(detectEcuOption);
 
     QCommandLineOption autoDiscoverOption(QStringList() << "A" << "probe-all", "Probe all known ECU addresses and print the results.");
     parser->addOption(autoDiscoverOption);
 
-    QCommandLineOption runJobOption(QStringList() << "J" << "run-operation", "Run an operation on an ECU, prints results as JSON to stdout.  Must also specify --ecu.", "operation");
+    QCommandLineOption runJobOption(QStringList() << "r" << "run-operation", "Run an operation on an ECU, prints results as JSON to stdout.  Must also specify --ecu.", "operation");
     parser->addOption(runJobOption);
 
     QCommandLineOption datalogOption(QStringList() << "D" << "data-log", "Create a CSV log, write until interrupted.", "ecu-jobs-and-results");
@@ -90,24 +90,29 @@ void DataCollection::run()
     QCommandLineOption rawQueryOption(QStringList() << "Q" << "query", "Send packet to ECU, print raw output.", "query");
     parser->addOption(rawQueryOption);
 
-    QCommandLineOption outputFormatOption(QStringList() << "F" << "format", "Output format.  Either text, verbose, or json.", "format", "text");
+    QCommandLineOption iterateOption(QStringList() << "n" << "iterate", "Iterate <n> number of times.", "n");
+    parser->addOption(iterateOption);
+
+    QCommandLineOption textPacketOption(QStringList() << "i" << "input-packet", "Treat this argument as a packet instead of reading from the serial port.  Base 16, space delimited.", "input-packet");
+    parser->addOption(textPacketOption);
+
+    QCommandLineOption outputFormatOption(QStringList() << "o" << "format", "Output format.  Either text, verbose, or json.", "format", "text");
     parser->addOption(outputFormatOption);
 
     parser->process(*QCoreApplication::instance());
 
     try {
         if (parser->isSet("format")) {
-            QStringList validFormats;
-            validFormats << "text" << "verbose" << "json";
+            QStringList validFormats = QStringList() << "text" << "verbose" << "json";
             if (!validFormats.contains(parser->value("format"))) {
-                throw CommandlineArgumentException("Format must be one of: text, verbose, json.");
+                throw CommandlineArgumentException(qPrintable(QString("Format must be one of: %1").arg(validFormats.join(", "))));
             }
         }
 
-        if (!parser->isSet("reload") && !parser->isSet("families") && !parser->isSet("ecus") && !parser->isSet("operations")) {
+        if (!parser->isSet("reload") && !parser->isSet("list-families") && !parser->isSet("list-ecus") && !parser->isSet("list-operations")) {
             if (!parser->isSet("input-packet")) {
-                if (!parser->isSet("port")) {
-                    throw CommandlineArgumentException("A serial port is required.");
+                if (!parser->isSet("device")) {
+                    throw CommandlineArgumentException("A serial port is required to complete this operation.");
                 }
                 this->serialSetup(parser);
             }
@@ -118,15 +123,17 @@ void DataCollection::run()
         // This will rescan all the JSON files, we should be smarter about doing this.
         if (parser->isSet("reload")) {
             dbm->initializeDatabase();
+            emit finished();
+            return;
         }
 
-        if (parser->isSet("families")) {
+        if (parser->isSet("list-families")) {
             listFamilies();
             emit finished();
             return;
         }
 
-        if (parser->isSet("ecus")) {
+        if (parser->isSet("list-ecus")) {
             listEcus();
             emit finished();
             return;
@@ -145,6 +152,7 @@ void DataCollection::run()
                 } else {
                     ourAddress=ecuString.toUShort(&ok, 10);
                 }
+
                 if (ok) {
                     ecuAddressList << ourAddress;
                 } else {
@@ -156,20 +164,20 @@ void DataCollection::run()
             }
         }
 
-        if (parser->isSet("operations")) {
-            listOperations();
-            emit finished();
-            return;
-        }
-
         if (parser->isSet("probe-all")) {
             this->probeAll();
             emit finished();
             return;
         }
 
-        if (!parser->isSet("ecu") && !parser->isSet("data-log") && !parser->isSet("reload") && !parser->isSet("query")) {
+        if (!parser->isSet("ecu") && !parser->isSet("data-log") && !parser->isSet("query")) {
             throw CommandlineArgumentException("A valid ECU family or address is required to proceed further.");
+        }
+
+        if (parser->isSet("list-operations")) {
+            listOperations();
+            emit finished();
+            return;
         }
 
         if (parser->isSet("run-operation")) {
@@ -185,32 +193,7 @@ void DataCollection::run()
         }
 
         if (parser->isSet("probe")) {
-            DS2PlusPlus::ControlUnitPtr autoDetect;
-
-            foreach (quint8 ecuAddress, ecuAddressList) {
-                try {
-                    // Progress info
-                    qOut << qSetFieldWidth(80) << qSetPadChar(' ') << left << QString(">> Probing ECU at 0x%1 (%2)")
-                            .arg(ecuAddress, 2, 16, QChar('0'))
-                            .arg(ControlUnit::familyForAddress(ecuAddress)) << qSetFieldWidth(0) << endl;
-
-                    autoDetect = DS2PlusPlus::ControlUnitPtr(dbm->findModuleAtAddress(ecuAddress));
-                } catch(DS2PlusPlus::TimeoutException) {
-                    continue;
-                }
-                if (!autoDetect.isNull()) {
-                    break;
-                }
-                usleep(5000);
-            }
-            usleep(5000);
-
-            if (!autoDetect.isNull()) {
-                qOut << QString("At 0x%1 we think we have: %2").arg(autoDetect->address(), 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
-                PacketResponse ourResponse = autoDetect->executeOperation("identify");
-                qOut << "Identity:" << endl << ResponseToJsonString(ourResponse) << endl;
-            } else {
-            }
+            probe();
             emit finished();
             return;
         }
@@ -235,24 +218,27 @@ void DataCollection::listFamilies()
     QStringList families = ControlUnit::knownFamilies();
     families.sort();
 
-    qOut << "Known ECU families: " << families.join(", ") << endl << endl;
-    qOut.setFieldAlignment(QTextStream::AlignLeft);
-    qOut << qSetFieldWidth(8) << "Family" << qSetFieldWidth(25) << "Addresses" << qSetFieldWidth(1) << endl;
+    if (parser->value("format") == "text") {
+        qOut << "Known ECU families: " << families.join(", ") << endl << endl;
+    } else if (parser->value("format") == "verbose") {
+        qOut.setFieldAlignment(QTextStream::AlignLeft);
+        qOut << qSetFieldWidth(8) << "Family" << qSetFieldWidth(25) << "Addresses" << qSetFieldWidth(1) << endl;
 
-    qOut.setPadChar('-');
-    qOut << qSetFieldWidth(33) << "-" << qSetFieldWidth(1) << endl;
-    qOut.setPadChar(' ');
+        qOut.setPadChar('-');
+        qOut << qSetFieldWidth(33) << "-" << qSetFieldWidth(1) << endl;
+        qOut.setPadChar(' ');
 
-    foreach(const QString &family, families) {
-        qOut << qSetFieldWidth(8) << family;
-        QStringList textList;
-        QString stringVal;
-        foreach(quint8 address, ControlUnit::addressForFamily(family)) {
-            stringVal.sprintf("0x%02X", address);
-            textList << stringVal;
+        foreach(const QString &family, families) {
+            qOut << qSetFieldWidth(8) << family;
+            QStringList textList;
+            QString stringVal;
+            foreach(quint8 address, ControlUnit::addressForFamily(family)) {
+                stringVal.sprintf("0x%02X", address);
+                textList << stringVal;
+            }
+            qOut << qSetFieldWidth(25) << textList.join(", ");
+            qOut << qSetFieldWidth(1) << endl;
         }
-        qOut << qSetFieldWidth(25) << textList.join(", ");
-        qOut << qSetFieldWidth(1) << endl;
     }
     return;
 }
@@ -263,7 +249,7 @@ void DataCollection::listEcus()
 
     QHash<QString, ControlUnitPtr> ourEcus;
 
-    QString aFamily = parser->value("ecus");
+    QString aFamily = parser->value("family");
     if (aFamily == "ALL") {
         ourEcus = dbm->findAllModules();
     } else {
@@ -331,7 +317,13 @@ void DataCollection::listOperations()
     foreach (quint64 partNumber, partNumbers) {
         partStrings << QString::number(partNumber, 10);
     }
-    qOut << "Part numbers: " << partStrings.join(", ") << endl;
+
+    if (partStrings.count() == 1) {
+        qOut << "Part number:  " << partStrings.first() << endl;
+    } else if (!partStrings.isEmpty()){
+        qOut << "Part numbers: " << partStrings.join(", ") << endl;
+    }
+
     qOut << "Protocol:     ";
     switch (ourEcu->protocol()) {
     case BasePacket::ProtocolDS2:
@@ -438,6 +430,50 @@ void DataCollection::listOperations()
             qOut << qSetFieldWidth(1)  << endl;
         }
     }
+}
+
+void DataCollection::probe()
+{
+    using namespace DS2PlusPlus;
+
+    ControlUnitPtr autoDetect;
+
+    foreach (quint8 ecuAddress, ecuAddressList) {
+        try {
+            // Progress info
+            qOut << qSetFieldWidth(80) << qSetPadChar(' ') << left << QString(">> Probing ECU at 0x%1 (%2)")
+                    .arg(ecuAddress, 2, 16, QChar('0'))
+                    .arg(ControlUnit::familyForAddress(ecuAddress)) << qSetFieldWidth(0) << endl;
+
+            autoDetect = ControlUnitPtr(dbm->findModuleAtAddress(ecuAddress));
+        } catch(DS2PlusPlus::TimeoutException) {
+            continue;
+        }
+        if (!autoDetect.isNull()) {
+            break;
+        }
+        usleep(5000);
+    }
+    usleep(5000);
+
+    if (!autoDetect.isNull()) {
+        qOut << QString("At 0x%1 we think we have: %2").arg(autoDetect->address(), 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
+        PacketResponse ourResponse = autoDetect->executeOperation("identify");
+        qOut << "Identity:" << endl << ResponseToJsonString(ourResponse) << endl;
+    } else {
+#if 0
+        try {
+            DS2PacketPtr anIdentPacket(new DS2Packet(autoDetect->address(), QByteArray(1, 0)));
+            DS2PacketPtr aResponsePacket = dbm->query(anIdentPacket);
+
+            qOut << "Couldn't find a match, got this response: " << endl << aResponsePacket << endl;
+        } catch(DS2PlusPlus::TimeoutException exception) {
+            qDebug() << "Another timeout here at: " <<
+        }
+#endif
+    }
+    emit finished();
+    return;
 }
 
 void DataCollection::probeAll()

@@ -41,6 +41,7 @@ signals:
 
 public slots:
     void run();
+    void probe();
     void probeAll();
     void listFamilies();
     void listEcus();

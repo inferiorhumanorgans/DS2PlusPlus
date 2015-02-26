@@ -31,7 +31,7 @@
 
 void DataCollection::serialSetup(QSharedPointer<QCommandLineParser> parser)
 {
-    QString serialPortName = parser->value("port");
+    QString serialPortName = parser->value("device");
 
     int fd = open(qPrintable(serialPortName), O_RDWR | O_NOCTTY | O_NDELAY);
     if (fd < 0) {
