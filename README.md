@@ -36,3 +36,7 @@ Tests, of course.  Written using QTestLib.  Running `make check` will excute the
 ####Building Everything###
 
 Use Qt Creator for GUI goodness.  From the commandline use qmake (ex: `qmake DS2PlusPlus.pro`).
+
+####Building Debian Packages###
+
+DEB_BUILD_OPTIONS=nocheck debuild -kNNNNN
