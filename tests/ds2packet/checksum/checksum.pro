@@ -10,8 +10,8 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 LIBS += -lds2
-INCLUDEPATH += $$top_srcdir/libds2
-LIBPATH += $$top_builddir/libds2
+INCLUDEPATH += ../../../libds2
+LIBPATH += ../../../libds2
 
 SOURCES += main.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
