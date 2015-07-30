@@ -1,0 +1,15 @@
+Source: ds2plusplus
+Section: libraries
+Priority: optional
+Maintainer: Alex Zepeda <alex@inferiorhumanorgans.com>
+Build-Depends: debhelper (>= 9), qtbase5-dev, qtbase5-dev-tools, qt5-qmake
+Standards-Version: 3.9.6
+Homepage: https://github.com/inferiorhumanorgans/DS2PlusPlus
+
+Package: ds2plusplus
+Architecture: any
+Depends: libqt5sql5, libqt5serialport5, libqt5core5a, ${misc:Depends}, ${shlibs:Depends}
+Description: AppnameEditor is an editor program.
+ Editor is an editor app based on Qt and C++.
+ It is ....... It has ...... It supports ...........
+ It is licensed under licensename. See so and so file for more information.
