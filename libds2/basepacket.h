@@ -18,6 +18,7 @@ namespace DS2PlusPlus {
     typedef QHash<QString, QVariant> PacketResponse;
     const Json::Value *ResponseToJson(const PacketResponse &aResponse);
     const QString ResponseToJsonString(const PacketResponse &aResponse);
+    const QString HashToJsonString(const QHash<QString, QVariant> &aResponse, const QString &aRootNode = QString::null);
 
     class BasePacket : public QObject
     {

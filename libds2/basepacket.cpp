@@ -158,6 +158,22 @@ namespace DS2PlusPlus {
         return QString(ourStr.c_str());
     }
 
+    const QString HashToJsonString(const QHash<QString, QVariant> &aResponse, const QString &aRootNode) {
+        std::string ourStr;
+        const Json::Value *jsonNode = ResponseToJson(aResponse);
+
+        if (!aRootNode.isEmpty()) {
+            Json::Value realRoot;
+            realRoot[qPrintable(aRootNode)] = (*jsonNode);
+            ourStr = realRoot.toStyledString();
+        } else {
+            ourStr = jsonNode->toStyledString();
+        }
+
+        delete jsonNode;
+        return QString(ourStr.c_str());
+    }
+
     BasePacket::operator const QByteArray () const
     {
         QByteArray ret = this->toByteArray();

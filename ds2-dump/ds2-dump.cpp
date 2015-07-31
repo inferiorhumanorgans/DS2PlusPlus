@@ -279,7 +279,18 @@ void DataCollection::listFamilies()
             qOut << qSetFieldWidth(25) << textList.join(", ");
             qOut << qSetFieldWidth(1) << endl;
         }
+    } else if (parser->value("format") == "json") {
+        QHash<QString, QVariant> ourHash;
+        foreach(const QString &family, families) {
+            QList<quint8> sortedAddresses(ControlUnit::addressForFamily(family));
+            qSort(sortedAddresses);
+            QVariant variant;
+            variant.setValue<QList<quint8> >(sortedAddresses);
+            ourHash.insert(family, variant);
+        }
+        qOut << HashToJsonString(ourHash, "families") << endl;
     }
+
     return;
 }
 
