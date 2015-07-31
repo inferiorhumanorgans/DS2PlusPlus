@@ -78,6 +78,8 @@ namespace DS2PlusPlus {
 
         operator const QByteArray() const;
 
+        static const char *HEX_CHAR_FORMAT;
+
     protected:
         virtual const QByteArray toByteArray() const = 0;
 

@@ -28,6 +28,8 @@ namespace DS2PlusPlus {
         virtual ProtocolType protocol() const;
         virtual const QString toByteString () const;
 
+        static const quint8 KWP_MAGIC_BYTE=0xB8;
+
     protected:
         virtual const QByteArray toByteArray() const;
     };

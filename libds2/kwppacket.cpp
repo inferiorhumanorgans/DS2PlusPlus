@@ -34,7 +34,7 @@ namespace DS2PlusPlus {
         // Chop off initial header, balk if it's not the rightheader
         QString kwpHeader = ourArguments.takeFirst();
         bool isNumber;
-        if (kwpHeader.toULongLong(&isNumber, 16) != 0xB8 or isNumber != true) {
+        if (kwpHeader.toULongLong(&isNumber, 16) != KWP_MAGIC_BYTE or isNumber != true) {
             throw std::domain_error("This is not a KWP packet.");
         }
 
@@ -74,7 +74,7 @@ namespace DS2PlusPlus {
         QByteArray ourData(someData);
 
         if (ourData.isEmpty()) {
-            ourData.append(static_cast<quint8>(0xB8));
+            ourData.append(static_cast<quint8>(KWP_MAGIC_BYTE));
             ourData.append(_targetAddress);
             ourData.append(static_cast<quint8>(_sourceAddress));
             ourData.append(static_cast<quint8>(_data.length()));
@@ -96,26 +96,36 @@ namespace DS2PlusPlus {
 
     const QString KWPPacket::toByteString () const
     {
-        QStringList ret;
-        QChar zeroPadding('0');
+        QString ret("#<KWP Source:%1, Target:%2, Len: %3, Data:%4, Chk:%5>");
+        QString tmp;
 
-        ret.append(QString("%1").arg(static_cast<quint8>(0xB8), 2, 16, zeroPadding));
-        ret.append(QString("%1").arg(_targetAddress, 2, 16, zeroPadding));
-        ret.append(QString("%1").arg(_sourceAddress, 2, 16, zeroPadding));
-        ret.append(QString("%1").arg(_data.length(), 2, 16, zeroPadding));
+        tmp.sprintf(HEX_CHAR_FORMAT, static_cast<quint8>(_sourceAddress));
+        ret = ret.arg(tmp);
 
+        tmp.sprintf(HEX_CHAR_FORMAT, static_cast<quint8>(_targetAddress));
+        ret = ret.arg(tmp);
+
+        tmp.sprintf(HEX_CHAR_FORMAT, static_cast<quint8>(_data.length()));
+        ret = ret.arg(tmp);
+
+        QStringList data;
         for (int i=0; i < _data.length(); i++) {
-            ret.append(QString("%1").arg(static_cast<quint8>(_data.at(i)), 2, 16, zeroPadding));
+            tmp.sprintf(HEX_CHAR_FORMAT, static_cast<quint8>(_data.at(i)));
+            data.append(tmp);
         }
+        ret = ret.arg(data.join(" "));
 
-        return ret.join(" ");
+        tmp.sprintf(HEX_CHAR_FORMAT, static_cast<quint8>(checksum()));
+        ret = ret.arg(tmp);
+
+        return ret;
     }
 
     const QByteArray KWPPacket::toByteArray() const
     {
         QByteArray ret;
 
-        ret.append(0xB8);
+        ret.append(KWP_MAGIC_BYTE);
         ret.append(_targetAddress);
         ret.append(_sourceAddress);
         ret.append(_data.length());

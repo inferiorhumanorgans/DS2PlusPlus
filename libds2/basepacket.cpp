@@ -12,6 +12,8 @@
 #include "basepacket.h"
 
 namespace DS2PlusPlus {
+    const char *BasePacket::HEX_CHAR_FORMAT = "%02X";
+
     BasePacket::BasePacket(QObject *parent) :
         QObject(parent), _hasSourceAddress(false)
     {
@@ -183,22 +185,6 @@ QTextStream &operator << (QTextStream &s, DS2PlusPlus::BasePacketPtr packet)
 
 QDebug operator << (QDebug d, const DS2PlusPlus::BasePacket &packet)
 {
-    QString debugString("TARGET: %1 SOURCE: %2 LENGTH: %3 CHECKSUM: %4 RAW: %5");
-    QChar zeroPadding('0');
-
-    QString targetString = QString("0x%1").arg(packet.targetAddress(), 2, 16, zeroPadding);
-    QString sourceString("--");
-    if (packet.hasSourceAddress()) {
-        sourceString.sprintf("0x%02X", packet.sourceAddress());
-    }
-    QString checksumString = QString("0x%1").arg(packet.checksum(), 2, 16, zeroPadding);
-
-    d << debugString
-         .arg(targetString)
-         .arg(sourceString)
-         .arg(packet.hasSourceAddress() ? packet.data().length() : packet.data().length() + 3)
-         .arg(checksumString)
-         .arg(packet.toByteString());
-
+    d << packet.toByteString();
     return d;
 }

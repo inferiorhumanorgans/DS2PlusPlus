@@ -98,17 +98,26 @@ namespace DS2PlusPlus {
 
     const QString DS2Packet::toByteString () const
     {
-        QStringList ret;
-        QChar zeroPadding('0');
+        QString ret("#<DS2 Target:%1, Len: %2, Data:%3, Chk:%4>");
+        QString tmp;
 
-        ret.append(QString("%1").arg(_targetAddress, 2, 16, zeroPadding));
-        ret.append(QString("%1").arg(_data.length() + 3, 2, 16, zeroPadding));
+        tmp.sprintf(HEX_CHAR_FORMAT, static_cast<quint8>(_targetAddress));
+        ret = ret.arg(tmp);
 
+        tmp.sprintf(HEX_CHAR_FORMAT, static_cast<quint8>(_data.length() + 3));
+        ret = ret.arg(tmp);
+
+        QStringList data;
         for (int i=0; i < _data.length(); i++) {
-            ret.append(QString("%1").arg(static_cast<quint8>(_data.at(i)), 2, 16, zeroPadding));
+            tmp.sprintf(HEX_CHAR_FORMAT, static_cast<quint8>(_data.at(i)));
+            data.append(tmp);
         }
+        ret = ret.arg(data.join(" "));
 
-        return ret.join(" ");
+        tmp.sprintf(HEX_CHAR_FORMAT, static_cast<quint8>(checksum()));
+        ret = ret.arg(tmp);
+
+        return ret;
     }
 
     const QByteArray DS2Packet::toByteArray() const

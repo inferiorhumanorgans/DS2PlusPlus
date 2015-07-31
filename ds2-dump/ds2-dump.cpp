@@ -29,6 +29,8 @@
 #include <QDebug>
 #include <QFile>
 #include <QDate>
+#include <QVariant>
+#include <QList>
 
 #include <ds2packet.h>
 #include <kwppacket.h>
@@ -37,6 +39,42 @@
 #include <exceptions.h>
 
 #include "ds2-dump.h"
+
+void PrettyFormat(const QList<QStringList> &rows)
+{
+    QTextStream qOut(stdout);
+
+    int numCols = rows.at(0).length();
+    QList<int> colWidth;
+
+    for (int i=0; i < numCols; i++) {
+        colWidth.append(0);
+    }
+
+    foreach (const QStringList &row, rows) {
+        for (int i=0; i < numCols; i++) {
+            colWidth[i] = qMax(colWidth[i], row.at(i).length()+2);
+        }
+    }
+
+    bool isHeader = true;
+    foreach (const QStringList &row, rows) {
+        for (int i=0; i < numCols; i++) {
+            qOut << qSetFieldWidth(colWidth[i]) << qSetPadChar(QChar(' ')) << left << row.at(i);
+        }
+        qOut << qSetFieldWidth(0) << endl;
+
+        if (isHeader == true) {
+            for (int i=0; i < numCols; i++) {
+                qOut << qSetFieldWidth(colWidth[i]) << qSetPadChar(QChar('-')) << left << "-";
+            }
+            qOut << qSetFieldWidth(0) << endl;
+            isHeader = false;
+        }
+    }
+
+    return;
+}
 
 DataCollection::DataCollection(QObject *parent) :
     QObject(parent), qOut(stdout), qErr(stderr)
@@ -81,7 +119,7 @@ void DataCollection::run()
     QCommandLineOption autoDiscoverOption(QStringList() << "A" << "probe-all", "Probe all known ECU addresses and print the results.");
     parser->addOption(autoDiscoverOption);
 
-    QCommandLineOption runJobOption(QStringList() << "r" << "run-operation", "Run an operation on an ECU, prints results as JSON to stdout.  Must also specify --ecu.", "operation");
+    QCommandLineOption runJobOption(QStringList() << "R" << "run-operation", "Run an operation on an ECU, prints results as JSON to stdout.");
     parser->addOption(runJobOption);
 
     QCommandLineOption datalogOption(QStringList() << "D" << "data-log", "Create a CSV log, write until interrupted.", "ecu-jobs-and-results");
@@ -232,8 +270,10 @@ void DataCollection::listFamilies()
             qOut << qSetFieldWidth(8) << family;
             QStringList textList;
             QString stringVal;
-            foreach(quint8 address, ControlUnit::addressForFamily(family)) {
-                stringVal.sprintf("0x%02X", address);
+            QList<quint8> sortedAddresses(ControlUnit::addressForFamily(family));
+            qSort(sortedAddresses);
+            foreach(quint8 address, sortedAddresses) {
+                stringVal.sprintf(BasePacket::HEX_CHAR_FORMAT, address);
                 textList << stringVal;
             }
             qOut << qSetFieldWidth(25) << textList.join(", ");
@@ -265,36 +305,28 @@ void DataCollection::listEcus()
         ecuSortMap.insert(ourEcu->name(), ourEcu->uuid());
     }
 
-    int totalLen = 38+40+9+21;
-    qOut << qSetFieldWidth(38) << left << "UUID";
-    qOut << qSetFieldWidth(40) << left << "Name";
-    qOut << qSetFieldWidth(9)  << left << "Version";
-    qOut << qSetFieldWidth(21) << left << "Last Modified";
+    QList<QStringList> output;
+    QStringList headerRow;
+    headerRow << "UUID" << "Name" << "Version" << "Last Modified";
 
     if (aFamily == "ALL") {
-        qOut << qSetFieldWidth(8) << left << "Family";
-        totalLen += 8;
+        headerRow << "Family";
     }
 
-    qOut << qSetFieldWidth(1) << endl;
-
-
-    qOut << qSetFieldWidth(totalLen) << qSetPadChar('-') << "" << qSetFieldWidth(1) << qSetPadChar(' ') << endl;
+    output.append(headerRow);
 
     foreach (const QString &ourUuid, ecuSortMap.values()) {
         ControlUnitPtr ourEcu = ourEcus[ourUuid];
-        qOut << qSetFieldWidth(38) << left << ourEcu->uuid();
-        qOut << qSetFieldWidth(40) << left << ourEcu->name();
-        qOut << qSetFieldWidth(9)  << left << ourEcu->fileVersion();
-        qOut << qSetFieldWidth(21) << left << ourEcu->fileLastModified().toString(Qt::ISODate);
+        QStringList row;
+        row << ourEcu->uuid() << ourEcu->name() << QString::number(ourEcu->fileVersion()) << ourEcu->fileLastModified().toString(Qt::ISODate);
 
         if (aFamily == "ALL") {
-            qOut << qSetFieldWidth(8) << left << ourEcu->family();
+            row << ourEcu->family();
         }
 
-        qOut << qSetFieldWidth(1) << endl;
+        output.append(row);
     }
-    qOut << endl;
+    PrettyFormat(output);
 }
 
 void DataCollection::listOperations()
@@ -643,7 +675,7 @@ void DataCollection::rawQuery()
     BasePacketPtr queryPacket(new DS2Packet(parser->value("query")));
     BasePacketPtr responsePacket =  dbm->query(queryPacket);
 
-    qOut << "Response: " << responsePacket << endl;
+    qOut << "<< REPLY: " << responsePacket << endl;
 }
 
 void DataCollection::runOperation()
@@ -653,13 +685,9 @@ void DataCollection::runOperation()
     ControlUnitPtr autoDetect;
     BasePacketPtr ourPacket;
 
-    if (parser->isSet("input-packet")) {
-        qOut << "Reading from packet specified on command line." << endl << endl;
-    }
-
     if (ecuUuid.isEmpty()) {
         if (parser->isSet("input-packet")) {
-            qOut << "Auto detection from a command line packet is not supported." << endl << "Please specify an ECU UUID when specifying a packet on the command line." << endl;
+            qOut << "-- Auto detection from a command line packet is not supported." << endl << "-- Please specify an ECU UUID when specifying a packet on the command line." << endl;
             finished();
             return;
         }
@@ -682,13 +710,15 @@ void DataCollection::runOperation()
                 ourPacket = BasePacketPtr(new DS2Packet(packetString));
             }
         } else {
-            qDebug() << "No Input packet specified";
+            qDebug() << "-- No Input packet specified";
         }
     }
 
     if (!autoDetect.isNull()) {
-        QString ourJob = parser->value("run-operation");
-        qOut << QString("At 0x%1 we think we have: %2").arg(autoDetect->address(), 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
+        QString ourJob = parser->value("operation");
+        qOut << QString("%1: %3 at 0x%2")
+                .arg(ecuUuid.isEmpty() ? "Detected" : "Using")
+                .arg(autoDetect->address(), 2, 16, QChar('0')).arg(autoDetect->name()) << endl;
 
         bool ok;
         quint64 iterations;
@@ -705,12 +735,58 @@ void DataCollection::runOperation()
 
         for (quint64 i=0; i < iterations; i++) {
             PacketResponse ourResponse;
+
             if (!ourPacket.isNull()) {
                 ourResponse = autoDetect->parseOperation(ourJob, ourPacket);
             } else {
                 ourResponse = autoDetect->executeOperation(ourJob);
             }
-            qOut << "\"" << ourJob << "\"" << ": " << ResponseToJsonString(ourResponse) << endl;
+
+            if (parser->value("format") == "text") {
+                QStringList resultNames = ourResponse.keys();
+                resultNames.sort();
+
+                int longestResultName = 0;
+                foreach (const QString &result, resultNames) {
+                    longestResultName = qMax(result.length(), longestResultName);
+                }
+
+                foreach (const QString &result, resultNames) {
+                    qOut << left << qSetFieldWidth(longestResultName + 2) << result << qSetFieldWidth(0);
+                    QVariant variantValue = ourResponse[result];
+
+                    if (variantValue.type() == static_cast<QVariant::Type>(QMetaType::QString)) {
+                        QString ourString = variantValue.toString();
+
+                        if (ourString.isEmpty()) {
+                            qOut << "null";
+                        } else {
+                            qOut << variantValue.toString();
+                        }
+                    } else if (
+                               (variantValue.type() == static_cast<QVariant::Type>(QMetaType::Int)) ||
+                               (variantValue.type() == static_cast<QVariant::Type>(QMetaType::Long)) ||
+                               (variantValue.type() == static_cast<QVariant::Type>(QMetaType::LongLong))
+                               ) {
+                        qOut << variantValue.toLongLong();
+                    } else if (
+                               (variantValue.type() == static_cast<QVariant::Type>(QMetaType::UInt)) ||
+                               (variantValue.type() == static_cast<QVariant::Type>(QMetaType::ULong)) ||
+                               (variantValue.type() == static_cast<QVariant::Type>(QMetaType::ULongLong))
+                              ) {
+                        qOut << variantValue.toULongLong();
+                    } else if ((variantValue.type() == static_cast<QVariant::Type>(QMetaType::Double)) || (variantValue.type() == static_cast<QVariant::Type>(QMetaType::Float))) {
+                        qOut << variantValue.toDouble();
+                    } else {
+                        qDebug() << "Uknown variant type: " << variantValue.typeName();
+                    }
+
+                    qOut << endl;
+                }
+            } else if (parser->value("format") == "json") {
+                qOut << "\"" << ourJob << "\"" << ": " << ResponseToJsonString(ourResponse) << endl;
+            }
+
             if ((i < iterations - 1) and (iterations > 1)) {
                 sleep(1);
             }
