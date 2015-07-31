@@ -46,6 +46,8 @@ namespace DS2PlusPlus
         virtual ProtocolType protocol() const;
         virtual const QString toByteString () const;
 
+        virtual QByteArray expectedHeaderPadding() const;
+
     protected:
         virtual const QByteArray toByteArray() const;
     };

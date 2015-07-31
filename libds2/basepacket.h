@@ -77,6 +77,8 @@ namespace DS2PlusPlus {
         virtual ProtocolType protocol() const = 0;
         virtual const QString toByteString() const = 0;
 
+        virtual QByteArray expectedHeaderPadding() const = 0;
+
         operator const QByteArray() const;
 
         static const char *HEX_CHAR_FORMAT;

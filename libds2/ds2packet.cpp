@@ -131,4 +131,9 @@ namespace DS2PlusPlus {
 
         return ret;
     }
+
+    QByteArray DS2Packet::expectedHeaderPadding() const
+    {
+        return QByteArray();
+    }
 }

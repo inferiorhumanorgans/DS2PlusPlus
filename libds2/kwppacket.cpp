@@ -137,4 +137,9 @@ namespace DS2PlusPlus {
 
         return ret;
     }
+
+    QByteArray KWPPacket::expectedHeaderPadding() const
+    {
+        return QByteArray("\xB8\xF1", 2);
+    }
 }

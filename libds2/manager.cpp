@@ -367,10 +367,14 @@ namespace DS2PlusPlus {
         quint8 ecuAddress;
         quint8 length;
 
-        QByteArray inputArray;
-        if (aPacket->hasSourceAddress()) {
-            inputArray = readBytes(_fd, 2);
+        QByteArray inputArray, expectedInput = aPacket->expectedHeaderPadding();
+
+        if (!expectedInput.isEmpty()) {
+            inputArray = readBytes(_fd, expectedInput.length());
             usleep(slowEcu ? 250000 : 12500);
+            if (expectedInput != inputArray) {
+                qDebug() << "Got unexpected input";
+            }
             // Should be reading in 0xB8 as our header and F1 as our target address
         }
 
