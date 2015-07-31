@@ -1,5 +1,5 @@
 Source: ds2plusplus
-Section: libraries
+Section: libs
 Priority: extra
 Maintainer: Alex Zepeda <alex@inferiorhumanorgans.com>
 Build-Depends:
@@ -11,7 +11,7 @@ Build-Depends:
 Standards-Version: 3.9.6
 Homepage: https://github.com/inferiorhumanorgans/DS2PlusPlus
 
-Package: libds2plusplus
+Package: libds2
 Architecture: any
 Depends:
   libqt5core5a,
@@ -19,4 +19,20 @@ Depends:
   libqt5sql5,
   ${misc:Depends},
   ${shlibs:Depends}
+Description: DS2PlusPlus is a library designed to interface with early 2000s BMWs over a serial port.
+
+Package: libds2-dev
+Architecture: all
+Section: libdevel
+Depends:
+  libds2 (= ${Source-Version}),
+  ${misc:Depends}
+Description: DS2PlusPlus is a library designed to interface with early 2000s BMWs over a serial port.
+
+Package: ds2db
+Architecture: all
+Section: libs
+Depends:
+  libds2 (= ${Source-Version}),
+  ${misc:Depends}
 Description: DS2PlusPlus is a library designed to interface with early 2000s BMWs over a serial port.

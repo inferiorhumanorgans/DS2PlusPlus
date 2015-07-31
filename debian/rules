@@ -3,5 +3,9 @@ export QT_SELECT := qt5
 export DH_ALWAYS_EXCLUDE=tests:libjsoncpp.a:changelog.Debian.gz
 export DH_VERBOSE=1
 
+override_dh_auto_build:
+	dh_auto_build
+	mkdir tmp
+	LD_LIBRRAY_PATH=./libds2/ ds2-dump --dpp-source-dir ./dpp-json --dpp-dir ./tmp --load
 %:
 	dh $@ 
