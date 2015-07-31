@@ -368,6 +368,10 @@ namespace DS2PlusPlus {
             //qErr << errorString << endl;
         }
 
+        if (getenv("DPP_TRACE")) {
+            qOut << "<< REPLY: " << *packet << endl;
+        }
+
         foreach(const Result &result, theOp->results()) {
             //qDebug() << "Result: " << result.name;
 
