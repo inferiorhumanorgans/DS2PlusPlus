@@ -140,6 +140,13 @@ namespace DS2PlusPlus {
                 jsonValue  = Json::Value(variantValue.toULongLong());
             } else if ((variantValue.type() == static_cast<QVariant::Type>(QMetaType::Double)) || (variantValue.type() == static_cast<QVariant::Type>(QMetaType::Float))) {
                 jsonValue  = Json::Value(variantValue.toDouble());
+            } else if (strcmp(variantValue.typeName(), "QList<uchar>")==0) {
+                jsonValue = Json::Value(Json::arrayValue);
+
+                QList<quint8> ourQList = variantValue.value<QList<quint8> >();
+                foreach (quint8 address, ourQList) {
+                    jsonValue.append(address);
+                }
             } else {
                 qDebug() << "Uknown variant type: " << variantValue.typeName();
             }
