@@ -280,6 +280,8 @@ namespace DS2PlusPlus {
             // This is cheating
             if (QFile::exists(QDir::currentPath() + "/dppdb.sqlite3" )) {
                 _dppDir = QDir::currentPath();
+            } else if (QFile::exists("/usr/share/ds2/dppdb.sqlite3" )) {
+                _dppDir = "/usr/share/ds2";
             } else {
                 _dppDir = DPP_DIR;
             }
