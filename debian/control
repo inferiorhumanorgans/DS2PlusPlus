@@ -18,21 +18,20 @@ Depends:
   libqt5serialport5,
   libqt5sql5,
   ${misc:Depends},
-  ${shlibs:Depends}
-Description: DS2PlusPlus is a library designed to interface with early 2000s BMWs over a serial port.
+Description: libds2 provides an API to interface with early 2000s BMWs.
 
 Package: libds2-dev
 Architecture: all
 Section: libdevel
 Depends:
-  libds2 (= ${Source-Version}),
+  libds2 (= ${binary:Version}),
   ${misc:Depends}
-Description: DS2PlusPlus is a library designed to interface with early 2000s BMWs over a serial port.
+Description: libds2 provides an API to interface with early 2000s BMWs.
 
 Package: ds2db
 Architecture: all
 Section: libs
 Depends:
-  libds2 (= ${Source-Version}),
+  libds2 (>= ${source:Upstream-Version}),
   ${misc:Depends}
-Description: DS2PlusPlus is a library designed to interface with early 2000s BMWs over a serial port.
+Description: DS2DB provides a database of DS2 operations.

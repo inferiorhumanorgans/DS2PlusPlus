@@ -6,6 +6,10 @@ export DH_VERBOSE=1
 override_dh_auto_build:
 	dh_auto_build
 	mkdir tmp
-	LD_LIBRRAY_PATH=./libds2/ ds2-dump --dpp-source-dir ./dpp-json --dpp-dir ./tmp --load
+	LD_LIBRARY_PATH=$(shell pwd)/libds2/ $(shell pwd)/ds2-dump/ds2-dump --load --dpp-source-dir=./dpp-json --dpp-dir=./tmp
+
+override_dh_shlibdeps:
+	dh_shlibdeps -l$(shell pwd)/libds2
+
 %:
 	dh $@ 
