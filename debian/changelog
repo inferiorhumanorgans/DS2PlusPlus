@@ -1,3 +1,9 @@
+ds2plusplus (0.5.0-iho20150802) UNRELEASED; urgency=low
+
+  * Correct packaging so that ld can find the shared libraries.
+
+ -- Alex Zepeda <alex@inferiorhumanorgans.com>  Sun, 2 Aug 2015 15:59:45 -0700
+
 ds2plusplus (0.5.0-iho20150731) UNRELEASED; urgency=low
 
   * Improve pretty printing, and add JSON output.

@@ -1,2 +1,2 @@
 ds2-dump/ds2-dump usr/bin
-libds2/libds2.so.* usr/lib
+libds2/libds2.so* usr/lib
