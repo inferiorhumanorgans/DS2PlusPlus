@@ -141,6 +141,11 @@ namespace DS2PlusPlus {
         }
     }
 
+    const QString Manager::version()
+    {
+        return QString(LIBDS2_VERSION);
+    }
+
     void Manager::initializeManager()
     {
         // Create a random UUID so we can have multiple connections to the database...

@@ -52,6 +52,8 @@ namespace DS2PlusPlus
         explicit Manager(QSharedPointer<QCommandLineParser> aParser=QSharedPointer<QCommandLineParser>(), int fd = -1, QObject *aParent = 0);
         virtual ~Manager();
 
+        static const QString version();
+
         /*!
          * \brief initializeManager
          *

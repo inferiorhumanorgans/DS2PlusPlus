@@ -4,13 +4,15 @@
 #
 #-------------------------------------------------
 
+VERSION = 0.6.1
+
 QT -= gui
 QT += sql
 
 TARGET = ds2
 TEMPLATE = lib
 
-DEFINES += LIBDS2_LIBRARY
+DEFINES += LIBDS2_LIBRARY LIBDS2_VERSION=\\\"$$VERSION\\\"
 
 SOURCES += \
            ds2packet.cpp \
@@ -36,7 +38,6 @@ HEADERS +=\
 unix {
     target.path = /usr/lib
     INSTALLS += target
-    VERSION = 0.6
 }
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../jsoncpp/ -ljsoncpp
