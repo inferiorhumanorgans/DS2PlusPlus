@@ -23,10 +23,10 @@
 
 #include <stdexcept>
 
-#include "controlunit.h"
-#include "operation.h"
-#include "ds2packet.h"
-#include "kwppacket.h"
+#include <ds2/controlunit.h>
+#include <ds2/operation.h>
+#include <ds2/ds2packet.h>
+#include <ds2/kwppacket.h>
 
 namespace DS2PlusPlus {
 

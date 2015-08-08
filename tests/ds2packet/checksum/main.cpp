@@ -1,6 +1,6 @@
 #include <QTest>
 
-#include <ds2packet.h>
+#include <ds2/ds2packet.h>
 
 namespace Test_DS2Packet {
     class Checksum : public QObject

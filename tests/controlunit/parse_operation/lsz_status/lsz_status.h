@@ -7,8 +7,8 @@
 #include <QString>
 #include <QTest>
 
-#include "ds2packet.h"
-#include "controlunit.h"
+#include <ds2/ds2packet.h>
+#include <ds2/controlunit.h>
 
 namespace Test_ControlUnit {
     namespace ParseOperation {

@@ -1,4 +1,4 @@
-#include "kwppacket.h"
+#include <ds2/kwppacket.h>
 
 #include <stdexcept>
 

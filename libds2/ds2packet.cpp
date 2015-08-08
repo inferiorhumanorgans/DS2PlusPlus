@@ -25,7 +25,7 @@
 
 #include <QSharedPointer>
 
-#include "ds2packet.h"
+#include <ds2/ds2packet.h>
 
 namespace DS2PlusPlus {
     DS2Packet::DS2Packet(QObject *parent) :

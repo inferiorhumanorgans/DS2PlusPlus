@@ -32,11 +32,11 @@
 #include <QVariant>
 #include <QList>
 
-#include <ds2packet.h>
-#include <kwppacket.h>
-#include <manager.h>
-#include <controlunit.h>
-#include <exceptions.h>
+#include <ds2/ds2packet.h>
+#include <ds2/kwppacket.h>
+#include <ds2/manager.h>
+#include <ds2/controlunit.h>
+#include <ds2/exceptions.h>
 
 #include "ds2-dump.h"
 

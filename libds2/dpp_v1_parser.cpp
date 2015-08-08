@@ -21,7 +21,7 @@
  * Or see <http://www.gnu.org/licenses/>.
  */
 
-#include "dpp_v1_parser.h"
+#include <ds2/dpp_v1_parser.h>
 
 #include <stdexcept>
 
@@ -34,7 +34,7 @@
 #include <QSqlError>
 #include <QSqlRecord>
 
-#include "manager.h"
+#include <ds2/manager.h>
 
 QString getQStringFromJson(Json::Value &aJsonValue)
 {

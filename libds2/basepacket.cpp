@@ -9,7 +9,7 @@
 #include <QSharedPointer>
 #include <QByteArray>
 
-#include "basepacket.h"
+#include <ds2/basepacket.h>
 
 namespace DS2PlusPlus {
     const char *BasePacket::HEX_CHAR_FORMAT = "%02X";

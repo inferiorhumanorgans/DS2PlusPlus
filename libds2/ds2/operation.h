@@ -28,8 +28,8 @@
 #include <QStringList>
 #include <QHash>
 
-#include <result.h>
-#include <basepacket.h>
+#include <ds2/result.h>
+#include <ds2/basepacket.h>
 
 namespace DS2PlusPlus {
     class Operation

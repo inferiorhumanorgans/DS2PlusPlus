@@ -48,10 +48,10 @@
 #include <QSqlRecord>
 #include <QSqlError>
 
-#include "exceptions.h"
-#include "manager.h"
-#include "dpp_v1_parser.h"
-#include "kwppacket.h"
+#include <ds2/exceptions.h>
+#include <ds2/manager.h>
+#include <ds2/dpp_v1_parser.h>
+#include <ds2/kwppacket.h>
 
 QByteArray readBytes(int fd, int length)
 {

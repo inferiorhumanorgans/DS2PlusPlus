@@ -37,10 +37,10 @@
 
 #include <QUuid>
 
-#include "operation.h"
-#include "controlunit.h"
-#include "manager.h"
-#include "dpp_v1_parser.h"
+#include <ds2/operation.h>
+#include <ds2/controlunit.h>
+#include <ds2/manager.h>
+#include <ds2/dpp_v1_parser.h>
 
 namespace DS2PlusPlus {
 

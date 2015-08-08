@@ -28,7 +28,7 @@
 #include <QSharedPointer>
 #include <QCommandLineParser>
 
-#include "manager.h"
+#include <ds2/manager.h>
 
 class DataCollection : public QObject
 {

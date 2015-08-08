@@ -5,9 +5,9 @@
 #include <QString>
 #include <QTest>
 
-#include "ds2packet.h"
-#include "manager.h"
-#include "controlunit.h"
+#include <ds2/ds2packet.h>
+#include <ds2/manager.h>
+#include <ds2/controlunit.h>
 
 namespace Test_ControlUnit {
     namespace ParseOperation {

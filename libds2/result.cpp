@@ -25,7 +25,7 @@
 
 #include <QDebug>
 
-#include "result.h"
+#include <ds2/result.h>
 
 namespace DS2PlusPlus {
     void Result::setUuid(const QString &aUuid)
