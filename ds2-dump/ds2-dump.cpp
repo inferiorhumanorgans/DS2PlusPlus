@@ -712,6 +712,10 @@ void DataCollection::runOperation()
     } else {
         autoDetect = ControlUnitPtr(new ControlUnit(ecuUuid, &(*dbm)));
         ecuAddressList << autoDetect->address();
+        if (parser->isSet("family")) {
+            ecuAddressList = (DS2PlusPlus::ControlUnit::addressForFamily(parser->value("family")));
+            autoDetect->setAddress(ecuAddressList.first());
+        }
 
         if (parser->isSet("input-packet")) {
             QString packetString = parser->value("input-packet");
