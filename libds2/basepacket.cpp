@@ -20,7 +20,7 @@ namespace DS2PlusPlus {
     }
 
     BasePacket::BasePacket(quint8 aTargetAddress, const QByteArray &someData, QObject *parent) :
-        QObject(parent), _targetAddress(aTargetAddress), _data(someData), _hasSourceAddress(false)
+        QObject(parent), _hasSourceAddress(false), _targetAddress(aTargetAddress), _data(someData)
     {
 
     }
