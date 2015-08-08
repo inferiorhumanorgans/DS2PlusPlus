@@ -25,18 +25,21 @@ void InitializationTest::testCase1()
 {
     DS2PlusPlus::DS2Packet *packet1 = new DS2PlusPlus::DS2Packet;
     QVERIFY(packet1->hasSourceAddress() == false);
+    QVERIFY(packet1->protocol() == DS2PlusPlus::BasePacket::ProtocolDS2);
 }
 
 void InitializationTest::testCase2()
 {
     DS2PlusPlus::DS2Packet *packet2 = new DS2PlusPlus::DS2Packet("80 04 00");
     QVERIFY(packet2->hasSourceAddress() == false);
+    QVERIFY(packet2->protocol() == DS2PlusPlus::BasePacket::ProtocolDS2);
 }
 
 void InitializationTest::testCase3()
 {
     DS2PlusPlus::DS2Packet *packet3 = new DS2PlusPlus::DS2Packet(0x80, "bytearray");
     QVERIFY(packet3->hasSourceAddress() == false);
+    QVERIFY(packet3->protocol() == DS2PlusPlus::BasePacket::ProtocolDS2);
 }
 
 QTEST_APPLESS_MAIN(InitializationTest)
