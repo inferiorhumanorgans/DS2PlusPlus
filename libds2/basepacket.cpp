@@ -181,7 +181,7 @@ namespace DS2PlusPlus {
         return QString(ourStr.c_str());
     }
 
-    BasePacket::operator const QByteArray () const
+    BasePacket::operator QByteArray () const
     {
         QByteArray ret = this->toByteArray();
 

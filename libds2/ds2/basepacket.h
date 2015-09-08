@@ -79,7 +79,7 @@ namespace DS2PlusPlus {
 
         virtual QByteArray expectedHeaderPadding() const = 0;
 
-        operator const QByteArray() const;
+        operator QByteArray() const;
 
         static const char *HEX_CHAR_FORMAT;
 
