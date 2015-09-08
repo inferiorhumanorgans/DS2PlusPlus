@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       -= core gui
+CONFIG   += c++11
 
 TARGET = jsoncpp
 TEMPLATE = lib

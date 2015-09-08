@@ -4,10 +4,12 @@
 #
 #-------------------------------------------------
 
-VERSION = 0.6.1
+VERSION = 0.6.2
 
 QT -= gui
 QT += sql
+
+CONFIG   += c++11
 
 TARGET = ds2
 TEMPLATE = lib

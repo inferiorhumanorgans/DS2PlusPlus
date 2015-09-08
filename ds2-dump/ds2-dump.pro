@@ -7,6 +7,8 @@
 QT       -= gui
 QT       += core sql
 
+CONFIG   += c++11
+
 TARGET = ds2-dump
 CONFIG += console
 CONFIG -= app_bundle
