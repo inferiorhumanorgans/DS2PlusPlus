@@ -27,6 +27,8 @@
 #include <errno.h>
 #include <stdio.h>
 
+#include <iostream>
+
 #include "ds2-dump.h"
 
 void DataCollection::serialSetup(QSharedPointer<QCommandLineParser> parser)
