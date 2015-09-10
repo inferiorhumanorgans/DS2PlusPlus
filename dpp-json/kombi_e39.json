@@ -1,0 +1,126 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2015-08-08T22:53:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "80000000-0002-0000-0000-000000000000",
+  "address":            "0x80",
+  "family":             "KOMBI",
+  "name":               "E39 Instrument Cluster",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [6942178, 8381798],
+  "hardware_number":    "0x25",
+  "software_number":    "0x21",
+  "coding_index":       "0x12",
+  "endian":             "little",
+  "operations": {
+    "vehicle_id_short": {
+      "uuid":           "80000000-0002-0001-0000-000000000000",
+      "command":        ["0x02", "0x02"],
+      "results": {
+        "short_vin": {
+          "uuid":       "80000000-0002-0001-0001-000000000000",
+          "type":       "short_vin",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     5,
+          "units":      "string"
+        }
+      }      
+    },
+    "dtc_load_bank1": {
+      "uuid":           "80000000-0002-0002-0000-000000000000",
+      "command":        ["0x04", "0x01"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "80000000-0002-0002-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.dtc": {
+          "uuid":       "80000000-0002-0002-0002-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.0.description": {
+          "uuid":       "80000000-0002-0002-0003-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-0008-0000-0000-000000000000",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.1.dtc": {
+          "uuid":       "80000000-0002-0002-0004-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  5,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.1.description": {
+          "uuid":       "80000000-0002-0002-0005-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-0008-0000-0000-000000000000",
+          "start_pos":  5,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.2.dtc": {
+          "uuid":       "80000000-0002-0002-0006-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  8,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.2.description": {
+          "uuid":       "80000000-0002-0002-0007-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-0008-0000-0000-000000000000",
+          "start_pos":  8,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.3.dtc": {
+          "uuid":       "80000000-0002-0002-0008-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  11,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.3.description": {
+          "uuid":       "80000000-0002-0002-0009-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-0008-0000-0000-000000000000",
+          "start_pos":  11,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.4.dtc": {
+          "uuid":       "80000000-0002-0002-000A-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  14,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.4.description": {
+          "uuid":       "80000000-0002-0002-000B-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-0008-0000-0000-000000000000",
+          "start_pos":  14,
+          "length":     1,
+          "units":      "string"
+        }
+      }
+    }
+  }
+}
