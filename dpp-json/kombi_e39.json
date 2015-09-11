@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       1,
-  "file_mtime":         "2015-08-08T22:53:00.0Z",
+  "file_version":       2,
+  "file_mtime":         "2015-09-11T06:02:00.0Z",
   "file_type":          "ecu",
   "uuid":               "80000000-0002-0000-0000-000000000000",
   "address":            "0x80",
@@ -56,69 +56,110 @@
           "length":     1,
           "units":      "string"
         },
-        "error_code.codes.1.dtc": {
+        "error_code.codes.0.flags": {
           "uuid":       "80000000-0002-0002-0004-000000000000",
           "type":       "byte",
-          "display":    "hex_string",
-          "start_pos":  5,
+          "display":    "enum",
+          "start_pos":  3,
           "length":     1,
+          "levels": {
+            "0x01": "Short circuit to batt+",   // Intel: 1 << 0, BMW: 1 << 1
+            "0x02": "Short circuit to ground",  // Intel: 1 << 1, BMW: 1 << 2
+            "0x04": "Open circuit",             // Intel: 1 << 2, BMW: 1 << 3
+            "0x08": "Invalid working area",     // Intel: 1 << 3, BMW: 1 << 4
+            "0x80": "Error present",            // Intel: 1 << 7, BMW: 1 << 5
+            "0x40": "Sporadic Error",           // Intel: 1 << 6, BMW: 1 << 6
+            "0x20": "External Error"            // Intel: 1 << 5, BMW: 1 << 7
+          },
           "units":      "string"
         },
-        "error_code.codes.1.description": {
+        "error_code.codes.0.frequency": {
           "uuid":       "80000000-0002-0002-0005-000000000000",
           "type":       "byte",
-          "display":    "string_table:00002222-0008-0000-0000-000000000000",
-          "start_pos":  5,
+          "display":    "raw",
+          "start_pos":  4,
           "length":     1,
-          "units":      "string"
+          "units":      "int"
+        },
+        "error_code.codes.1.dtc": {
+          "uuid":       "80000000-0002-0002-0006-000000000000",
+          "parent_id":  "80000000-0002-0002-0002-000000000000",
+          "start_pos":  5
+        },
+        "error_code.codes.1.description": {
+          "uuid":       "80000000-0002-0002-0007-000000000000",
+          "parent_id":  "80000000-0002-0002-0003-000000000000",
+          "start_pos":  5
+        },
+        "error_code.codes.1.flags": {
+          "uuid":       "80000000-0002-0002-0008-000000000000",
+          "parent_id":  "80000000-0002-0002-0004-000000000000",
+          "start_pos":  6
+        },
+        "error_code.codes.1.frequency": {
+          "uuid":       "80000000-0002-0002-0009-000000000000",
+          "parent_id":  "80000000-0002-0002-0005-000000000000",
+          "start_pos":  7
         },
         "error_code.codes.2.dtc": {
-          "uuid":       "80000000-0002-0002-0006-000000000000",
-          "type":       "byte",
-          "display":    "hex_string",
-          "start_pos":  8,
-          "length":     1,
-          "units":      "string"
+          "uuid":       "80000000-0002-0002-000A-000000000000",
+          "parent_id":  "80000000-0002-0002-0002-000000000000",
+          "start_pos":  8
         },
         "error_code.codes.2.description": {
-          "uuid":       "80000000-0002-0002-0007-000000000000",
-          "type":       "byte",
-          "display":    "string_table:00002222-0008-0000-0000-000000000000",
-          "start_pos":  8,
-          "length":     1,
-          "units":      "string"
+          "uuid":       "80000000-0002-0002-000B-000000000000",
+          "parent_id":  "80000000-0002-0002-0003-000000000000",
+          "start_pos":  8
+        },
+        "error_code.codes.2.flags": {
+          "uuid":       "80000000-0002-0002-000C-000000000000",
+          "parent_id":  "80000000-0002-0002-0004-000000000000",
+          "start_pos":  9
+        },
+        "error_code.codes.2.frequency": {
+          "uuid":       "80000000-0002-0002-000D-000000000000",
+          "parent_id":  "80000000-0002-0002-0005-000000000000",
+          "start_pos":  10
         },
         "error_code.codes.3.dtc": {
-          "uuid":       "80000000-0002-0002-0008-000000000000",
-          "type":       "byte",
-          "display":    "hex_string",
-          "start_pos":  11,
-          "length":     1,
-          "units":      "string"
+          "uuid":       "80000000-0002-0002-000E-000000000000",
+          "parent_id":  "80000000-0002-0002-0002-000000000000",
+          "start_pos":  11
         },
         "error_code.codes.3.description": {
-          "uuid":       "80000000-0002-0002-0009-000000000000",
-          "type":       "byte",
-          "display":    "string_table:00002222-0008-0000-0000-000000000000",
-          "start_pos":  11,
-          "length":     1,
-          "units":      "string"
+          "uuid":       "80000000-0002-0002-000F-000000000000",
+          "parent_id":  "80000000-0002-0002-0003-000000000000",
+          "start_pos":  11
+        },
+        "error_code.codes.3.flags": {
+          "uuid":       "80000000-0002-0002-0010-000000000000",
+          "parent_id":  "80000000-0002-0002-0004-000000000000",
+          "start_pos":  12
+        },
+        "error_code.codes.3.frequency": {
+          "uuid":       "80000000-0002-0002-0011-000000000000",
+          "parent_id":  "80000000-0002-0002-0005-000000000000",
+          "start_pos":  13
         },
         "error_code.codes.4.dtc": {
-          "uuid":       "80000000-0002-0002-000A-000000000000",
-          "type":       "byte",
-          "display":    "hex_string",
-          "start_pos":  14,
-          "length":     1,
-          "units":      "string"
+          "uuid":       "80000000-0002-0002-0012-000000000000",
+          "parent_id":  "80000000-0002-0002-0002-000000000000",
+          "start_pos":  14
         },
         "error_code.codes.4.description": {
-          "uuid":       "80000000-0002-0002-000B-000000000000",
-          "type":       "byte",
-          "display":    "string_table:00002222-0008-0000-0000-000000000000",
-          "start_pos":  14,
-          "length":     1,
-          "units":      "string"
+          "uuid":       "80000000-0002-0002-0013-000000000000",
+          "parent_id":  "80000000-0002-0002-0003-000000000000",
+          "start_pos":  14
+        },
+        "error_code.codes.4.flags": {
+          "uuid":       "80000000-0002-0002-0014-000000000000",
+          "parent_id":  "80000000-0002-0002-0004-000000000000",
+          "start_pos":  15
+        },
+        "error_code.codes.4.frequency": {
+          "uuid":       "80000000-0002-0002-0015-000000000000",
+          "parent_id":  "80000000-0002-0002-0005-000000000000",
+          "start_pos":  16
         }
       }
     }
