@@ -85,9 +85,9 @@
           "start_pos":  1,
           "length":     1,
           "levels": {
-            "0x10": "auto",
-            "0x20": "recirculation",
-            "else": "fresh"
+            "0x10":     "auto",
+            "0x20":     "recirculation",
+            "else":     "fresh"
           },
           "units":      "string"
         },
@@ -98,10 +98,10 @@
           "start_pos":  1,
           "length":     1,
           "levels": {
-            "0x01": "defrost",
-            "0x02": "dash",
-            "0x04": "floor",
-            "0x08": "auto"
+            "0x01":     "defrost",
+            "0x02":     "dash",
+            "0x04":     "floor",
+            "0x08":     "auto"
           },
           "units":      "string"
         },
