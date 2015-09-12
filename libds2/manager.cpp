@@ -69,7 +69,9 @@ QByteArray readBytes(int fd, int length)
     while (ret.length() < length) {
         switch(select(fd+1, &fds, NULL, NULL, &tv)) {
         case 0:
-            // timeout
+            // reset timeout
+            tv.tv_sec = 0;
+            tv.tv_usec = 500000;
             if (--remainingTimeouts == 0) {
                 throw DS2PlusPlus::TimeoutException();
             }
