@@ -54,7 +54,7 @@ void DataCollection::serialSetup(QSharedPointer<QCommandLineParser> parser)
 
     tty.c_oflag = 0;
     tty.c_lflag = 0;
-    tty.c_iflag &= (IXON | IXOFF | IXANY);
+    tty.c_iflag &= ~(IXON | IXOFF | IXANY);
     tty.c_cflag |= CLOCAL | CREAD;
     tty.c_cflag &= ~HUPCL;
 
