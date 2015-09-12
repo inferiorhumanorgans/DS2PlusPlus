@@ -100,10 +100,6 @@ bool fd_is_valid(int fd)
 }
 
 namespace DS2PlusPlus {
-    const QString Manager::DPP_DIR = QString("~/.dpp");
-    const QString Manager::DPP_DB_PATH = QString("dppdb.sqlite3");
-    const QString Manager::DPP_JSON_PATH = QString("json");
-
     QTextStream qOut(stdout);
     QTextStream qErr(stderr);
 
@@ -116,6 +112,10 @@ namespace DS2PlusPlus {
 
         return ret;
     }
+
+    const QString Manager::DPP_DIR = expandTilde(QString("~/.dpp"));
+    const QString Manager::DPP_DB_PATH = QString("dppdb.sqlite3");
+    const QString Manager::DPP_JSON_PATH = QString("json");
 
     Manager::Manager(QSharedPointer<QCommandLineParser> aParser, int fd, QObject *parent) :
         QObject(parent), _dppDir(QString::null), _fd(fd), _cliParser(aParser)
@@ -279,22 +279,28 @@ namespace DS2PlusPlus {
             return _dppDir;
         }
 
-        const char *dppDirEnv = getenv("DPP_DIR");
+        QString dppDirEnv = getenv("DPP_DIR");
 
-        if (dppDirEnv) {
-            _dppDir = QString(dppDirEnv);
-        } else {
-            // This is cheating
-            if (QFile::exists(QDir::currentPath() + "/dppdb.sqlite3" )) {
-                _dppDir = QDir::currentPath();
-            } else if (QFile::exists("/usr/share/ds2/dppdb.sqlite3" )) {
-                _dppDir = "/usr/share/ds2";
-            } else {
-                _dppDir = DPP_DIR;
-            }
+        QStringList searchPath;
+
+        if (!dppDirEnv.isEmpty()) {
+          searchPath << expandTilde(dppDirEnv);
+        }
+        searchPath << QDir::currentPath();
+        searchPath << DPP_DIR;
+        searchPath << QString("/usr/share/ds2/");
+
+        foreach (QString path, searchPath) {
+          QString checkMe = QString(path + "/" + DPP_DB_PATH);
+          if (QFile::exists(checkMe)) {
+            _dppDir = path;
+            break;
+          }
         }
 
-        _dppDir = expandTilde(_dppDir);
+        if (_dppDir.isEmpty()) {
+          _dppDir = DPP_DIR; // Gross, should error out
+        }
 
         QDir ourDir(_dppDir);
         if (!ourDir.exists()) {
