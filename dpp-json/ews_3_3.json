@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       3,
-  "file_mtime":         "2014-09-22T00:21:13.0Z",
+  "file_version":       4,
+  "file_mtime":         "2015-09-12T00:10:14.0Z",
   "file_type":          "ecu",
   "uuid":               "44000000-0001-0000-0000-000000000000",
   "address":            "0x44",
@@ -59,86 +59,51 @@
           "length":     1,
           "rpn":        "N 5 >>", // Take the left most 3 bits
           "levels": {
-            "0x00": "sporadic",
-            "0x01": "static"
+            "0x00":     "sporadic",
+            "0x01":     "static"
           },
           "units":      "string"
         },
         "error_code.codes.1.dtc": {
           "uuid":       "44000000-0001-0001-0006-000000000000",
-          "type":       "byte",
-          "display":    "hex_string",
-          "start_pos":  4,
-          "length":     1,
-          "units":      "int"
+          "parent_id":  "44000000-0001-0001-0002-000000000000",
+          "start_pos":  4
         },
         "error_code.codes.1.description": {
           "uuid":       "44000000-0001-0001-0007-000000000000",
-          "type":       "byte",
-          "display":    "string_table:00002222-0002-0000-0000-000000000000",
-          "start_pos":  4,
-          "length":     1,
-          "units":      "int"
+          "parent_id":  "44000000-0001-0001-0003-000000000000",
+          "start_pos":  4
         },
         "error_code.codes.1.frequency": {
           "uuid":       "44000000-0001-0001-0008-000000000000",
-          "type":       "byte",
-          "display":    "raw",
-          "start_pos":  5,
-          "length":     1,
-          "rpn":        "N 0x1f &",
-          "units":      "int"
+          "parent_id":  "44000000-0001-0001-0004-000000000000",
+          "start_pos":  5
         },
         "error_code.codes.1.type": {
           "uuid":       "44000000-0001-0001-0009-000000000000",
-          "type":       "byte",
-          "display":    "enum",
-          "start_pos":  5,
-          "length":     1,
-          "rpn":        "N 5 >>", // Take the left most 3 bits
-          "levels": {
-            "0x00": "sporadic",
-            "0x01": "static"
-          },
-          "units":      "string"
+          "parent_id":  "44000000-0001-0001-0004-000000000000",
+          "start_pos":  5
+
         },
         "error_code.codes.2.dtc": {
           "uuid":       "44000000-0001-0001-000A-000000000000",
-          "type":       "byte",
-          "display":    "hex_string",
-          "start_pos":  6,
-          "length":     1,
-          "units":      "int"
+          "parent_id":  "44000000-0001-0001-0002-000000000000",
+          "start_pos":  6
         },
         "error_code.codes.2.description": {
           "uuid":       "44000000-0001-0001-000B-000000000000",
-          "type":       "byte",
-          "display":    "string_table:00002222-0002-0000-0000-000000000000",
-          "start_pos":  6,
-          "length":     1,
-          "units":      "string"
+          "parent_id":  "44000000-0001-0001-0003-000000000000",
+          "start_pos":  6
         },
         "error_code.codes.2.frequency": {
           "uuid":       "44000000-0001-0001-000C-000000000000",
-          "type":       "byte",
-          "display":    "raw",
-          "start_pos":  7,
-          "length":     1,
-          "mask":       "0x1f",
-          "units":      "string"
+          "parent_id":  "44000000-0001-0001-0004-000000000000",
+          "start_pos":  7
         },
         "error_code.codes.2.type": {
           "uuid":       "44000000-0001-0001-000D-000000000000",
-          "type":       "byte",
-          "display":    "enum",
-          "start_pos":  7,
-          "length":     1,
-          "rpn":        "N 5 >>", // Take the left most 3 bits
-          "levels": {
-            "0x00": "sporadic",
-            "0x01": "static"
-          },
-          "units":      "string"
+          "parent_id":  "44000000-0001-0001-0004-000000000000",
+          "start_pos":  7
         }
       }
     }
