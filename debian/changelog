@@ -1,3 +1,9 @@
+ds2plusplus (0.6.3-iho20150912) UNRELEASED; urgency=low
+
+  * Update to fix flow control issues
+
+ -- Alex Zepeda <alex@inferiorhumanorgans.com>  Fri, 12 Sep 2015 01:27:20 -0700
+
 ds2plusplus (0.6.2-iho20150911) UNRELEASED; urgency=low
 
   * Update
