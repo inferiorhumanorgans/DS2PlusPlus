@@ -1,1 +1,1 @@
-libds2/*.h usr/include/ds2/
+libds2/ds2/*.h usr/include/ds2/
