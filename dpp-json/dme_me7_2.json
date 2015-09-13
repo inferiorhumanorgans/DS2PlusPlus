@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       2,
-  "file_mtime":         "2015-02-23T04:20:44.0Z",
+  "file_version":       3,
+  "file_mtime":         "2015-09-12T23:24:42.0Z",
   "file_type":          "ecu",
   "uuid":               "12000000-0004-0000-0000-000000000000",
   "address":            "0x12",
@@ -118,6 +118,278 @@
           "start_pos":  1,
           "length":     1,
           "units":      "int"
+        }
+      }
+    },
+    "digital_status_1": {
+      "uuid":           "12000000-0004-0004-0000-000000000000",
+      "command":        ["0x22", "0x40", "0x05"],
+      "results": {
+        "leak_diagnostic_pump.pump": {
+          "uuid":       "12000000-0004-0004-0001-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  9,
+          "length":     1,
+          "mask":       "0x01",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "secondary_air_pump.valve": {
+          "uuid":       "12000000-0004-0004-0002-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  9,
+          "length":     1,
+          "mask":       "0x02",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "secondary_air_pump.pump": {
+          "uuid":       "12000000-0004-0004-0003-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  9,
+          "length":     1,
+          "mask":       "0x04",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "oxygen_sensor.before.bank_1.heater": {
+          "uuid":       "12000000-0004-0004-0004-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  9,
+          "length":     1,
+          "mask":       "0x10",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "oxygen_sensor.before.bank_2.heater": {
+          "uuid":       "12000000-0004-0004-0005-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  9,
+          "length":     1,
+          "mask":       "0x20",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "oxygen_sensor.after.bank_2.heater": {
+          "uuid":       "12000000-0004-0004-0006-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  9,
+          "length":     1,
+          "mask":       "0x40",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "oxygen_sensor.after.bank_1.heater": {
+          "uuid":       "12000000-0004-0004-0007-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  9,
+          "length":     1,
+          "mask":       "0x80",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "exhaust_gas_recirculation": {
+          "uuid":       "12000000-0004-0004-0008-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  10,
+          "length":     1,
+          "mask":       "0x08",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "electric_fan": {
+          "uuid":       "12000000-0004-0004-0009-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  10,
+          "length":     1,
+          "mask":       "0x10",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "electric_fuel_pump": {
+          "uuid":       "12000000-0004-0004-000A-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  10,
+          "length":     1,
+          "mask":       "0x20",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "thermostat_valve": {
+          "uuid":       "12000000-0004-0004-000B-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  10,
+          "length":     1,
+          "mask":       "0x40",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "start_mode": {
+          "uuid":       "12000000-0004-0004-000C-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  10,
+          "length":     1,
+          "mask":       "0x80",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        }
+      }
+    },
+    "digital_status_2": {
+      "uuid":           "12000000-0004-0005-0000-000000000000",
+      "command":        ["0x22", "0x40", "0x07"],
+      "results": {
+        "neutral_switch": {
+          "uuid":       "12000000-0004-0005-0001-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x01",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "acceleration_enrichment": {
+          "uuid":       "12000000-0004-0005-0002-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x02",
+          "levels": {
+            "yes":      "on",
+            "no":       "off"
+          },
+          "units":      "string"
+        },
+        "oxygen_sensor.after.bank_2.ready": {
+          "uuid":       "12000000-0004-0005-0003-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x04",
+          "levels": {
+            "yes":      "yes",
+            "no":       "no"
+          },
+          "units":      "string"
+        },
+        "oxygen_sensor.after.bank_1.ready": {
+          "uuid":       "12000000-0004-0005-0004-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x08",
+          "levels": {
+            "yes":      "yes",
+            "no":       "no"
+          },
+          "units":      "string"
+        },
+        "oxygen_sensor.before.bank_2.ready": {
+          "uuid":       "12000000-0004-0005-0005-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x10",
+          "levels": {
+            "yes":      "yes",
+            "no":       "no"
+          },
+          "units":      "string"
+        },
+        "oxygen_sensor.before.bank_1.ready": {
+          "uuid":       "12000000-0004-0005-0006-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x20",
+          "levels": {
+            "yes":      "yes",
+            "no":       "no"
+          },
+          "units":      "string"
+        },
+        "idle_valve_2": {
+          "uuid":       "12000000-0004-0005-0007-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x40",
+          "levels": {
+            "yes":      "open",
+            "no":       "closed"
+          },
+          "units":      "string"
+        },
+        "idle_valve_1": {
+          "uuid":       "12000000-0004-0005-0008-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  3,
+          "length":     1,
+          "mask":       "0x80",
+          "levels": {
+            "yes":      "open",
+            "no":       "closed"
+          },
+          "units":      "string"
         }
       }
     }
