@@ -1,12 +1,12 @@
 {
   "dpp_version":        1,
-  "file_version":       1,
-  "file_mtime":         "2015-01-25T23:45:00.0Z",
+  "file_version":       2,
+  "file_mtime":         "2015-09-14T11:50:00.0Z",
   "file_type":          "ecu",
   "uuid":               "32000000-0001-0000-0000-000000000000",
   "address":            "0x32",
   "family":             "EGS",
-  "name":               "Bosch GS 8.60.2 (E38/E39)",
+  "name":               "Bosch GS 8.60.2 ZF4HP224 (E38/E39)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [7353036],
   "hardware_number":    "0x2B",
@@ -14,5 +14,64 @@
   "coding_index":       "0x00",
   "endian":             "big",
   "operations": {
+    "combined_status": {
+      "uuid":           "32000000-0001-0001-0000-000000000000",
+      "command":        ["0x0B", "0x03"],
+      "results": {
+        "engine.current_rpm": {
+          "uuid":       "32000000-0001-0001-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "rpn":        "N 32 *",
+          "units":      "RPM"
+        },
+        "transmission.input_turbine.current_rpm": {
+          "uuid":       "32000000-0001-0001-0002-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  2,
+          "length":     1,
+          "rpn":        "N 32 *",
+          "units":      "RPM"
+        },
+        "transmission.output_shaft.current_rpm": {
+          "uuid":       "32000000-0001-0001-0003-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  3,
+          "length":     1,
+          "rpn":        "N 32 *",
+          "units":      "RPM"
+        },
+        "temp.coolant": {
+          "uuid":       "32000000-0001-0001-0004-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  6,
+          "length":     1,
+          "rpn":        "N -48 +",
+          "units":      "°C"
+        },
+        "transmission.temperature": {
+          "uuid":       "32000000-0001-0001-0005-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  7,
+          "length":     1,
+          "rpn":        "N -40 +",
+          "units":      "°C"
+        },
+        "transmission.current_gear": {
+          "uuid":       "32000000-0001-0001-0006-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-0009-0000-0000-000000000000",
+          "start_pos":  21,
+          "length":     1,
+          "rpn":        "N 5 >>" // Take the left most 3 bits
+        }
+      }
+    }
   }
 }
