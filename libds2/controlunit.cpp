@@ -748,7 +748,7 @@ namespace DS2PlusPlus {
             return QVariant(num);
         } else if (aResult.displayFormat().startsWith("string_table:")) {
             QString tableName = aResult.displayFormat().mid(13);
-            QString stringValue = _manager->findStringByTableAndNumber(tableName, byte);
+            QString stringValue = _manager->findStringByTableAndNumber(tableName, num);
 
             if (!stringValue.isEmpty()) {
                return QVariant(stringValue);
