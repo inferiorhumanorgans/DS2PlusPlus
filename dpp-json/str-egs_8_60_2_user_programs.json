@@ -1,0 +1,14 @@
+{
+  "dpp_version":  1,
+  "file_version": 1,
+  "file_mtime":   "2015-09-14T11:50:00.0Z",
+  "file_type":    "string_table",
+  "uuid":         "00002222-000B-0000-0000-000000000000",
+  "table_name":   "egs8.60.2_user_programs",
+  "strings": {
+    // User's choices based on shifter position
+    "0x00":     "Automatic",
+    "0x01":     "Sport",
+    "0x02":     "Manual"
+  }
+}

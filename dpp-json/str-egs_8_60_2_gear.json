@@ -11,7 +11,7 @@
     "0x03":     "3rd gear",
     "0x04":     "4th gear",
     "0x05":     "5th gear",
-    "0x06":     "1m",
+    "0x06":     "Neutral",
     "0x07":     "Reverse"
   }
 }

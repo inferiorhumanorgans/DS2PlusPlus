@@ -1,0 +1,16 @@
+{
+  "dpp_version":  1,
+  "file_version": 1,
+  "file_mtime":   "2015-09-14T11:50:00.0Z",
+  "file_type":    "string_table",
+  "uuid":         "00002222-000C-0000-0000-000000000000",
+  "table_name":   "egs8.60.2_shift_programs",
+  "strings": {
+    // Computer's choices based on all inputs
+    "0x00":     "Extreme Economy",
+    "0x10":     "Economy",
+    "0x20":     "Sport",
+    "0x40":     "Adaptive",
+    "0x80":     "Manual"
+  }
+}

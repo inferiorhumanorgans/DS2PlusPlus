@@ -70,6 +70,99 @@
           "start_pos":  21,
           "length":     1,
           "rpn":        "N 5 >>" // Take the left most 3 bits
+        },
+        "transmission.shifter.program": {
+          "uuid":       "32000000-0001-0001-0007-000000000000",
+          "type":       "byte",
+          "display":    "enum",
+          "start_pos":  19,
+          "length":     1,
+          "mask":       "0x0C",
+          "levels": {
+            "0x04":     "D",
+            "0x08":     "S/M",
+            "else":     "Unknown"
+          },
+          "units":      "string"
+        },
+        "transmission.shifter.steptronic": {
+          "uuid":       "32000000-0001-0001-0008-000000000000",
+          "type":       "byte",
+          "display":    "enum",
+          "start_pos":  21,
+          "length":     1,
+          "levels": {
+            "0x01":     "up",
+            "0x02":     "down",
+            "else":     "neutral"
+          },
+          "units":      "string"
+        },
+        "transmission.adaptive.kickdown": {
+          "uuid":       "32000000-0001-0001-0009-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  21,
+          "length":     1,
+          "mask":       "0x10",
+          "levels": {
+            "yes":      "yes",
+            "no":       "no"
+          },
+          "units":      "string"
+        },
+        "transmission.adaptive.vehicle_in_curve": {
+          "uuid":       "32000000-0001-0001-000A-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  21,
+          "length":     1,
+          "mask":       "0x08",
+          "levels": {
+            "yes":      "yes",
+            "no":       "no"
+          },
+          "units":      "string"
+        },
+        "transmission.last_shift": {
+          "uuid":       "32000000-0001-0001-000B-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-000A-0000-0000-000000000000",
+          "start_pos":  22,
+          "length":     1
+        },
+        "transmission.user_program": {
+          "uuid":       "32000000-0001-0001-000C-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-000B-0000-0000-000000000000",
+          "start_pos":  23,
+          "length":     1,
+          "mask":       "0x0F"
+        },
+        "transmission.actual_program": {
+          "uuid":       "32000000-0001-0001-000D-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-000C-0000-0000-000000000000",
+          "start_pos":  23,
+          "length":     1,
+          "mask":      "0xF0"
+        },
+        "cruise_control.mode": {
+          "uuid":       "32000000-0001-0001-000E-000000000000",
+          "type":       "byte",
+          "display":    "enum",
+          "start_pos":  20,
+          "mask":       "0xF0",
+          "length":     1,
+          "levels": {
+            "0x00":     "Off",
+            "0x20":     "On",
+            "0x40":     "Resume",
+            "0x60":     "Set, accel",
+            "0x80":     "Set, decel",
+            "else":     "Off!"
+          },
+          "units":      "string"
         }
       }
     }
