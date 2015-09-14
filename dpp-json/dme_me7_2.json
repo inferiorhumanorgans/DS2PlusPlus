@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       3,
-  "file_mtime":         "2015-09-12T23:24:42.0Z",
+  "file_version":       4,
+  "file_mtime":         "2015-09-13T09:10:11.0Z",
   "file_type":          "ecu",
   "uuid":               "12000000-0004-0000-0000-000000000000",
   "address":            "0x12",
@@ -390,6 +390,57 @@
             "no":       "closed"
           },
           "units":      "string"
+        }
+      }
+    },
+    "analog_status": {
+      "uuid":           "12000000-0004-0006-0000-000000000000",
+      "command":        ["0x22", "0x40", "0x00"],
+      "results": {
+        "vehicle.current_speed": {
+          "uuid":       "12000000-0004-0006-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  9,
+          "length":     1,
+          "rpn":        "N 1.25 *",
+          "units":      "km/h"
+        },
+        "engine.current_rpm": {
+          "uuid":       "12000000-0004-0006-0002-000000000000",
+          "type":       "short",
+          "display":    "int",
+          "start_pos":  10,
+          "length":     2,
+          "rpn":        "N 0.25 *",
+          "units":      "RPM"
+        },
+        "camshaft.intake.bank1.position": {
+          "uuid":       "12000000-0004-0006-0004-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  13,
+          "length":     2,
+          "rpn":        "N 0.0039 *",
+          "units":      "°"
+        },
+        "camshaft.intake.bank2.position": {
+          "uuid":       "12000000-0004-0006-0005-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  15,
+          "length":     2,
+          "rpn":        "N 0.0039 *",
+          "units":      "°"
+        },
+        "engine.air_mass": {
+          "uuid":       "12000000-0004-0006-000A-000000000000",
+          "type":       "short",
+          "display":    "float",
+          "start_pos":  21,
+          "length":     2,
+          "rpn":        "N 0.1 *",
+          "units":      "kg/h"
         }
       }
     }
