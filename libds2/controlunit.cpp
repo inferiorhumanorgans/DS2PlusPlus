@@ -761,7 +761,7 @@ namespace DS2PlusPlus {
             }
             return QVariant(value);
         } else if (aResult.displayFormat() == "enum") {
-            return QVariant(aResult.stringForLevel(byte));
+            return QVariant(aResult.stringForLevel(num));
         } else {
             QString ourError = QObject::tr("Unknown display format for byte type: %1").arg(aResult.displayFormat());
             throw std::invalid_argument(qPrintable(ourError));
