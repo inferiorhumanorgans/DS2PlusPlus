@@ -51,6 +51,7 @@ namespace DS2PlusPlus {
         static const QString familyForAddress(quint8 anAddress);
         static const QStringList knownFamilies();
         static const QList<quint8> knownAddresses();
+        static const QString nameForFamily(const QString &aFamily);
 
         enum MatchType {
             MatchNone       = 0x00, // Nothing matches
@@ -191,6 +192,7 @@ namespace DS2PlusPlus {
 
         Manager *_manager;
         static QHash<QString, QList<quint8> > _familyDictionary;
+        static QHash<QString, QString> _familyNames;
     };
 
     typedef QSharedPointer<ControlUnit> ControlUnitPtr;

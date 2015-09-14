@@ -45,6 +45,8 @@
 namespace DS2PlusPlus {
 
     QHash<QString, QList<quint8> > ControlUnit::_familyDictionary;
+    QHash<QString, QString> ControlUnit::_familyNames;
+
     const QString ControlUnit::ROOT_UUID = "00001111-0000-0000-0000-000000000000";
 
     QList<quint8> ControlUnit::addressForFamily(const QString &aFamily)
@@ -126,6 +128,44 @@ namespace DS2PlusPlus {
              ret.sort();
              return ret.join(", ");
          }
+    }
+
+    const QString ControlUnit::nameForFamily(const QString &aFamily)
+    {
+        if (_familyNames.isEmpty()) {
+            _familyNames.insert("AIC",     "Rain Sensor");
+            _familyNames.insert("DME",     "Engine - Gas");
+            _familyNames.insert("DDE",     "Engine - Diesel");
+            _familyNames.insert("DSC",     "Stability Control");
+            _familyNames.insert("EHC",     "Electronic Height Control");
+            _familyNames.insert("EGS",     "Auto Transmission");
+            _familyNames.insert("EWS",     "Immobiliser");
+            _familyNames.insert("IHKA",    "Climate Control - Auto");
+            _familyNames.insert("IKE",     "Instrument Cluster");
+            _familyNames.insert("KOMBI",   "Instrument Cluster");
+            _familyNames.insert("LCM",     "Light Module");
+            _familyNames.insert("LSZ",     "Light Module");
+            _familyNames.insert("LWS",     "Steering Angle Sensor");
+            _familyNames.insert("MID",     "Multi Information Display");
+            _familyNames.insert("MFL",     "Multi-function Steering Wheel");
+            _familyNames.insert("MRS",     "Airbag / SRS");
+            _familyNames.insert("PDC",     "Park distance control");
+            _familyNames.insert("RADIO",   "Radio");
+            _familyNames.insert("RDC",     "TPMS");
+            _familyNames.insert("RLS",     "Rain Sensor");
+            _familyNames.insert("SHD",     "Sunroof");
+            _familyNames.insert("SMG",     "Sequential M Gearbox");
+            _familyNames.insert("SPMFT",   "Power Mirror - Driver");
+            _familyNames.insert("SPMBT",   "Power Mirror - Passenger");
+            _familyNames.insert("SZM",     "Center Console");
+            _familyNames.insert("ZKE",     "Chassis Electronics");
+        }
+
+        if (_familyNames.contains(aFamily)) {
+            return _familyNames.value(aFamily);
+        }
+
+        return aFamily;
     }
 
     ControlUnit::ControlUnit(const QString &aUuid, Manager *aParent) :
