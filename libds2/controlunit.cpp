@@ -637,6 +637,7 @@ namespace DS2PlusPlus {
     template <typename T> T ControlUnit::runRpnForResult(const Result &aResult, T aValue)
     {
         if (getenv("RPN_TRACE")) {
+            qDebug() << "";
             qDebug() << "RPN IS: " << aResult.rpn() << " " << aValue;
         }
 
@@ -681,12 +682,18 @@ namespace DS2PlusPlus {
                     a = stack.takeLast();
                     b = stack.takeLast();
                     stack.push_back(static_cast<quint64>(b) >> static_cast<quint64>(a));
+                    if (getenv("RPN_TRACE")) {
+                        qDebug() << ">> = " << stack.last();
+                    }
                 } else if (command == "<<") {
                     T a, b;
                     a = stack.takeLast();
                     b = stack.takeLast();
                     stack.push_back(static_cast<quint64>(b) << static_cast<quint64>(a));
                 } else if (command == "N")  {
+                    if (getenv("RPN_TRACE")) {
+                        qDebug() << "N: " << aValue;
+                    }
                     stack.push_back(aValue);
                 } else {
                     // Assume it's a base 10 integer
