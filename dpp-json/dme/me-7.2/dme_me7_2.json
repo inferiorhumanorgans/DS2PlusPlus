@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       4,
-  "file_mtime":         "2015-09-13T09:10:11.0Z",
+  "file_version":       5,
+  "file_mtime":         "2015-09-14T19:10:11.0Z",
   "file_type":          "ecu",
   "uuid":               "12000000-0004-0000-0000-000000000000",
   "address":            "0x12",
@@ -433,6 +433,42 @@
           "rpn":        "N 0.0039 *",
           "units":      "°"
         },
+        "temp.intake_air": {
+          "uuid":       "12000000-0004-0006-0006-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  17,
+          "length":     1,
+          "rpn":        "N 0.75 * -48 +",
+          "units":      "°C"
+        },
+        "temp.coolant": {
+          "uuid":       "12000000-0004-0006-0007-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  18,
+          "length":     1,
+          "rpn":        "N 0.75 * -48 +",
+          "units":      "°C"
+        },
+        "ignition.timing": {
+          "uuid":       "12000000-0004-0006-0008-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  19,
+          "length":     1,
+          "rpn":        "N 0.75 *",
+          "units":      "°"
+        },
+        "engine.throttle_angle": {
+          "uuid":       "12000000-0004-0006-0009-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  20,
+          "length":     1,
+          "rpn":        "N 0.39216 *",
+          "units":      "%"
+        },
         "engine.air_mass": {
           "uuid":       "12000000-0004-0006-000A-000000000000",
           "type":       "short",
@@ -441,6 +477,15 @@
           "length":     2,
           "rpn":        "N 0.1 *",
           "units":      "kg/h"
+        },
+        "temp.coolant_outlet": {
+          "uuid":       "12000000-0004-0006-000B-000000000000",
+          "type":       "byte",
+          "display":    "float",
+          "start_pos":  28,
+          "length":     1,
+          "rpn":        "N 0.75 * -48 +",
+          "units":      "°C"
         }
       }
     }
