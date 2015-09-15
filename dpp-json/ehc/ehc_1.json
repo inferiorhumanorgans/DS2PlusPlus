@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       1,
-  "file_mtime":         "2015-01-25T00:32:00.0Z",
+  "file_version":       2,
+  "file_mtime":         "2015-09-15T00:32:00.0Z",
   "file_type":          "ecu",
   "uuid":               "AC000000-0001-0000-0000-000000000000",
   "address":            "0xAC",
@@ -21,7 +21,7 @@
         "height.offset.rear.left": {
           "uuid":       "AC000000-0001-0001-0001-000000000000",
           "type":       "signed_byte",
-          "display":    "int",
+          "display":    "raw",
           "start_pos":  1,
           "length":     1,
           "units":      "mm"
@@ -29,7 +29,7 @@
         "height.offset.rear.right": {
           "uuid":       "AC000000-0001-0001-0002-000000000000",
           "type":       "signed_byte",
-          "display":    "int",
+          "display":    "raw",
           "start_pos":  2,
           "length":     1,
           "units":      "mm"
