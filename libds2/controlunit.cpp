@@ -641,6 +641,12 @@ namespace DS2PlusPlus {
             qDebug() << "RPN IS: " << aResult.rpn() << " " << aValue;
         }
 
+        T ourValue = aValue;
+
+        if (aResult.type() == "signed_byte") {
+            ourValue = static_cast<qint8>(aValue);
+        }
+
         if (!aResult.rpn().isEmpty()) {
             QList<T> stack;
             foreach (const QString &command, aResult.rpn()) {
@@ -692,9 +698,10 @@ namespace DS2PlusPlus {
                     stack.push_back(static_cast<quint64>(b) << static_cast<quint64>(a));
                 } else if (command == "N")  {
                     if (getenv("RPN_TRACE")) {
-                        qDebug() << "N: " << aValue;
+                        qDebug() << "N: " << ourValue;
                     }
-                    stack.push_back(aValue);
+
+                    stack.push_back(ourValue);
                 } else {
                     // Assume it's a base 10 integer
                     bool ok;
@@ -717,7 +724,7 @@ namespace DS2PlusPlus {
             }
             return stack.takeFirst();
         }
-        return aValue;
+        return ourValue;
     }
 
     QVariant ControlUnit::resultByteToVariant(const BasePacketPtr aPacket, const Result &aResult)
