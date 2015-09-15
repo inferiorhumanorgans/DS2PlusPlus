@@ -165,6 +165,159 @@
           "units":      "string"
         }
       }
+    },
+    "dtc_load_bank1": {
+      "uuid":           "32000000-0001-0002-0000-000000000000",
+      "command":        ["0x04", "0x01"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "32000000-0001-0002-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.dtc": {
+          "uuid":       "32000000-0001-0002-0002-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.description": {
+          "uuid":       "32000000-0001-0002-0003-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-000D-0000-0000-000000000000",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.flags": {
+          "uuid":       "32000000-0001-0002-0004-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-000E-0000-0000-000000000000",
+          "start_pos":  3,
+          "length":     1
+        },
+        "error_code.codes.0.frequency": {
+          "uuid":       "32000000-0001-0002-0005-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  4,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.logistic_counter": {
+          "uuid":       "32000000-0001-0002-0006-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  5,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.1.dtc": {
+          "uuid":       "32000000-0001-0002-0007-000000000000",
+          "parent_id":  "32000000-0001-0002-0002-000000000000",
+          "start_pos":  21
+        },
+        "error_code.codes.1.description": {
+          "uuid":       "32000000-0001-0002-0008-000000000000",
+          "parent_id":  "32000000-0001-0002-0003-000000000000",
+          "start_pos":  21
+        },
+        "error_code.codes.1.flags": {
+          "uuid":       "32000000-0001-0002-0009-000000000000",
+          "parent_id":  "32000000-0001-0002-0004-000000000000",
+          "start_pos":  22
+        },
+        "error_code.codes.1.frequency": {
+          "uuid":       "32000000-0001-0002-000A-000000000000",
+          "parent_id":  "32000000-0001-0002-0005-000000000000",
+          "start_pos":  23
+        },
+        "error_code.codes.1.logistic_counter": {
+          "uuid":       "32000000-0001-0002-000B-000000000000",
+          "parent_id":  "32000000-0001-0002-0006-000000000000",
+          "start_pos":  24
+        },
+        "error_code.codes.2.dtc": {
+          "uuid":       "32000000-0001-0002-000C-000000000000",
+          "parent_id":  "32000000-0001-0002-0002-000000000000",
+          "start_pos":  40
+        },
+        "error_code.codes.2.description": {
+          "uuid":       "32000000-0001-0002-000D-000000000000",
+          "parent_id":  "32000000-0001-0002-0003-000000000000",
+          "start_pos":  40
+        },
+        "error_code.codes.2.flags": {
+          "uuid":       "32000000-0001-0002-000E-000000000000",
+          "parent_id":  "32000000-0001-0002-0004-000000000000",
+          "start_pos":  41
+        },
+        "error_code.codes.2.frequency": {
+          "uuid":       "32000000-0001-0002-000F-000000000000",
+          "parent_id":  "32000000-0001-0002-0005-000000000000",
+          "start_pos":  42
+        },
+        "error_code.codes.2.logistic_counter": {
+          "uuid":       "32000000-0001-0002-0010-000000000000",
+          "parent_id":  "32000000-0001-0002-0006-000000000000",
+          "start_pos":  43
+        },
+        "error_code.codes.3.dtc": {
+          "uuid":       "32000000-0001-0002-0011-000000000000",
+          "parent_id":  "32000000-0001-0002-0002-000000000000",
+          "start_pos":  59
+        },
+        "error_code.codes.3.description": {
+          "uuid":       "32000000-0001-0002-0012-000000000000",
+          "parent_id":  "32000000-0001-0002-0003-000000000000",
+          "start_pos":  59
+        },
+        "error_code.codes.3.flags": {
+          "uuid":       "32000000-0001-0002-0013-000000000000",
+          "parent_id":  "32000000-0001-0002-0004-000000000000",
+          "start_pos":  60
+        },
+        "error_code.codes.3.frequency": {
+          "uuid":       "32000000-0001-0002-0014-000000000000",
+          "parent_id":  "32000000-0001-0002-0005-000000000000",
+          "start_pos":  61
+        },
+        "error_code.codes.3.logistic_counter": {
+          "uuid":       "32000000-0001-0002-0015-000000000000",
+          "parent_id":  "32000000-0001-0002-0006-000000000000",
+          "start_pos":  62
+        },
+        "error_code.codes.4.dtc": {
+          "uuid":       "32000000-0001-0002-0016-000000000000",
+          "parent_id":  "32000000-0001-0002-0002-000000000000",
+          "start_pos":  78
+        },
+        "error_code.codes.4.description": {
+          "uuid":       "32000000-0001-0002-0017-000000000000",
+          "parent_id":  "32000000-0001-0002-0003-000000000000",
+          "start_pos":  78
+        },
+        "error_code.codes.4.flags": {
+          "uuid":       "32000000-0001-0002-0018-000000000000",
+          "parent_id":  "32000000-0001-0002-0004-000000000000",
+          "start_pos":  79
+        },
+        "error_code.codes.4.frequency": {
+          "uuid":       "32000000-0001-0002-0019-000000000000",
+          "parent_id":  "32000000-0001-0002-0005-000000000000",
+          "start_pos":  80
+        },
+        "error_code.codes.4.logistic_counter": {
+          "uuid":       "32000000-0001-0002-001A-000000000000",
+          "parent_id":  "32000000-0001-0002-0006-000000000000",
+          "start_pos":  81
+        }
+      }
     }
   }
 }

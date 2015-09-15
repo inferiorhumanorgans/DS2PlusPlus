@@ -1,0 +1,26 @@
+{
+  "dpp_version":  1,
+  "file_version": 2,
+  "file_mtime":   "2015-09-14T20:10:14.0Z",
+  "file_type":    "string_table",
+  "uuid":         "00002222-000E-0000-0000-000000000000",
+  "table_name":   "egs8.60.2_dtc_flags",
+  "strings": {
+    "0x01":       "Plausibility",
+    "0x02":       "Short circuit to batt+",
+    "0x03":       "Short circuit to ground",
+    "0x04":       "Open circuit",
+    "0x05":       "Open circuit or Short circuit to batt+",
+    "0x06":       "Open circuit or Short circuit to ground",
+    "0x07":       "Too large",
+    "0x08":       "Too small",
+    "0x09":       "No change",
+    "0x0F":       "No suitable error code",
+    "0x10":       "Error activates MIL",
+    "0x20":       "Sporadic error",
+    "0x40":       "Replacement function active",
+    "0x80":       "Error present",
+    "0xFE":       "Gen. error",
+    "0xFF":       "Unknown"
+  }
+}
