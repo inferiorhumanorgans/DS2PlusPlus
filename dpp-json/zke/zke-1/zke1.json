@@ -1,0 +1,109 @@
+{
+  "dpp_version":        1,
+  "file_version":       2,
+  "file_mtime":         "2015-09-17T11:30:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "00000000-0002-0000-0000-000000000000",
+  "address":            "0x00",
+  "family":             "ZKE",
+  "name":               "Central Body Electronics v1",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [6913521],
+  "hardware_number":    "0x21",
+  "software_number":    "0x23",
+  "coding_index":       "0x05",
+  "endian":             "little",
+  "operations": {
+    "dtc_load_bank1": {
+      "uuid":           "00000000-0002-0001-0000-000000000000",
+      "command":        ["0x04", "0x01"],
+      "results": {
+        "error_code.codes.0.dtc": {
+          "uuid":       "00000000-0002-0001-0001-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.0.description": {
+          "uuid":       "00000000-0002-0001-0002-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-0010-0000-0000-000000000000",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "string"
+        },
+        "error_code.codes.0.frequency": {
+          "uuid":       "00000000-0002-0001-0003-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  2,
+          "length":     1,
+          "rpn":        "N 0x1F &",
+          "units":      "int"
+        },
+        "error_code.codes.1.dtc": {
+          "uuid":       "00000000-0002-0001-0004-000000000000",
+          "parent_id":  "00000000-0002-0001-0001-000000000000",
+          "start_pos":  3
+        },
+        "error_code.codes.1.description": {
+          "uuid":       "00000000-0002-0001-0005-000000000000",
+          "parent_id":  "00000000-0002-0001-0002-000000000000",
+          "start_pos":  3
+        },
+        "error_code.codes.1.frequency": {
+          "uuid":       "00000000-0002-0001-0006-000000000000",
+          "parent_id":  "00000000-0002-0001-0003-000000000000",
+          "start_pos":  4
+        },
+        "error_code.codes.2.dtc": {
+          "uuid":       "00000000-0002-0001-0007-000000000000",
+          "parent_id":  "00000000-0002-0001-0001-000000000000",
+          "start_pos":  5
+        },
+        "error_code.codes.2.description": {
+          "uuid":       "00000000-0002-0001-0008-000000000000",
+          "parent_id":  "00000000-0002-0001-0002-000000000000",
+          "start_pos":  5
+        },
+        "error_code.codes.2.frequency": {
+          "uuid":       "00000000-0002-0001-0009-000000000000",
+          "parent_id":  "00000000-0002-0001-0003-000000000000",
+          "start_pos":  6
+        },
+        "error_code.codes.3.dtc": {
+          "uuid":       "00000000-0002-0001-000A-000000000000",
+          "parent_id":  "00000000-0002-0001-0001-000000000000",
+          "start_pos":  7
+        },
+        "error_code.codes.3.description": {
+          "uuid":       "00000000-0002-0001-000B-000000000000",
+          "parent_id":  "00000000-0002-0001-0002-000000000000",
+          "start_pos":  7
+        },
+        "error_code.codes.3.frequency": {
+          "uuid":       "00000000-0002-0001-000C-000000000000",
+          "parent_id":  "00000000-0002-0001-0003-000000000000",
+          "start_pos":  8
+        },
+        "error_code.codes.4.dtc": {
+          "uuid":       "00000000-0002-0001-000D-000000000000",
+          "parent_id":  "00000000-0002-0001-0001-000000000000",
+          "start_pos":  9
+        },
+        "error_code.codes.4.description": {
+          "uuid":       "00000000-0002-0001-000E-000000000000",
+          "parent_id":  "00000000-0002-0001-0002-000000000000",
+          "start_pos":  9
+        },
+        "error_code.codes.4.frequency": {
+          "uuid":       "00000000-0002-0001-000F-000000000000",
+          "parent_id":  "00000000-0002-0001-0003-000000000000",
+          "start_pos":  10
+        }
+      }
+    }
+  }
+}
