@@ -1,0 +1,166 @@
+{
+  "dpp_version":        1,
+  "file_version":       2,
+  "file_mtime":         "2015-09-15T00:32:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "AC000000-0001-0000-0000-000000000000",
+  "address":            "0xAC",
+  "family":             "EHC",
+  "name":               "Electronic Height Control, 1-Axle (EHC1)",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [1092396],
+  "hardware_number":    "0x44",
+  "software_number":    "0x43",
+  "coding_index":       "0x01",
+  "endian":             "little",
+  "operations": {
+    "compensation_values": {
+      "uuid":           "AC000000-0001-0001-0000-000000000000",
+      "command":        ["0x40"],
+      "results": {
+        "height.offset.rear.left": {
+          "uuid":       "AC000000-0001-0001-0001-000000000000",
+          "type":       "signed_byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "mm"
+        },
+        "height.offset.rear.right": {
+          "uuid":       "AC000000-0001-0001-0002-000000000000",
+          "type":       "signed_byte",
+          "display":    "raw",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "mm"
+        }
+      }
+    },
+    "dtc_load_bank1": {
+      "uuid":           "AC000000-0001-0002-0000-000000000000",
+      "command":        ["0x04", "0x03"],
+      "results": {
+        "error_code.count": {
+          "uuid":       "AC000000-0001-0002-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  1,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.dtc": {
+          "uuid":       "AC000000-0001-0002-0002-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.description": {
+          "uuid":       "AC000000-0001-0002-0003-000000000000",
+          "type":       "byte",
+          "display":    "string_table:00002222-000F-0000-0000-000000000000",
+          "start_pos":  2,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.attributes": {
+          "uuid":       "AC000000-0001-0002-0004-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  3,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.0.frequency": {
+          "uuid":       "AC000000-0001-0002-0005-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  4,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_code.codes.1.dtc": {
+          "uuid":       "AC000000-0001-0002-0006-000000000000",
+          "parent_id":  "AC000000-0001-0002-0002-000000000000",
+          "start_pos":  6
+        },
+        "error_code.codes.1.description": {
+          "uuid":       "AC000000-0001-0002-0007-000000000000",
+          "parent_id":  "AC000000-0001-0002-0003-000000000000",
+          "start_pos":  6
+        },
+        "error_code.codes.1.attributes": {
+          "uuid":       "AC000000-0001-0002-0008-000000000000",
+          "parent_id":  "AC000000-0001-0002-0004-000000000000",
+          "start_pos":  7
+        },
+        "error_code.codes.1.frequency": {
+          "uuid":       "AC000000-0001-0002-0009-000000000000",
+          "parent_id":  "AC000000-0001-0002-0005-000000000000",
+          "start_pos":  8
+        },
+        "error_code.codes.2.dtc": {
+          "uuid":       "AC000000-0001-0002-000A-000000000000",
+          "parent_id":  "AC000000-0001-0002-0002-000000000000",
+          "start_pos":  10
+        },
+        "error_code.codes.2.description": {
+          "uuid":       "AC000000-0001-0002-000B-000000000000",
+          "parent_id":  "AC000000-0001-0002-0003-000000000000",
+          "start_pos":  10
+        },
+        "error_code.codes.2.attributes": {
+          "uuid":       "AC000000-0001-0002-000C-000000000000",
+          "parent_id":  "AC000000-0001-0002-0004-000000000000",
+          "start_pos":  11
+        },
+        "error_code.codes.2.frequency": {
+          "uuid":       "AC000000-0001-0002-000D-000000000000",
+          "parent_id":  "AC000000-0001-0002-0005-000000000000",
+          "start_pos":  12
+        },
+        "error_code.codes.3.dtc": {
+          "uuid":       "AC000000-0001-0002-000E-000000000000",
+          "parent_id":  "AC000000-0001-0002-0002-000000000000",
+          "start_pos":  14
+        },
+        "error_code.codes.3.description": {
+          "uuid":       "AC000000-0001-0002-000F-000000000000",
+          "parent_id":  "AC000000-0001-0002-0003-000000000000",
+          "start_pos":  14
+        },
+        "error_code.codes.3.attributes": {
+          "uuid":       "AC000000-0001-0002-0010-000000000000",
+          "parent_id":  "AC000000-0001-0002-0004-000000000000",
+          "start_pos":  15
+        },
+        "error_code.codes.3.frequency": {
+          "uuid":       "AC000000-0001-0002-0011-000000000000",
+          "parent_id":  "AC000000-0001-0002-0005-000000000000",
+          "start_pos":  16
+        },
+        "error_code.codes.4.dtc": {
+          "uuid":       "AC000000-0001-0002-0012-000000000000",
+          "parent_id":  "AC000000-0001-0002-0002-000000000000",
+          "start_pos":  18
+        },
+        "error_code.codes.4.description": {
+          "uuid":       "AC000000-0001-0002-0013-000000000000",
+          "parent_id":  "AC000000-0001-0002-0003-000000000000",
+          "start_pos":  18
+        },
+        "error_code.codes.4.attributes": {
+          "uuid":       "AC000000-0001-0002-0014-000000000000",
+          "parent_id":  "AC000000-0001-0002-0004-000000000000",
+          "start_pos":  19
+        },
+        "error_code.codes.4.frequency": {
+          "uuid":       "AC000000-0001-0002-0015-000000000000",
+          "parent_id":  "AC000000-0001-0002-0005-000000000000",
+          "start_pos":  20
+        }
+      }
+    }
+  }
+}

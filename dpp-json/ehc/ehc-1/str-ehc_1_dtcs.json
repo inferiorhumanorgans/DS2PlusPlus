@@ -1,0 +1,20 @@
+{
+  "dpp_version":  1,
+  "file_version": 1,
+  "file_mtime":   "2015-09-10T17:04:09.0Z",
+  "file_type":    "string_table",
+  "uuid":         "00002222-000F-0000-0000-000000000000",
+  "table_name":   "ehc1_dtcs",
+  "strings": {
+    "0x01": "Sensor: rear left",
+    "0x02": "Sensor: rear right",
+    "0x03": "Relay: compressor",
+    "0x04": "Valve: magnetic, rear left",
+    "0x05": "Valve: magnetic, rear right",
+    "0x06": "Valve: exhaust",
+    "0x07": "EEPROM or ADC error",
+    "0x08": "controling time, upwards",
+    "0x09": "controling time, downwards",
+    "0x0A": "controling time, only one side"
+  }
+}
