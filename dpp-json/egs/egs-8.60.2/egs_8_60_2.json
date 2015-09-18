@@ -6,7 +6,7 @@
   "uuid":               "32000000-0001-0000-0000-000000000000",
   "address":            "0x32",
   "family":             "EGS",
-  "name":               "Bosch GS 8.60.2 ZF4HP224 (E38/E39)",
+  "name":               "Bosch GS 8.60.2 ZF 5HP24 (E38/E39)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [7353036],
   "hardware_number":    "0x2B",
