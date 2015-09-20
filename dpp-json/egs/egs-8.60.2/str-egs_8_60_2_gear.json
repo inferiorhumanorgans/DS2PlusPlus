@@ -1,7 +1,7 @@
 {
   "dpp_version":  1,
-  "file_version": 1,
-  "file_mtime":   "2015-09-14T11:50:00.0Z",
+  "file_version": 2,
+  "file_mtime":   "2015-09-18T21:00:00.0Z",
   "file_type":    "string_table",
   "uuid":         "00002222-0009-0000-0000-000000000000",
   "table_name":   "egs8.60.2_gears",
@@ -11,7 +11,7 @@
     "0x03":     "3rd gear",
     "0x04":     "4th gear",
     "0x05":     "5th gear",
-    "0x06":     "Neutral",
+    "0x06":     "1st gear (manually selected)",
     "0x07":     "Reverse"
   }
 }
