@@ -6,7 +6,7 @@
   "uuid":               "00000000-0001-0000-0000-000000000000",
   "address":            "0x00",
   "family":             "ZKE",
-  "name":               "Central Body Electronics v5",
+  "name":               "Central Body Electronics (GM5)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [6907663],
   "hardware_number":    "0x11",
