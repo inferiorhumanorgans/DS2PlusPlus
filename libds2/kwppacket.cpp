@@ -38,9 +38,9 @@ namespace DS2PlusPlus {
             throw std::domain_error("This is not a KWP packet.");
         }
 
-        quint8 ourTargetAddress = ourArguments.takeFirst().toUShort(NULL, 16);
-        quint8 ourSourceAddress = ourArguments.takeFirst().toUShort(NULL, 16);
-        quint8 ourLength = ourArguments.takeFirst().toUShort(NULL, 16) + 1;
+        const quint8 ourTargetAddress = ourArguments.takeFirst().toUShort(NULL, 16);
+        const quint8 ourSourceAddress = ourArguments.takeFirst().toUShort(NULL, 16);
+        const quint8 ourLength = ourArguments.takeFirst().toUShort(NULL, 16) + 1;
 
         QByteArray ourData;
         for (int i=0; i < ourArguments.length(); i++) {
@@ -56,7 +56,7 @@ namespace DS2PlusPlus {
 
         } else if (ourLength == ourData.length()) {
             // There was a checksum
-            quint8 ourChecksum = _data.at(_data.length() - 1);
+            const quint8 ourChecksum = _data.at(_data.length() - 1);
             _data.remove(_data.length() - 1, 1);
 
             if (ourChecksum != checksum()) {
@@ -132,8 +132,6 @@ namespace DS2PlusPlus {
 
         ret.append(_data);
         ret.append(checksum(ret));
-
-//        ret.data()[1] = 0x12;
 
         return ret;
     }

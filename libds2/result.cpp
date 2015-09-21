@@ -142,11 +142,12 @@ namespace DS2PlusPlus {
     {
         // Boolean
         if (_levels.contains("yes") and _levels.contains("no") and _levels.count() == 2) {
-                return (aLevel == true) ? _levels.value("yes") : _levels.value("no");
+            return (aLevel == true) ? _levels.value("yes") : _levels.value("no");
         }
 
         qint32 ourLevelCount = 0;
         QStringList ourLevels;
+
         for (QHash<QString, QString>::const_iterator it = _levels.begin(); it != _levels.end(); ++it) {
             if ((it.key() == "else") or (it.key() == "all")) {
                 continue;

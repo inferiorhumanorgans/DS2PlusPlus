@@ -57,9 +57,10 @@ namespace DS2PlusPlus {
 
     const QStringList Operation::command() const
     {
+        const QChar zeroPadding = QChar('0');
         QStringList ret;
         for (int i=0; i < _command.length(); i++) {
-            ret.append(QString("0x%1").arg(static_cast<quint8>(_command.at(i)), 2, 16, QChar('0')));
+            ret.append(QString("0x%1").arg(static_cast<quint8>(_command.at(i)), 2, 16, zeroPadding));
         }
 
         return ret;

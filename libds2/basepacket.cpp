@@ -84,12 +84,12 @@ namespace DS2PlusPlus {
     const Json::Value *ResponseToJson(const DS2PlusPlus::PacketResponse &aResponse) {
         Json::Value root;
         foreach (const QString &key, aResponse.keys()) {
-            QStringList ourHier = key.split(".");
+            const QStringList ourHier = key.split(".");
 
             Json::Value *curVal = &root;
 
             for (int i=0; i < ourHier.length() - 1; i++) {
-                QString currentKey = ourHier.at(i);
+                const QString currentKey = ourHier.at(i);
                 QString nextKey;
                 bool currentType = false, nextType = false;
                 unsigned int curIdx = currentKey.toUInt(&currentType);
@@ -116,10 +116,10 @@ namespace DS2PlusPlus {
             }
 
             Json::Value jsonValue;
-            QVariant variantValue = aResponse.value(key);
+            const QVariant variantValue = aResponse.value(key);
 
             if (variantValue.type() == static_cast<QVariant::Type>(QMetaType::QString)) {
-                QString ourString = variantValue.toString();
+                const QString ourString = variantValue.toString();
 
                 if (ourString.isEmpty()) {
                     jsonValue = Json::nullValue;
@@ -143,8 +143,8 @@ namespace DS2PlusPlus {
             } else if (strcmp(variantValue.typeName(), "QList<uchar>")==0) {
                 jsonValue = Json::Value(Json::arrayValue);
 
-                QList<quint8> ourQList = variantValue.value<QList<quint8> >();
-                foreach (quint8 address, ourQList) {
+                const QList<quint8> ourQList = variantValue.value<QList<quint8> >();
+                foreach (const quint8 address, ourQList) {
                     jsonValue.append(address);
                 }
             } else {
@@ -160,7 +160,7 @@ namespace DS2PlusPlus {
 
     const QString ResponseToJsonString(const PacketResponse &aResponse) {
         const Json::Value *ourJson = ResponseToJson(aResponse);
-        std::string ourStr = ourJson->toStyledString();
+        const std::string ourStr = ourJson->toStyledString();
         delete ourJson;
         return QString(ourStr.c_str());
     }
@@ -183,7 +183,7 @@ namespace DS2PlusPlus {
 
     BasePacket::operator QByteArray () const
     {
-        QByteArray ret = this->toByteArray();
+        const QByteArray ret = this->toByteArray();
 
         if (getenv("DPP_DEBUG_CONVERSION")) {
             for (int i=0; i < ret.length(); i++) {
