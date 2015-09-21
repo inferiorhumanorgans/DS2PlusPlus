@@ -242,15 +242,16 @@ namespace DS2PlusPlus {
                 qErr << "Module: " << moduleParent << " (from: " << aUuid << ")" << endl;
             }
 
-            QSharedPointer<QSqlTableModel> operationsTable(_manager->operationsTable());
-            operationsTable->setFilter(QString("module_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(moduleParent)));
-            operationsTable->select();
-            for (int i=0; i < operationsTable->rowCount(); i++) {
-                QSqlRecord opRecord = operationsTable->record(i);
+            QSqlQuery operationsForModuleQuery(_manager->sqlDatabase());
+            operationsForModuleQuery.prepare(QString("SELECT * FROM operations WHERE module_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(moduleParent)));
+            operationsForModuleQuery.exec();
+
+            while (operationsForModuleQuery.next()) {
+                QSqlRecord opRecord = operationsForModuleQuery.record();
 
                 const QString opName = opRecord.value("name").toString();
                 const QString opUuid = DPP_V1_Parser::rawUuidToString(opRecord.value("uuid").toByteArray());
-                const QString opModule = DPP_V1_Parser::rawUuidToString(opRecord.value("module_id").toByteArray());
+                //const QString opModule = DPP_V1_Parser::rawUuidToString(opRecord.value("module_id").toByteArray());
                 const QString opParent = DPP_V1_Parser::rawUuidToString(opRecord.value("parent_id").toByteArray());
                 const QByteArray opCommand = opRecord.value("command").toByteArray();
 
@@ -286,12 +287,13 @@ namespace DS2PlusPlus {
                 QSqlRecord curOpRecord = opRecord;
 
                 while (!curOpUuid.isEmpty()) {
-                    QSharedPointer<QSqlTableModel> results(_manager->resultsTable());
-                    results->setFilter(QString("operation_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(curOpUuid)));
-                    results->select();
 
-                    for (int j=0; j < results->rowCount(); j++) {
-                        QSqlRecord resultRecord = results->record(j);
+                    QSqlQuery resultsForOperationQuery(_manager->sqlDatabase());
+                    resultsForOperationQuery.prepare(QString("SELECT * FROM results WHERE operation_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(curOpUuid)));
+                    resultsForOperationQuery.exec();
+
+                    while (resultsForOperationQuery.next()) {
+                        QSqlRecord resultRecord = resultsForOperationQuery.record();
                         QString ourUuid = DPP_V1_Parser::rawUuidToString(resultRecord.value("uuid").toByteArray());
                         Result result;
 
@@ -336,10 +338,12 @@ namespace DS2PlusPlus {
                             if (resultId.isEmpty()) {
                                 break;
                             }
-                            QSharedPointer<QSqlTableModel> subResults(_manager->resultsTable());
-                            subResults->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(resultId)));
-                            subResults->select();
-                            resultRecord = subResults->record(0);
+
+                            QSqlQuery parentResultsQuery(_manager->sqlDatabase());
+                            parentResultsQuery.prepare(QString("SELECT * FROM results WHERE uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(resultId)));
+                            parentResultsQuery.exec();
+                            parentResultsQuery.first();
+                            resultRecord = parentResultsQuery.record();
                         }
 
                         if (op->results().contains(result.name())) {
@@ -359,10 +363,11 @@ namespace DS2PlusPlus {
                         break;
                     }
 
-                    QSharedPointer<QSqlTableModel> curOpsTable(_manager->operationsTable());
-                    curOpsTable->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(curOpUuid)));
-                    curOpsTable->select();
-                    curOpRecord = curOpsTable->record(0);
+                    QSqlQuery subOps(_manager->sqlDatabase());
+                    subOps.prepare(QString("SELECT * FROM operations WHERE uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(curOpUuid)));
+                    subOps.exec();
+                    subOps.first();
+                    curOpRecord = subOps.record();
                 }
 
                 _operations.insert(opName, op);

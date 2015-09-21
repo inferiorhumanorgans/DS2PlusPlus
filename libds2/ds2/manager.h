@@ -29,7 +29,6 @@
 #include <QCommandLineParser>
 
 #include <QSqlDatabase>
-#include <QSqlTableModel>
 
 #include "controlunit.h"
 
@@ -86,11 +85,7 @@ namespace DS2PlusPlus
          */
         static const QString DPP_DIR;
 
-        QSqlTableModel *modulesTable();
-        QSqlTableModel *operationsTable();
-        QSqlTableModel *resultsTable();
-        QSqlTableModel *stringValuesTable();
-        QSqlTableModel *stringTablesTable();
+        QSqlDatabase sqlDatabase() const;
 
         QString dppDir();
         QString jsonDir();

@@ -44,7 +44,6 @@
 #include <QDirIterator>
 
 #include <QSqlQuery>
-#include <QSqlTableModel>
 #include <QSqlRecord>
 #include <QSqlError>
 
@@ -202,69 +201,6 @@ namespace DS2PlusPlus {
     int Manager::fd() const
     {
         return _fd;
-    }
-
-    QSqlTableModel *Manager::modulesTable() {
-        if (!_db.isOpen()) {
-            qDebug() << "DB NOT OPEN";
-        }
-
-        QSqlTableModel *ret = new QSqlTableModel(this, _db);
-        ret->setTable("modules");
-        ret->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
-        return ret;
-    }
-
-    QSqlTableModel *Manager::operationsTable() {
-        if (!_db.isOpen()) {
-            qDebug() << "DB NOT OPEN";
-        }
-
-        QSqlTableModel *ret = new QSqlTableModel(this, _db);
-        ret->setTable("operations");
-        ret->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
-        return ret;
-    }
-
-    QSqlTableModel *Manager::resultsTable() {
-        if (!_db.isOpen()) {
-            qDebug() << "DB NOT OPEN";
-        }
-
-        QSqlTableModel *ret = new QSqlTableModel(this, _db);
-        ret->setTable("results");
-        ret->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
-        return ret;
-    }
-
-    QSqlTableModel *Manager::stringValuesTable()
-    {
-        if (!_db.isOpen()) {
-            qDebug() << "DB NOT OPEN";
-        }
-
-        QSqlTableModel *ret = new QSqlTableModel(this, _db);
-        ret->setTable("string_values");
-        ret->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
-        return ret;
-
-    }
-
-    QSqlTableModel *Manager::stringTablesTable()
-    {
-        if (!_db.isOpen()) {
-            qDebug() << "DB NOT OPEN";
-        }
-
-        QSqlTableModel *ret = new QSqlTableModel(this, _db);
-        ret->setTable("string_tables");
-        ret->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
-        return ret;
     }
 
     Manager::~Manager() {
@@ -440,6 +376,10 @@ namespace DS2PlusPlus {
         return ret;
     }
 
+    QSqlDatabase Manager::sqlDatabase() const {
+        return this->_db;
+    }
+
     ControlUnitPtr Manager::findModuleAtAddress(quint8 anAddress) {
         if (getenv("DPP_TRACE")) {
             qDebug() << "ControlUnitPtr Manager::findModuleAtAddress(" << anAddress << ")";
@@ -568,111 +508,100 @@ namespace DS2PlusPlus {
     {
         QHash<QString, QVariant> ret;
         QSqlRecord rec;
-        QSqlTableModel *ourModel = modulesTable();
 
-        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
-        ourModel->select();
+        QSqlQuery moduleQuery(this->sqlDatabase());
+        moduleQuery.prepare(QString("SELECT * FROM modules WHERE uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
+        moduleQuery.exec();
+        moduleQuery.first();
 
-        if (ourModel->rowCount() == 1) {
-            rec = ourModel->record(0);
-        }
+        rec = moduleQuery.record();
 
         if (!rec.isEmpty()) {
-            for (int i=0; i < ourModel->columnCount(); i++) {
+            for (int i=0; i < rec.count(); i++) {
                 ret.insert(rec.fieldName(i), rec.value(i));
             }
         }
 
-        delete ourModel;
         return ret;
     }
 
     QHash<QString, ControlUnitPtr> Manager::findAllModulesByFamily(const QString &aFamily)
     {
         QHash<QString, ControlUnitPtr > ret;
-        QSqlTableModel *ourModel = modulesTable();
 
-        ourModel->setFilter(QString("family = '%1'").arg(aFamily));
-        ourModel->select();
+        QSqlQuery modulesQuery(this->sqlDatabase());
+        modulesQuery.prepare("SELECT * FROM modules WHERE family = :family");
+        modulesQuery.bindValue(":family", aFamily);
+        modulesQuery.exec();
 
-        for (int i=0; i < ourModel->rowCount(); i++) {
-            QSqlRecord theRecord = ourModel->record(i);
+        while (modulesQuery.next()) {
+            QSqlRecord theRecord = modulesQuery.record();
             QString uuid(DPP_V1_Parser::rawUuidToString(theRecord.value("uuid").toByteArray()));
             ControlUnitPtr ecu(new ControlUnit(uuid, this));
             ret.insert(uuid, ecu);
         }
 
-        delete ourModel;
         return ret;
     }
 
     QHash<QString, ControlUnitPtr> Manager::findAllModulesByAddress(quint8 anAddress)
     {
         QHash<QString, ControlUnitPtr > ret;
-        QSqlTableModel *ourModel = modulesTable();
 
-        ourModel->setFilter(QString("address = %1").arg(static_cast<quint64>(anAddress)));
-        ourModel->select();
+        QSqlQuery modulesQuery(this->sqlDatabase());
+        modulesQuery.prepare("SELECT * FROM modules WHERE address = :address");
+        modulesQuery.bindValue(":address", anAddress);
+        modulesQuery.exec();
 
-        for (int i=0; i < ourModel->rowCount(); i++) {
-            QSqlRecord theRecord = ourModel->record(i);
+        while (modulesQuery.next()) {
+            QSqlRecord theRecord = modulesQuery.record();
             QString uuid(DPP_V1_Parser::rawUuidToString(theRecord.value("uuid").toByteArray()));
             ControlUnitPtr ecu(new ControlUnit(uuid, this));
             ret.insert(uuid, ecu);
         }
 
-        delete ourModel;
         return ret;
     }
 
     QHash<QString, ControlUnitPtr > Manager::findAllModules()
     {
-        QHash<QString, ControlUnitPtr > ret;
-        QSqlTableModel *ourModel = modulesTable();
+        QHash<QString, ControlUnitPtr> ret;
 
-        ourModel->setFilter(QString::null);
-        ourModel->select();
+        QSqlQuery modulesQuery(this->sqlDatabase());
+        modulesQuery.prepare("SELECT * FROM modules");
+        modulesQuery.exec();
 
-        for (int i=0; i < ourModel->rowCount(); i++) {
-            QSqlRecord ourRecord = ourModel->record(i);
+        while (modulesQuery.next()) {
+            QSqlRecord ourRecord = modulesQuery.record();
             QString ourUuid = DPP_V1_Parser::rawUuidToString(ourRecord.value("uuid").toByteArray());
             ControlUnitPtr ecu(new ControlUnit(ourUuid, this));
             ret.insert(ourUuid, ecu);
         }
 
-        delete ourModel;
         return ret;
     }
 
 
     bool Manager::removeModuleByUuid(const QString &aUuid)
     {
-        bool ret = false;
-        QSqlTableModel *ourModel = modulesTable();
-
-        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
-        ourModel->select();
-
-        if (ourModel->rowCount() == 1) {
-            ourModel->removeRow(0);
-            ret = ourModel->submitAll();
-        }
-
-        delete ourModel;
-        return ret;
+        QSqlQuery modulesQuery(this->sqlDatabase());
+        modulesQuery.prepare("DELETE FROM modules WHERE uuid = :uuid");
+        modulesQuery.bindValue(":uuid", aUuid);
+        return modulesQuery.exec();
     }
 
     QHash<QString, QVariant> Manager::findOperationByUuid(const QString &aUuid)
     {
         QHash<QString, QVariant> ret;
-        QSharedPointer<QSqlTableModel> ourModel(operationsTable());
 
-        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
-        ourModel->select();
+        QSqlQuery operationsQuery(this->sqlDatabase());
+        operationsQuery.prepare("SELECT * FROM operations WHERE uuid = :uuid");
+        operationsQuery.bindValue(":uuid", aUuid);
 
-        if (ourModel->rowCount() == 1) {
-            QSqlRecord theRecord = ourModel->record(0);
-            for (int i=0; i < ourModel->columnCount(); i++) {
+        if (operationsQuery.exec() && operationsQuery.size() == 1) {
+            operationsQuery.first();
+            QSqlRecord theRecord = operationsQuery.record();
+            for (int i=0; i < theRecord.count(); i++) {
                 ret.insert(theRecord.fieldName(i), theRecord.value(i));
             }
         }
@@ -682,52 +611,38 @@ namespace DS2PlusPlus {
 
     bool Manager::removeOperationByUuid(const QString &aUuid)
     {
-        QSharedPointer<QSqlTableModel> ourModel(operationsTable());
-
-        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
-        ourModel->select();
-
-        if (ourModel->rowCount() == 1) {
-            ourModel->removeRows(0, 1);
-            return ourModel->submitAll();
-        } else {
-            qDebug() << "Expected to find 1 row, found: " << ourModel->rowCount();
-        }
-
-        return false;
+        QSqlQuery operationsQuery(this->sqlDatabase());
+        operationsQuery.prepare("DELETE FROM operations WHERE uuid = :uuid");
+        operationsQuery.bindValue(":uuid", aUuid);
+        return operationsQuery.exec();
     }
 
     QHash<QString, QVariant> Manager::findResultByUuid(const QString &aUuid)
     {
         QHash<QString, QVariant> ret;
-        QSharedPointer<QSqlTableModel> ourModel(resultsTable());
 
-        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
-        ourModel->select();
+        QSqlQuery resultsQuery(this->sqlDatabase());
+        resultsQuery.prepare("SELECT * FROM results WHERE uuid = :uuid");
+        resultsQuery.bindValue(":uuid", aUuid);
+        resultsQuery.exec();
 
-        if (ourModel->rowCount() == 1) {
-            QSqlRecord theRecord = ourModel->record(0);
-            for (int i=0; i < ourModel->columnCount(); i++) {
+        if (resultsQuery.size() == 1) {
+            QSqlRecord theRecord = resultsQuery.record();
+            for (int i=0; i < theRecord.count(); i++) {
                 ret.insert(theRecord.fieldName(i), theRecord.value(i));
             }
         }
 
         return ret;
+
     }
 
     bool Manager::removeResultByUuid(const QString &aUuid)
     {
-        QSharedPointer<QSqlTableModel> ourModel(resultsTable());
-
-        ourModel->setFilter(QString("uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
-        ourModel->select();
-
-        if (ourModel->rowCount() == 1) {
-            ourModel->removeRow(0);
-            return ourModel->submitAll();
-        }
-
-        return false;
+        QSqlQuery resultsQuery(this->sqlDatabase());
+        resultsQuery.prepare("DELETE FROM results WHERE uuid= :uuid");
+        resultsQuery.bindValue(":uuid", aUuid);
+        return resultsQuery.exec();
     }
 
     bool Manager::removeStringTableByUuid(const QString &aUuid)
@@ -888,24 +803,29 @@ namespace DS2PlusPlus {
         // If we were given an invalid UUID, assume we've got to look it up by name.
         // We could join if it weren't such a pain in the ass with Qt.
         if (uuid == "NULL") {
-            QSharedPointer<QSqlTableModel> ourStringTableTable(stringTablesTable());
-            ourStringTableTable->setFilter(QString("name = '%1'").arg(aStringTable));
-            ourStringTableTable->select();
-            if (ourStringTableTable->rowCount() == 1) {
-                QSqlRecord ourRecord = ourStringTableTable->record(0);
+            QSqlQuery findTableByNameQuery(this->sqlDatabase());
+            findTableByNameQuery.prepare("SELECT * FROM string_tables WHERE name = :name");
+            findTableByNameQuery.bindValue(":name", aStringTable);
+
+            if (findTableByNameQuery.exec() && findTableByNameQuery.size() == 1) {
+                findTableByNameQuery.first();
+                QSqlRecord ourRecord = findTableByNameQuery.record();
                 uuid = DPP_V1_Parser::rawUuidToString(ourRecord.value("uuid").toByteArray());
                 uuid = DPP_V1_Parser::stringToUuidSQL(uuid);
+            } else {
+                return QString::null;
             }
         }
 
-        QSharedPointer<QSqlTableModel> ourStringValueTable(stringValuesTable());
-        ourStringValueTable->setFilter(QString("(table_uuid = %1) AND (number = %2)").arg(uuid).arg(aNumber));
-        ourStringValueTable->select();
+        QSqlQuery stringValueQuery(this->sqlDatabase());
+        stringValueQuery.prepare(QString("SELECT * FROM string_values WHERE (table_uuid = %1) AND (number = %2)").arg(uuid).arg(aNumber));
 
-        if (ourStringValueTable->rowCount() == 1) {
-           QSqlRecord ourRecord = ourStringValueTable->record(0);
-           return ourRecord.value("string").toString();
+        if (stringValueQuery.exec() && stringValueQuery.size() == 1) {
+            stringValueQuery.first();
+            QSqlRecord ourRecord = stringValueQuery.record();
+            return ourRecord.value("string").toString();
         }
+
         return QString::null;
     }
 }

@@ -64,8 +64,8 @@ namespace DS2PlusPlus {
          */
         void parseStringTableFile(const Json::Value &aJsonObject);
 
-        bool parseOperationJson(Json::ValueIterator &operationIt, Json::Value &moduleJSON, QSharedPointer<QSqlTableModel> &operationsModel);
-        bool parseResultJson(Json::ValueIterator &aResultIterator, Json::Value &operationJSON, QSharedPointer<QSqlTableModel> &aResultsModel);
+        bool parseOperationJson(Json::ValueIterator &operationIt, Json::Value &moduleJSON);
+        bool parseResultJson(Json::ValueIterator &aResultIterator, Json::Value &operationJSON);
 
     protected:
         Manager *_manager;
