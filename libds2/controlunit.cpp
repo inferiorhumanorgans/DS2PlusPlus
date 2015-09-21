@@ -46,6 +46,7 @@ namespace DS2PlusPlus {
 
     QHash<QString, QList<quint8> > ControlUnit::_familyDictionary;
     QHash<QString, QString> ControlUnit::_familyNames;
+    const QChar ControlUnit::zeroPadding = QChar('0');
 
     const QString ControlUnit::ROOT_UUID = "00001111-0000-0000-0000-000000000000";
 
@@ -97,26 +98,34 @@ namespace DS2PlusPlus {
     const QList<quint8> ControlUnit::knownAddresses()
     {
         QSet<quint8> set;
+
+        // Load the address family info if needed
         addressForFamily("");
-        foreach (QList<quint8> addressList, _familyDictionary.values()) {
-            foreach (quint8 address, addressList) {
+
+        foreach (const QList<quint8> addressList, _familyDictionary.values()) {
+            foreach (const quint8 address, addressList) {
                 set.insert(address);
             }
         }
 
         QList<quint8> ret(set.toList());
         qSort(ret);
+
         return ret;
     }
 
     const QString ControlUnit::familyForAddress(quint8 anAddress)
     {
         QStringList ret;
+
+        // Load the address family info if needed
         addressForFamily("");
+
         QHashIterator<QString, QList<quint8> > familyList(_familyDictionary);
          while (familyList.hasNext()) {
              familyList.next();
-             foreach(quint8 address, familyList.value()) {
+
+             foreach(const quint8 address, familyList.value()) {
                 if (address == anAddress) {
                     ret.append(familyList.key());
                 }
@@ -188,6 +197,7 @@ namespace DS2PlusPlus {
         _operations.clear();
 
         QString moduleParent = aUuid;
+
         // Add a "find root UUID" method to dbm
         while (!moduleParent.isEmpty()) {
             QHash<QString, QVariant> theRecord = _manager->findModuleRecordByUuid(moduleParent);
@@ -214,7 +224,7 @@ namespace DS2PlusPlus {
                     throw std::invalid_argument(qPrintable(QString("Invalid protocol.  ECU=%1, protocol=%2").arg(_uuid).arg(ourProtocol)));
                 }
 
-                QStringList partStrings = theRecord.value("part_number").toString().split("/");
+                const QStringList partStrings = theRecord.value("part_number").toString().split("/");
                 _partNumbers = QSet<quint64>();
                 foreach (const QString &partNumber, partStrings) {
                     _partNumbers.insert(partNumber.toULongLong());
@@ -238,11 +248,11 @@ namespace DS2PlusPlus {
             for (int i=0; i < operationsTable->rowCount(); i++) {
                 QSqlRecord opRecord = operationsTable->record(i);
 
-                QString opName = opRecord.value("name").toString();
-                QString opUuid = DPP_V1_Parser::rawUuidToString(opRecord.value("uuid").toByteArray());
-                QString opModule = DPP_V1_Parser::rawUuidToString(opRecord.value("module_id").toByteArray());
-                QString opParent = DPP_V1_Parser::rawUuidToString(opRecord.value("parent_id").toByteArray());
-                QByteArray opCommand = opRecord.value("command").toByteArray();
+                const QString opName = opRecord.value("name").toString();
+                const QString opUuid = DPP_V1_Parser::rawUuidToString(opRecord.value("uuid").toByteArray());
+                const QString opModule = DPP_V1_Parser::rawUuidToString(opRecord.value("module_id").toByteArray());
+                const QString opParent = DPP_V1_Parser::rawUuidToString(opRecord.value("parent_id").toByteArray());
+                const QByteArray opCommand = opRecord.value("command").toByteArray();
 
                 OperationPtr op;
                 if (_operations.contains(opName)) {
@@ -274,6 +284,7 @@ namespace DS2PlusPlus {
 
                 QString curOpUuid = opUuid;
                 QSqlRecord curOpRecord = opRecord;
+
                 while (!curOpUuid.isEmpty()) {
                     QSharedPointer<QSqlTableModel> results(_manager->resultsTable());
                     results->setFilter(QString("operation_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(curOpUuid)));
@@ -422,39 +433,7 @@ namespace DS2PlusPlus {
             if (result.isType("byte") || result.isType("signed_byte")) {
                 ret.insert(result.name(), resultByteToVariant(packet, result));
             } else if (result.isType("short") || result.isType("signed_short")) {
-                if (result.length() != 2) {
-                    QString errorString = QString("Length for short data type must be 2.  Length was %1, Result was %2 (%3)").arg(result.length()).arg(result.name()).arg(result.uuid());
-                    throw std::invalid_argument(qPrintable(errorString));
-                }
-
-                quint16 ourNumber;
-                memcpy(&ourNumber, packet->data().mid(result.startPosition(), result.length()), qMin((size_t)result.length(), sizeof(quint16)));
-                if (_bigEndian) {
-                    ourNumber = qFromBigEndian(ourNumber);
-                } else {
-                    ourNumber = qFromLittleEndian(ourNumber);
-                }
-
-                if (result.displayFormat() == "int") {
-                    if (result.isType("signed_short")) {
-                        qint64 value = runRpnForResult<float>(result, static_cast<qint16>(ourNumber));
-                        ret.insert(result.name(), QVariant(value));
-                    } else {
-                        quint64 value = runRpnForResult<float>(result, ourNumber);
-                        ret.insert(result.name(), QVariant(value));
-                    }
-                } else if (result.displayFormat() == "float") {
-                    double ourFloat;
-                    if (result.isType("signed_short")) {
-                        ourFloat = runRpnForResult<float>(result, static_cast<qint16>(ourNumber));
-                    } else {
-                        ourFloat = runRpnForResult<float>(result, ourNumber);
-                    }
-
-                    ret.insert(result.name(), QVariant(ourFloat));
-                } else {
-                    throw std::invalid_argument("Invalid display type for short specified.");
-                }
+                ret.insert(result.name(), resultShortToVariant(packet, result));
             } else if (result.isType("hex_string")) {
                 ret.insert(result.name(), resultHexStringToVariant(packet, result));
             } else if (result.isType("string")) {
@@ -611,7 +590,7 @@ namespace DS2PlusPlus {
 
       if (start_byte == finish_byte) {
         quint8 mask = (1 << (finish_bit - start_bit)) - 1;
-        return getCharFrom6BitInt(bytes[start_byte] & mask);
+        return ControlUnit::getCharFrom6BitInt(bytes[start_byte] & mask);
       } else {
         start_bit++;
 
@@ -619,8 +598,9 @@ namespace DS2PlusPlus {
         quint8 low_nibble = bytes[finish_byte] & (0xff << (7 - finish_bit));
         quint8 finish = (high_nibble << (6 - (8 - start_bit))) | (low_nibble >> (7 - finish_bit));
 
-        return getCharFrom6BitInt(finish);
+        return ControlUnit::getCharFrom6BitInt(finish);
       }
+
       return -1;
     }
 
@@ -727,10 +707,46 @@ namespace DS2PlusPlus {
         return ourValue;
     }
 
+    QVariant ControlUnit::resultShortToVariant(const BasePacketPtr aPacket, const Result &aResult)
+    {
+        if (aResult.length() != 2) {
+            QString errorString = QString("Length for short data type must be 2.  Length was %1, Result was %2 (%3)").arg(aResult.length()).arg(aResult.name()).arg(aResult.uuid());
+            throw std::invalid_argument(qPrintable(errorString));
+        }
+
+        quint16 ourNumber;
+        memcpy(&ourNumber, aPacket->data().mid(aResult.startPosition(), aResult.length()), qMin(static_cast<size_t>(aResult.length()), sizeof(quint16)));
+
+        if (_bigEndian) {
+            ourNumber = qFromBigEndian(ourNumber);
+        } else {
+            ourNumber = qFromLittleEndian(ourNumber);
+        }
+
+        if (aResult.displayFormat() == "int") {
+            if (aResult.isType("signed_short")) {
+                qint64 value = runRpnForResult<float>(aResult, static_cast<qint16>(ourNumber));
+                return QVariant(value);
+            } else {
+                quint64 value = runRpnForResult<float>(aResult, ourNumber);
+                return QVariant(value);
+            }
+        } else if (aResult.displayFormat() == "float") {
+            double ourFloat;
+            if (aResult.isType("signed_short")) {
+                ourFloat = runRpnForResult<float>(aResult, static_cast<qint16>(ourNumber));
+            } else {
+                ourFloat = runRpnForResult<float>(aResult, ourNumber);
+            }
+
+            return QVariant(ourFloat);
+        } else {
+            throw std::invalid_argument("Invalid display type for short specified.");
+        }
+    }
+
     QVariant ControlUnit::resultByteToVariant(const BasePacketPtr aPacket, const Result &aResult)
     {
-        QChar zeroPadding = QChar('0');
-
         if (aResult.length() != 1) {
             QString ourError = QObject::tr("Length is not one for a byte data type.  Length is %1").arg(aResult.length());
             throw std::invalid_argument(qPrintable(ourError));
@@ -741,27 +757,24 @@ namespace DS2PlusPlus {
             byte = (byte & aResult.mask()) & 0xff;
         }
 
-        qint64 num = runRpnForResult<qint64>(aResult, byte);
+        const qint64 num = runRpnForResult<qint64>(aResult, byte);
 
         if (aResult.displayFormat() == "hex_string") {
-            QString hex;
-            hex = QString("0x%1").arg(QString::number(byte, 16), 2, zeroPadding);
+            const QString hex = QString("0x%1").arg(QString::number(byte, 16), 2, zeroPadding);
             return QVariant(hex);
         } else if (aResult.displayFormat() == "hex_int") {
-            QString hex;
-            hex = QString("%1").arg(QString::number(byte, 16), 2, zeroPadding);
+            const QString hex = QString("%1").arg(QString::number(byte, 16), 2, zeroPadding);
             return QVariant(hex.toUInt());
         } else if (aResult.displayFormat() == "raw") {
             return QVariant(num);
         } else if (aResult.displayFormat().startsWith("string_table:")) {
-            QString tableName = aResult.displayFormat().mid(13);
-            QString stringValue = _manager->findStringByTableAndNumber(tableName, num);
+            const QString tableName = aResult.displayFormat().mid(13);
+            const QString stringValue = _manager->findStringByTableAndNumber(tableName, num);
 
             if (!stringValue.isEmpty()) {
                return QVariant(stringValue);
             } else {
-                QString hex;
-                hex = QString("0x%1").arg(QString::number(byte, 16), 2, zeroPadding);
+                const QString hex = QString("0x%1").arg(QString::number(byte, 16), 2, zeroPadding);
                 return QVariant(hex);
             }
 
@@ -773,34 +786,36 @@ namespace DS2PlusPlus {
             } else {
                 value = runRpnForResult<double>(aResult, static_cast<quint8>(byte));
             }
+
             return QVariant(value);
         } else if (aResult.displayFormat() == "enum") {
             return QVariant(aResult.stringForLevel(num));
         } else {
-            QString ourError = QObject::tr("Unknown display format for byte type: %1").arg(aResult.displayFormat());
+            const QString ourError = QObject::tr("Unknown display format for byte type: %1").arg(aResult.displayFormat());
             throw std::invalid_argument(qPrintable(ourError));
         }
     }
 
     QVariant ControlUnit::resultHexStringToVariant(const BasePacketPtr aPacket, const Result &aResult)
     {
-        QChar zeroPadding = QChar('0');
         QString hex;
+
         for (int i=0; i < aResult.length(); i++) {
-            unsigned char byte = aPacket->data().at(aResult.startPosition() + i);
+            const unsigned char byte = aPacket->data().at(aResult.startPosition() + i);
             if (i == 0) {
                 hex.append(QString("%1").arg(QString::number(byte & 0x0f, 16)));
             } else {
                 hex.append(QString("%1").arg(QString::number(byte, 16), 2, zeroPadding));
             }
         }
+
         if (aResult.displayFormat() == "int") {
-            quint64 number = hex.toULongLong();
+            const quint64 number = hex.toULongLong();
             return QVariant(number);
         } else if (aResult.displayFormat() == "string") {
             return QVariant(hex);
         } else {
-            QString ourError = QObject::tr("Unknown display format for hex_string type: %1").arg(aResult.displayFormat());
+            const QString ourError = QObject::tr("Unknown display format for hex_string type: %1").arg(aResult.displayFormat());
             throw std::runtime_error(qPrintable(ourError));
         }
     }

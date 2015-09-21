@@ -169,11 +169,16 @@ namespace DS2PlusPlus {
          * Types handled include: integers, floats, and strings from a lookup table
          */
         QVariant resultByteToVariant(const BasePacketPtr aPacket, const Result &aResult);
-        QVariant resultHexStringToVariant(const BasePacketPtr aPacket, const Result &aResult);
-        char getCharFrom6BitInt(quint8 n);
-        char decode_vin_char(int start, const QByteArray &bytes);
 
-        template <typename X> X runRpnForResult(const Result &aResult, X aValue);
+        QVariant resultShortToVariant(const BasePacketPtr aPacket, const Result &aResult);
+
+        QVariant resultHexStringToVariant(const BasePacketPtr aPacket, const Result &aResult);
+
+        static char getCharFrom6BitInt(quint8 n);
+
+        static char decode_vin_char(int start, const QByteArray &bytes);
+
+        template <typename X> static X runRpnForResult(const Result &aResult, X aValue);
 
     protected:
         quint32 _dppVersion;
@@ -193,6 +198,7 @@ namespace DS2PlusPlus {
         Manager *_manager;
         static QHash<QString, QList<quint8> > _familyDictionary;
         static QHash<QString, QString> _familyNames;
+        static const QChar zeroPadding;
     };
 
     typedef QSharedPointer<ControlUnit> ControlUnitPtr;
