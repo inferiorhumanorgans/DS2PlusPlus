@@ -58,6 +58,21 @@ namespace DS2PlusPlus {
     void DPP_V1_Parser::reset()
     {
         _knownUuids.clear();
+        insertModuleQuery = QSqlQuery(_manager->sqlDatabase());
+        insertModuleQuery.prepare("INSERT INTO modules(uuid, parent_id, file_version, dpp_version, name, protocol, family, address, part_number, hardware_num, software_num, coding_index, big_endian, mtime) VALUES (:uuid, :parent_id, :file_version, :dpp_version, :name, :protocol, :family, :address, :part_number, :hardware_num, :software_num, :coding_index, :big_endian, :mtime)");
+
+        stringTableQuery = QSqlQuery(_manager->sqlDatabase());
+        stringTableQuery.prepare("INSERT INTO string_tables (name, uuid) VALUES (:name, :uuid)");
+
+        stringTableValueQuery = QSqlQuery(_manager->sqlDatabase());
+        stringTableValueQuery.prepare("INSERT INTO string_values (table_uuid, number, string) VALUES (:table_uuid, :number, :string)");
+
+        operationQuery = QSqlQuery(_manager->sqlDatabase());
+        operationQuery.prepare("INSERT INTO operations(uuid, module_id, name, parent_id, command) VALUES(:uuid, :module_id, :name, :parent_id, :command)");
+
+        resultQuery = QSqlQuery(_manager->sqlDatabase());
+        resultQuery.prepare("INSERT INTO results (uuid, operation_id, parent_id, name, type, display, start_pos, mask, rpn, units, length, levels) VALUES (:uuid, :operation_id, :parent_id, :name, :type, :display, :start_pos, :mask, :rpn, :units, :length, :levels)");
+
     }
 
     void DPP_V1_Parser::parseFile(const QString &aLabel, QIODevice *anInput)
@@ -136,9 +151,8 @@ namespace DS2PlusPlus {
 
         QSqlQuery transaction(_manager->sqlDatabase());
         transaction.exec("BEGIN");
-        QSqlQuery insertModuleQuery(_manager->sqlDatabase());
-        insertModuleQuery.prepare("INSERT INTO modules(uuid, parent_id, file_version, dpp_version, name, protocol, family, address, part_number, hardware_num, software_num, coding_index, big_endian, mtime) VALUES (:uuid, :parent_id, :file_version, :dpp_version, :name, :protocol, :family, :address, :part_number, :hardware_num, :software_num, :coding_index, :big_endian, :mtime)");
 
+        insertModuleQuery.finish();
         insertModuleQuery.bindValue(":uuid", stringToUuidVariant(uuid));
         insertModuleQuery.bindValue(":parent_id", stringToUuidVariant(parent_id));
         insertModuleQuery.bindValue(":file_version", moduleJson["file_version"].asInt());
@@ -260,9 +274,7 @@ namespace DS2PlusPlus {
 
         _manager->removeStringTableByUuid(uuid);
 
-        QSqlQuery stringTableQuery(_manager->sqlDatabase());
-        stringTableQuery.prepare("INSERT INTO string_tables (name, uuid) VALUES (:name, :uuid)");
-
+        stringTableQuery.finish();
         stringTableQuery.bindValue(":name", tableName);
         stringTableQuery.bindValue(":uuid", stringToUuidVariant(uuid));
 
@@ -275,15 +287,15 @@ namespace DS2PlusPlus {
         Json::ValueIterator stringIterator = ourStrings.begin();
 
         quint64 stringCount = 0;
+
         while (stringIterator != ourStrings.end()) {
             Json::Value ourString = *stringIterator;
-            QSqlQuery stringTableValueQuery(_manager->sqlDatabase());
-            stringTableValueQuery.prepare("INSERT INTO string_values (table_uuid, number, string) VALUES (:table_uuid, :number, :string)");
 
             bool ok;
             Json::Value ourKey = stringIterator.key();
             quint8 stringNumber = QString(getQStringFromJson(ourKey)).toUInt(&ok, 16);
 
+            stringTableValueQuery.finish();
             stringTableValueQuery.bindValue(":table_uuid", stringToUuidVariant(uuid));
             stringTableValueQuery.bindValue(":number", stringNumber);
             stringTableValueQuery.bindValue(":string", getQStringFromJson(ourString));
@@ -305,8 +317,7 @@ namespace DS2PlusPlus {
     {
         Json::Value ourOperation = *operationIt;
 
-        QSqlQuery operationQuery(_manager->sqlDatabase());
-        operationQuery.prepare("INSERT INTO operations(uuid, module_id, name, parent_id, command) VALUES(:uuid, :module_id, :name, :parent_id, :command)");
+        operationQuery.finish();
 
         const QString uuid(getQStringFromJson(ourOperation["uuid"]));
         QString module_id(getQStringFromJson(moduleJSON["uuid"]));
@@ -374,8 +385,8 @@ namespace DS2PlusPlus {
     bool DPP_V1_Parser::parseResultJson(Json::ValueIterator &aResultIterator, Json::Value &operationJSON)
     {
         Json::Value ourResult = *aResultIterator;
-        QSqlQuery resultQuery(_manager->sqlDatabase());
-        resultQuery.prepare("INSERT INTO results (uuid, operation_id, parent_id, name, type, display, start_pos, mask, rpn, units, length, levels) VALUES (:uuid, :operation_id, :parent_id, :name, :type, :display, :start_pos, :mask, :rpn, :units, :length, :levels)");
+
+        resultQuery.finish();
 
         const QString uuid(ourResult["uuid"].asCString());
 

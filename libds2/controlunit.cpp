@@ -243,7 +243,8 @@ namespace DS2PlusPlus {
             }
 
             QSqlQuery operationsForModuleQuery(_manager->sqlDatabase());
-            operationsForModuleQuery.prepare(QString("SELECT * FROM operations WHERE module_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(moduleParent)));
+            operationsForModuleQuery.prepare("SELECT * FROM operations WHERE module_id = :module_id");
+            operationsForModuleQuery.bindValue(":module_id", DPP_V1_Parser::stringToUuidVariant(moduleParent));
             operationsForModuleQuery.exec();
 
             while (operationsForModuleQuery.next()) {
@@ -289,7 +290,8 @@ namespace DS2PlusPlus {
                 while (!curOpUuid.isEmpty()) {
 
                     QSqlQuery resultsForOperationQuery(_manager->sqlDatabase());
-                    resultsForOperationQuery.prepare(QString("SELECT * FROM results WHERE operation_id = %1").arg(DPP_V1_Parser::stringToUuidSQL(curOpUuid)));
+                    resultsForOperationQuery.prepare("SELECT * FROM results WHERE operation_id = :operation_id");
+                    resultsForOperationQuery.bindValue(":operation_id", DPP_V1_Parser::stringToUuidVariant(curOpUuid));
                     resultsForOperationQuery.exec();
 
                     while (resultsForOperationQuery.next()) {
@@ -340,7 +342,8 @@ namespace DS2PlusPlus {
                             }
 
                             QSqlQuery parentResultsQuery(_manager->sqlDatabase());
-                            parentResultsQuery.prepare(QString("SELECT * FROM results WHERE uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(resultId)));
+                            parentResultsQuery.prepare("SELECT * FROM results WHERE uuid = :uuid");
+                            parentResultsQuery.bindValue(":uuid", DPP_V1_Parser::stringToUuidVariant(resultId));
                             parentResultsQuery.exec();
                             parentResultsQuery.first();
                             resultRecord = parentResultsQuery.record();
@@ -364,7 +367,8 @@ namespace DS2PlusPlus {
                     }
 
                     QSqlQuery subOps(_manager->sqlDatabase());
-                    subOps.prepare(QString("SELECT * FROM operations WHERE uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(curOpUuid)));
+                    subOps.prepare("SELECT * FROM operations WHERE uuid = :uuid");
+                    subOps.bindValue(":uuid", DPP_V1_Parser::stringToUuidVariant(curOpUuid));
                     subOps.exec();
                     subOps.first();
                     curOpRecord = subOps.record();

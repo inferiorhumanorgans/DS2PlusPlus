@@ -30,6 +30,7 @@
 #include <QSharedPointer>
 #include <QSqlTableModel>
 #include <QTextStream>
+#include <QSqlQuery>
 
 namespace Json {
     class Value;
@@ -72,6 +73,8 @@ namespace DS2PlusPlus {
         const QIODevice *_input;
         QSet<QString> _knownUuids;
         QTextStream qOut, qErr;
+
+        QSqlQuery insertModuleQuery, stringTableQuery, stringTableValueQuery, operationQuery, resultQuery;
     };
 }
 #endif // DPP_V1_PARSER_H

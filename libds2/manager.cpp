@@ -510,7 +510,8 @@ namespace DS2PlusPlus {
         QSqlRecord rec;
 
         QSqlQuery moduleQuery(this->sqlDatabase());
-        moduleQuery.prepare(QString("SELECT * FROM modules WHERE uuid = %1").arg(DPP_V1_Parser::stringToUuidSQL(aUuid)));
+        moduleQuery.prepare("SELECT * FROM modules WHERE uuid = :uuid");
+        moduleQuery.bindValue(":uuid", DPP_V1_Parser::stringToUuidVariant(aUuid));
         moduleQuery.exec();
         moduleQuery.first();
 
@@ -798,11 +799,12 @@ namespace DS2PlusPlus {
 
     QString Manager::findStringByTableAndNumber(const QString &aStringTable, int aNumber)
     {
-        QString uuid = DPP_V1_Parser::stringToUuidSQL(aStringTable);
+        bool isUuid = (DPP_V1_Parser::stringToUuidSQL(aStringTable) == "NULL") ? false : true;
+        QVariant uuid;
 
         // If we were given an invalid UUID, assume we've got to look it up by name.
         // We could join if it weren't such a pain in the ass with Qt.
-        if (uuid == "NULL") {
+        if (!isUuid) {
             QSqlQuery findTableByNameQuery(this->sqlDatabase());
             findTableByNameQuery.prepare("SELECT * FROM string_tables WHERE name = :name");
             findTableByNameQuery.bindValue(":name", aStringTable);
@@ -810,20 +812,29 @@ namespace DS2PlusPlus {
             if (findTableByNameQuery.exec() && findTableByNameQuery.size() == 1) {
                 findTableByNameQuery.first();
                 QSqlRecord ourRecord = findTableByNameQuery.record();
-                uuid = DPP_V1_Parser::rawUuidToString(ourRecord.value("uuid").toByteArray());
-                uuid = DPP_V1_Parser::stringToUuidSQL(uuid);
+                QString uuidString = DPP_V1_Parser::rawUuidToString(ourRecord.value("uuid").toByteArray());
+                uuid = DPP_V1_Parser::stringToUuidVariant(uuidString);
             } else {
                 return QString::null;
             }
+        } else {
+            uuid = DPP_V1_Parser::stringToUuidVariant(aStringTable);
         }
 
         QSqlQuery stringValueQuery(this->sqlDatabase());
-        stringValueQuery.prepare(QString("SELECT * FROM string_values WHERE (table_uuid = %1) AND (number = %2)").arg(uuid).arg(aNumber));
+        stringValueQuery.prepare("SELECT * FROM string_values WHERE (table_uuid = :uuid) AND (number = :number)");
+        stringValueQuery.bindValue(":uuid", uuid);
+        stringValueQuery.bindValue(":number", aNumber);
 
-        if (stringValueQuery.exec() && stringValueQuery.size() == 1) {
-            stringValueQuery.first();
-            QSqlRecord ourRecord = stringValueQuery.record();
-            return ourRecord.value("string").toString();
+        if (stringValueQuery.exec()) {
+            stringValueQuery.last();
+            int position = stringValueQuery.at() + 1;
+
+            if (position == 1) {
+                stringValueQuery.first();
+                QSqlRecord ourRecord = stringValueQuery.record();
+                return ourRecord.value("string").toString();
+            }
         }
 
         return QString::null;
