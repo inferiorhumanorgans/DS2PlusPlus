@@ -368,7 +368,8 @@ namespace DS2PlusPlus {
         Json::ValueIterator resultIt = ourResults.begin();
         while (resultIt != ourResults.end()) {
             if (!parseResultJson(resultIt, ourOperation)) {
-                throw std::invalid_argument("Error parsing result JSON");
+                QString error("Error parsing result JSON for operation ");
+                throw std::invalid_argument(error.arg(uuid).toUtf8());
             }
             resultIt++;
             resultsCount++;
