@@ -489,7 +489,7 @@ void DataCollection::probe()
                     .arg(ControlUnit::familyForAddress(ecuAddress)) << qSetFieldWidth(0) << endl;
 
             autoDetect = ControlUnitPtr(dbm->findModuleAtAddress(ecuAddress));
-        } catch(DS2PlusPlus::TimeoutException) {
+        } catch (TimeoutException) {
             continue;
         }
         if (!autoDetect.isNull()) {
@@ -542,7 +542,7 @@ void DataCollection::probeAll()
 
         usleep(100000);
 
-        DS2PlusPlus::ControlUnitPtr autoDetect;
+        ControlUnitPtr autoDetect;
         try {
             if (parser->value("format") == "text") {
                 qOut << qSetFieldWidth(0) << "\r";
@@ -563,8 +563,8 @@ void DataCollection::probeAll()
                 qOut << endl;
             }
 
-            autoDetect = DS2PlusPlus::ControlUnitPtr(dbm->findModuleAtAddress(address));
-        } catch(DS2PlusPlus::TimeoutException) {
+            autoDetect = ControlUnitPtr(dbm->findModuleAtAddress(address));
+        } catch (TimeoutException) {
             if (parser->value("format") == "verbose") {
                 qOut << QString("-- Uncaught timeout for ECU at 0x%1").arg(address, 2, 16, QChar('0')) << endl;
             }
@@ -588,7 +588,7 @@ void DataCollection::probeAll()
                 qOut << QString(">> Interrogating ECU at 0x%1 for additional details").arg(address, 2, 16, QChar('0')) << endl;
             }
             ourResponse = autoDetect->executeOperation("identify");
-        } catch(DS2PlusPlus::TimeoutException) {
+        } catch (TimeoutException) {
             if (parser->value("format") == "verbose") {
                 qOut << QString("-- Uncaught timeout for ECU at 0x%1").arg(address, 2, 16, QChar('0')) << endl;
             }
@@ -616,7 +616,7 @@ void DataCollection::probeAll()
                 if (ourVin.contains("vin")) {
                     notes.append(QString("vin=%1").arg(ourVin.value("vin").toString()));
                 }
-            } catch(DS2PlusPlus::TimeoutException) {
+            } catch (TimeoutException) {
             }
         } else if (autoDetect->operations().contains("vehicle_id_short")) {
             usleep(250000);
@@ -625,7 +625,7 @@ void DataCollection::probeAll()
                 if (ourVin.contains("short_vin")) {
                     notes.append(QString("vin=%1").arg(ourVin.value("short_vin").toString()));
                 }
-            } catch(DS2PlusPlus::TimeoutException) {
+            } catch (TimeoutException) {
             }
         }
 
@@ -640,7 +640,7 @@ void DataCollection::probeAll()
                         notes.append(QString("faults=%1").arg(ourFaultCount));
                     }
                 }
-            } catch(DS2PlusPlus::TimeoutException) {
+            } catch (TimeoutException) {
             }
         }
 
