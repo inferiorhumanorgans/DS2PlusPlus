@@ -43,16 +43,6 @@ namespace DS2PlusPlus {
         return ourPartNumber;
     }
 
-    float BasePacket::fetchFloat(quint16 aPosition, float aMultiplicativeFactor, int anAdditiveFactor) const
-    {
-        return (static_cast<quint8>(_data.at(aPosition)) * aMultiplicativeFactor) + anAdditiveFactor;
-    }
-
-    QString BasePacket::fetchString(quint16 aPosition, quint16 aLength) const
-    {
-        return QString(_data.mid(aPosition, aLength));
-    }
-
     quint8 BasePacket::sourceAddress() const {
         if (_hasSourceAddress) {
             return _sourceAddress;
@@ -165,7 +155,7 @@ namespace DS2PlusPlus {
         return QString(ourStr.c_str());
     }
 
-    const QString HashToJsonString(const QHash<QString, QVariant> &aResponse, const QString &aRootNode) {
+    const QString HashToJsonString(const PacketResponse &aResponse, const QString &aRootNode) {
         std::string ourStr;
         const Json::Value *jsonNode = ResponseToJson(aResponse);
 

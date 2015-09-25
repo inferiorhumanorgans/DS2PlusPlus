@@ -18,7 +18,7 @@ namespace DS2PlusPlus {
     typedef QHash<QString, QVariant> PacketResponse;
     const Json::Value *ResponseToJson(const PacketResponse &aResponse);
     const QString ResponseToJsonString(const PacketResponse &aResponse);
-    const QString HashToJsonString(const QHash<QString, QVariant> &aResponse, const QString &aRootNode = QString::null);
+    const QString HashToJsonString(const PacketResponse &aResponse, const QString &aRootNode = QString::null);
 
     class BasePacket : public QObject
     {
@@ -34,7 +34,7 @@ namespace DS2PlusPlus {
         explicit BasePacket(QObject *parent = 0);
 
         /*!
-         * \brief Constructs a DS2Packet and populates it with the appropriate data.
+         * \brief Constructs a BasePacket and populates it with the appropriate data.
          * \param anAddress An ECU address
          * \param someData The payload.
          * \param aParent  A QObject parent.
@@ -42,7 +42,7 @@ namespace DS2PlusPlus {
         BasePacket(quint8 aTargetAddress, const QByteArray &someData, QObject *aParent = 0);
 
         /*!
-         * \brief Constructs a DS2Packet and populates it with the appropriate data.
+         * \brief Constructs a BasePacket and populates it with the appropriate data.
          * \param anAddress An ECU address
          * \param someData The payload.
          * \param aParent  A QObject parent.
@@ -71,10 +71,8 @@ namespace DS2PlusPlus {
          */
         virtual unsigned char checksum(const QByteArray &data = QByteArray()) const = 0;
 
-        float fetchFloat(quint16 aPosition, float aMultiplicativeFactor, int anAdditiveFactor = 0) const;
-        QString fetchString(quint16 aPosition, quint16 aLength) const;
-
         virtual ProtocolType protocol() const = 0;
+
         virtual const QString toByteString() const = 0;
 
         virtual QByteArray expectedHeaderPadding() const = 0;
