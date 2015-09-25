@@ -393,7 +393,7 @@ namespace DS2PlusPlus {
         BasePacketPtr ourReceivedPacket;
         try {
             ourReceivedPacket = query(ourSentPacket);
-        } catch(DS2PlusPlus::TimeoutException) {
+        } catch (TimeoutException) {
             if (getenv("DPP_TRACE")) {
                 qDebug() << "-- Timeout reading DS2";
             }
@@ -408,7 +408,7 @@ namespace DS2PlusPlus {
                 ourSentPacket = BasePacketPtr(new KWPPacket(anAddress, static_cast<unsigned char>(0xF1) /* laptop fixed addy*/, QByteArray((int)1, static_cast<unsigned char>(0xA2))));
                 try {
                     ourReceivedPacket = query(ourSentPacket);
-                } catch(DS2PlusPlus::TimeoutException) {
+                } catch (TimeoutException) {
                     if (getenv("DPP_TRACE")) {
                         qDebug() << "-- Timeout with KWP.";
                     }
