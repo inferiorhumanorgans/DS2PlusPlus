@@ -31,7 +31,7 @@
 namespace DS2PlusPlus
 {
     /*!
-     * \brief The DS2Packet class represents a raw DS2 packet sent to or received from an ECU.
+     * \brief The DS2Packet class represents a raw DS2 protocol packet sent to or received from an ECU.
      */
     class DS2Packet : public BasePacket
     {

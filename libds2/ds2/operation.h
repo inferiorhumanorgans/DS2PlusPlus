@@ -32,6 +32,10 @@
 #include <ds2/basepacket.h>
 
 namespace DS2PlusPlus {
+
+    /*!
+     * \brief A command that a ControlUnit will execute and return one or more results for.
+     */
     class Operation
     {
     public:

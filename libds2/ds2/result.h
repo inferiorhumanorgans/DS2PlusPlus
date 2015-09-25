@@ -27,6 +27,9 @@
 #include <QString>
 
 namespace DS2PlusPlus {
+    /*!
+     * \brief The Result class represents a specific piece of processed data returned by an Operation.
+     */
     class Result
     {
     public:

@@ -10,6 +10,10 @@
 #include "basepacket.h"
 
 namespace DS2PlusPlus {
+
+    /*!
+     * \brief The KWPPacket class represents a raw KWP packet sent to or received from an ECU (typically Bosch Motronic).
+     */
     class KWPPacket : public BasePacket
     {
         Q_OBJECT
