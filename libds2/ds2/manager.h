@@ -123,7 +123,7 @@ namespace DS2PlusPlus
         QString findStringByTableAndNumber(const QString &aStringTable, int aNumber);
 
         /*!
-         * \brief removeModuleByUuid
+         * \brief Removes a module from the database including all of its operations and results.
          * \param aUuid
          * \return
          */

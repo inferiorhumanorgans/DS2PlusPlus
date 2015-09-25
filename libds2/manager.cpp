@@ -585,10 +585,45 @@ namespace DS2PlusPlus {
 
     bool Manager::removeModuleByUuid(const QString &aUuid)
     {
-        QSqlQuery modulesQuery(this->sqlDatabase());
-        modulesQuery.prepare("DELETE FROM modules WHERE uuid = :uuid");
-        modulesQuery.bindValue(":uuid", aUuid);
-        return modulesQuery.exec();
+        QVariant uuidVariant = DPP_V1_Parser::stringToUuidVariant(aUuid);
+
+        QSqlQuery transaction(_db);
+
+        QSqlQuery deleteResultsQuery(_db);
+        QSqlQuery deleteOperationsQuery(_db);
+        QSqlQuery deleteModulesQuery(_db);
+
+        if (!transaction.exec("BEGIN")) {
+            qDebug() << "Failed to create transaction, aborting";
+            goto failure;
+        }
+
+        deleteResultsQuery.prepare("DELETE FROM results WHERE results.uuid IN (SELECT results.uuid FROM results INNER JOIN operations ON operations.uuid = results.operation_id INNER JOIN modules ON operations.module_id = modules.uuid WHERE modules.uuid = :module_uuid)");
+        deleteResultsQuery.bindValue(":module_uuid", uuidVariant);
+        if (!deleteResultsQuery.exec()) {
+            qDebug() << "Couldn't delete the results, bailing" << deleteResultsQuery.lastError();
+            goto failure;
+        }
+
+        deleteOperationsQuery.prepare("DELETE FROM operations WHERE operations.module_id = :module_uuid");
+        deleteOperationsQuery.bindValue(":module_uuid", uuidVariant);
+        if (!deleteOperationsQuery.exec()) {
+            qDebug() << "Couldn't delete the operations, bailing" << deleteOperationsQuery.lastError();
+            goto failure;
+        }
+
+        deleteModulesQuery.prepare("DELETE FROM modules WHERE uuid = :module_uuid");
+        deleteModulesQuery.bindValue(":module_uuid", uuidVariant);
+        if (!deleteModulesQuery.exec()) {
+            qDebug() << "Couldn't delete the module, bailing" << deleteModulesQuery.lastError();
+            goto failure;
+        }
+
+        return transaction.exec("COMMIT");
+
+        failure:
+            transaction.exec("ROLLBACK");
+            return false;
     }
 
     QHash<QString, QVariant> Manager::findOperationByUuid(const QString &aUuid)
