@@ -21,21 +21,20 @@
  * Or see <http://www.gnu.org/licenses/>.
  */
 
-#include <ds2/dpp_v1_parser.h>
-
-#include <stdexcept>
-
-#include <json/json.h>
-
+#include <QDateTime>
 #include <QDebug>
 #include <QUuid>
-#include <QDateTime>
 
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QSqlQuery>
 
+#include <stdexcept>
+
+#include <json/json.h>
+
 #include <ds2/manager.h>
+#include <ds2/dpp_v1_parser.h>
 
 QString getQStringFromJson(Json::Value &aJsonValue)
 {
@@ -58,6 +57,7 @@ namespace DS2PlusPlus {
     void DPP_V1_Parser::reset()
     {
         _knownUuids.clear();
+
         insertModuleQuery = QSqlQuery(_manager->sqlDatabase());
         insertModuleQuery.prepare("INSERT INTO modules(uuid, parent_id, file_version, dpp_version, name, protocol, family, address, part_number, hardware_num, software_num, coding_index, big_endian, mtime) VALUES (:uuid, :parent_id, :file_version, :dpp_version, :name, :protocol, :family, :address, :part_number, :hardware_num, :software_num, :coding_index, :big_endian, :mtime)");
 
@@ -114,7 +114,7 @@ namespace DS2PlusPlus {
             return QString::null;
         }
 
-        return ourUuid.toString().mid(1,36).toUpper();
+        return ourUuid.toString().mid(1, 36).toUpper();
     }
 
     QString DPP_V1_Parser::stringToUuidSQL(const QString &aRawUuid)
