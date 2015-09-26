@@ -40,6 +40,9 @@ namespace Json {
 namespace DS2PlusPlus {
     class Manager;
 
+    /*!
+     * \brief The DPP_V1_Parser class handles the parsing of DPP JSON files and creation of a DPP SQL database.
+     */
     class DPP_V1_Parser : public QObject
     {
         Q_OBJECT
@@ -65,8 +68,8 @@ namespace DS2PlusPlus {
          */
         void parseStringTableFile(const Json::Value &aJsonObject);
 
-        bool parseOperationJson(Json::ValueIterator &operationIt, Json::Value &moduleJSON);
-        bool parseResultJson(Json::ValueIterator &aResultIterator, Json::Value &operationJSON);
+        bool parseOperationJson(Json::ValueIterator &anOperationIterator, Json::Value &aJSONObject);
+        bool parseResultJson(Json::ValueIterator &aResultIterator, Json::Value &aJSONObject);
 
     protected:
         Manager *_manager;
