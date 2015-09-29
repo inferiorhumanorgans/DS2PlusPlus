@@ -369,7 +369,7 @@ namespace DS2PlusPlus {
         while (resultIt != ourResults.end()) {
             if (!parseResultJson(resultIt, ourOperation)) {
                 QString error("Error parsing result JSON for operation ");
-                throw std::invalid_argument(error.arg(uuid).toUtf8());
+                throw std::invalid_argument(error.arg(uuid).toUtf8().constData());
             }
             resultIt++;
             resultsCount++;
