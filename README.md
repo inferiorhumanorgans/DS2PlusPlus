@@ -39,4 +39,10 @@ Use Qt Creator for GUI goodness.  From the commandline use qmake (ex: `qmake DS2
 
 ####Building Debian Packages###
 
+Use debuild.  For example, to build signed, binary and source packages:
+
 DEB_BUILD_OPTIONS=nocheck debuild -kNNNNN
+
+To build an unsigned binary package:
+
+DEB_BUILD_OPTIONS=nocheck debuild -us -uc -b
