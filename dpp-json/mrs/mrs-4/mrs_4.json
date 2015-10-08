@@ -1,0 +1,18 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2015-02-24T05:25:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "A4000000-0002-0000-0000-000000000000",
+  "address":            "0xA4",
+  "family":             "MRS",
+  "name":               "Multiple Restraint System v4",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [6919789],
+  "hardware_number":    "0x03",
+  "software_number":    "0x37",
+  "coding_index":       "0x12",
+  "endian":             "little",
+  "operations": {
+  }
+}

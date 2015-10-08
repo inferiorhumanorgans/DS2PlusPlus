@@ -1,0 +1,36 @@
+{
+  "dpp_version":        1,
+  "file_version":       3,
+  "file_mtime":         "2014-09-13T20:35:19.0Z",
+  "file_type":          "ecu",
+  "uuid":               "68000000-0001-0000-0000-000000000000",
+  "address":            "0x68",
+  "family":             "RADIO",
+  "name":               "Business Radio CD53 (E46)",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [6941505],
+  "hardware_number":    "0x44",
+  "software_number":    "0x43",
+  "coding_index":       "0x01",
+  "endian":             "little",
+  "operations": {
+    "status":  {
+      "uuid":           "68000000-0001-0001-0000-000000000000",
+      "command":        ["0x0b"],
+      "results": {
+        "radio.powered": { // This is bogus, ignore.
+          "uuid":       "68000000-0001-0001-0001-000000000000",
+          "type":       "boolean",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     1,
+          "levels": {
+            "yes":      "powered on",
+            "no":       "turned off"
+          },
+          "units":      "string"
+        }
+      }
+    }
+  }
+}

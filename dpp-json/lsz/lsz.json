@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       6,
-  "file_mtime":         "2014-09-20T15:23:32.0Z",
+  "file_version":       7,
+  "file_mtime":         "2015-10-08T07:36:32.0Z",
   "file_type":          "ecu",
   "uuid":               "D0000000-0001-0000-0000-000000000000",
   "address":            "0xd0",
@@ -11,7 +11,7 @@
   "hardware_number":    "0x10",
   "software_number":    "0x20",
   "coding_index":       "0x29",
-  "part_number":        [6907950],
+  "part_number":        [6907950, 6907951],
   "endian":             "little",
   "operations": {
     "status":  {
