@@ -430,7 +430,7 @@ namespace DS2PlusPlus {
         if (levelsQString == "null") {
             levelsQString = QString::null;
         }
-        resultQuery.bindValue("levels",       levelsQString);
+        resultQuery.bindValue(":levels",       levelsQString);
 
         if (!resultQuery.exec()) {
             QString errorString = QString("submitResultRecords: %1 (uuid=%2)").arg(resultQuery.lastError().databaseText()).arg(uuid);
