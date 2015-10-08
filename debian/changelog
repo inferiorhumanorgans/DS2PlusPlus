@@ -1,3 +1,8 @@
+ds2plusplus (0.7.3-iho20151008) UNRELEASED; urgency=low
+  * Update to 0.7.3 for increased coverage
+
+ -- Alex Zepeda <alex@inferiorhumanorgans.com>  Thu, 8 Oct 2015 12:30:00 -0700
+
 ds2plusplus (0.7.2-iho20150929) UNRELEASED; urgency=low
   * Update to 0.7.2 to fix many issues
 
