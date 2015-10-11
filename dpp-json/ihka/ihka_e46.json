@@ -6,12 +6,13 @@
   "uuid":               "5B000000-0001-0000-0000-000000000000",
   "address":            "0x5B",
   "family":             "IHKA",
-  "name":               "E46 Auto Climate Control",
+  "name":               "Auto Climate Control (E46)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [4106930, 6914009, 6956319],
   "hardware_number":    "0x22",
   "software_number":    "0x05",
   "coding_index":       "0x03",
+  "diag_index":         ["30-33"],
   "endian":             "little",
   "operations": {
     "status":  {

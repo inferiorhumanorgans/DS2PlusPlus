@@ -6,7 +6,7 @@
   "uuid":               "12000000-0004-0000-0000-000000000000",
   "address":            "0x12",
   "family":             "DME",
-  "name":               "Bosch Motronic 7.2 (M62TU)",
+  "name":               "Bosch Motronic v7.2 (M62TU)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "protocol":           "KWP0",
   "part_number":        [7508698],

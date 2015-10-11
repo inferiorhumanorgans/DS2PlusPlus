@@ -6,12 +6,13 @@
   "uuid":               "00000000-0002-0000-0000-000000000000",
   "address":            "0x00",
   "family":             "ZKE",
-  "name":               "Central Body Electronics (GM1)",
+  "name":               "Central Body Electronics GM3 (E38/E39/E53)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [6913521],
   "hardware_number":    "0x21",
   "software_number":    "0x23",
   "coding_index":       "0x05",
+  "diag_index":         ["20-22"],
   "endian":             "little",
   "operations": {
     "dtc_load_bank1": {

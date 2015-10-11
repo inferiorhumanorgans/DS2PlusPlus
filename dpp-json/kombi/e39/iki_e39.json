@@ -6,7 +6,7 @@
   "uuid":               "80000000-0002-0000-0000-000000000000",
   "address":            "0x80",
   "family":             "KOMBI",
-  "name":               "E38/E39/E53 Instrument Cluster (High, IKI)",
+  "name":               "Instrument Cluster - High/IKI (E38/E39/E53)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [6942178, 8381798],
   "hardware_number":    "0x25",

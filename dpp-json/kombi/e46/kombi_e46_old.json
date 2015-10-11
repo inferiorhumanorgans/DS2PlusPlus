@@ -6,7 +6,7 @@
   "uuid":               "80000000-0001-0000-0000-000000000000",
   "address":            "0x80",
   "family":             "KOMBI",
-  "name":               "E46 Instrument Cluster (Old)",
+  "name":               "Instrument Cluster (E46 - Old)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [6906896, 6910283],
   "hardware_number":    "0x10",

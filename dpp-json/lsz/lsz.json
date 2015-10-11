@@ -6,7 +6,7 @@
   "uuid":               "D0000000-0001-0000-0000-000000000000",
   "address":            "0xd0",
   "family":             "LSZ",
-  "name":               "E46 Lighting Module",
+  "name":               "Lighting Module (E46)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "hardware_number":    "0x10",
   "software_number":    "0x20",

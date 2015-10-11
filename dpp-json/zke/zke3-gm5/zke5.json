@@ -6,12 +6,13 @@
   "uuid":               "00000000-0001-0000-0000-000000000000",
   "address":            "0x00",
   "family":             "ZKE",
-  "name":               "Central Body Electronics (GM5)",
+  "name":               "Central Body Electronics GM5 (E46/E52/E83)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [6907663],
   "hardware_number":    "0x11",
   "software_number":    "0x16",
   "coding_index":       "0x02",
+  "diag_index":         ["40-53"],
   "endian":             "little",
   "operations": {
     "identify":  {
