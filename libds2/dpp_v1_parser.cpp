@@ -59,7 +59,7 @@ namespace DS2PlusPlus {
         _knownUuids.clear();
 
         insertModuleQuery = QSqlQuery(_manager->sqlDatabase());
-        insertModuleQuery.prepare("INSERT INTO modules(uuid, parent_id, file_version, dpp_version, name, protocol, family, address, part_number, hardware_num, software_num, coding_index, big_endian, mtime) VALUES (:uuid, :parent_id, :file_version, :dpp_version, :name, :protocol, :family, :address, :part_number, :hardware_num, :software_num, :coding_index, :big_endian, :mtime)");
+        insertModuleQuery.prepare("INSERT INTO modules(uuid, uuid_string, parent_id, file_version, dpp_version, name, protocol, family, address, hardware_num, software_num, coding_index, big_endian, mtime) VALUES (:uuid, :uuid_string, :parent_id, :file_version, :dpp_version, :name, :protocol, :family, :address, :hardware_num, :software_num, :coding_index, :big_endian, :mtime)");
 
         stringTableQuery = QSqlQuery(_manager->sqlDatabase());
         stringTableQuery.prepare("INSERT INTO string_tables (name, uuid) VALUES (:name, :uuid)");
@@ -153,6 +153,7 @@ namespace DS2PlusPlus {
         transaction.exec("BEGIN");
 
         insertModuleQuery.finish();
+        insertModuleQuery.bindValue(":uuid_string", uuid);
         insertModuleQuery.bindValue(":uuid", stringToUuidVariant(uuid));
         insertModuleQuery.bindValue(":parent_id", stringToUuidVariant(parent_id));
         insertModuleQuery.bindValue(":file_version", moduleJson["file_version"].asInt());
@@ -193,11 +194,52 @@ namespace DS2PlusPlus {
                 partNumbers << QString::number(moduleJson["part_number"][i].asUInt64(), 10);
             }
 
-            insertModuleQuery.bindValue(":part_number", partNumbers.join("/"));
-        } else {
-            insertModuleQuery.bindValue(":part_number", QVariant(QString::null));
+            QSqlQuery insertPartNumbers = QSqlQuery(_manager->sqlDatabase());
+            insertPartNumbers.prepare("INSERT INTO modules_part_numbers(module_uuid, part_number) VALUES (:module_uuid, :part_number)");
+
+            insertPartNumbers.bindValue(":module_uuid", stringToUuidVariant(uuid));
+            foreach(QString partNumber, partNumbers) {
+                insertPartNumbers.bindValue(":part_number", partNumber.toULongLong());
+                if (!insertPartNumbers.exec()) {
+                    QString errorString = QString("Saving the module PN %1 failed: %2").arg(uuid).arg(insertPartNumbers.lastError().databaseText());
+                    throw std::runtime_error(qPrintable(errorString));
+                }
+            }
         }
 
+        if (!moduleJson["diag_index"].isNull()) {
+            QList<quint64> diagIndexes;
+
+            for (Json::ArrayIndex i=0; i < moduleJson["diag_index"].size(); i++) {
+                if (moduleJson["diag_index"][i].isString()) {
+                    QString stringValue = moduleJson["diag_index"][i].asCString();
+                    if (stringValue.indexOf("-") >= 0) {
+                        QStringList indexes = stringValue.split("-");
+                        quint64 low = indexes[0].toULongLong(0, 16);
+                        quint64 high = indexes[1].toULongLong(0, 16);
+                        for (quint64 i=low; i <= high; ++i) {
+                            diagIndexes << i;
+                        }
+                    } else {
+                        diagIndexes << stringValue.toULongLong(0, 16);
+                    }
+                } else {
+                    diagIndexes << moduleJson["diag_index"][i].asUInt64();
+                }
+            }
+
+            QSqlQuery insertDiagIndex = QSqlQuery(_manager->sqlDatabase());
+            insertDiagIndex.prepare("INSERT INTO modules_diag_indexes(module_uuid, diag_index) VALUES (:module_uuid, :diag_index)");
+
+            insertDiagIndex.bindValue(":module_uuid", stringToUuidVariant(uuid));
+            foreach(quint64 diagIndex, diagIndexes) {
+                insertDiagIndex.bindValue(":diag_index", diagIndex);
+                if (!insertDiagIndex.exec()) {
+                    QString errorString = QString("Saving the module PN %1 failed: %2").arg(uuid).arg(insertDiagIndex.lastError().databaseText());
+                    throw std::runtime_error(qPrintable(errorString));
+                }
+            }
+        }
 
         insertModuleQuery.bindValue(":hardware_num", QVariant(QString::null));
         if (!moduleJson["hardware_number"].isNull()) {

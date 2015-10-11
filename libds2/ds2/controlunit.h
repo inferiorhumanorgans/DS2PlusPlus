@@ -54,11 +54,14 @@ namespace DS2PlusPlus {
         static const QString nameForFamily(const QString &aFamily);
 
         enum MatchType {
-            MatchNone       = 0x00, // Nothing matches
-            MatchSWMismatch = 0x01, // Software version mismatches
-            MatchHWMismatch = 0x02, // Hardawre version mismatches
-            MatchCIMismatch = 0x04, // Coding index unexpected
-            MatchAll        = 0x10, // Everything matches
+            MatchNone       = 0x00,
+            MatchSW         = 0x01, // Software version matches
+            MatchHW         = 0x02, // Hardawre version matches
+            MatchCI         = 0x04, // Coding index matches
+            MatchDI         = 0x08, // Diag Index matches
+            MatchBI         = 0x10, // Bus Index matches
+            MatchPN         = 0x20, // Part number matches
+            MatchAll        = 0x7F, // Everything matches
         };
 
         /*!
@@ -173,6 +176,12 @@ namespace DS2PlusPlus {
         /*! \brief The coding index of a ControlUnit. */
         Q_PROPERTY(quint64 codingIndex MEMBER _codingIndex READ codingIndex)
 
+        /*! \brief Returns the \ref diagIndexes property. */
+        QSet<quint64> diagIndexes() const;
+
+        /*! \brief All of the part numbers that apply to this ControlUnit. */
+        Q_PROPERTY(QSet<quint64> diagIndexes MEMBER _diagIndexes READ diagIndexes)
+
         /*! \brief Returns the \ref bigEndian property */
         bool bigEndian() const;
 
@@ -235,7 +244,7 @@ namespace DS2PlusPlus {
         QString _family;
         QString _name;
         QHash<QString, OperationPtr> _operations;
-        QSet<quint64> _partNumbers;
+        QSet<quint64> _partNumbers, _diagIndexes;
         quint64 _hardwareNumber, _softwareNumber, _codingIndex;
         bool _bigEndian;
         quint8 _matchFlags;

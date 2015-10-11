@@ -444,7 +444,10 @@ namespace DS2PlusPlus {
         for (moduleIt = modules.begin(); moduleIt != modules.end(); ++moduleIt) {
             ControlUnitPtr ecu(moduleIt.value());
 
-            if (ecu->partNumbers().isEmpty()) {
+            if (ecu->partNumbers().isEmpty() and ecu->diagIndexes().isEmpty()) {
+                if (getenv("DPP_TRACE")) {
+                    qDebug() << "Skipping " << ecu->name() << " because there are no part numbers or diag indexes";
+                }
                 continue;
             }
 
@@ -453,25 +456,65 @@ namespace DS2PlusPlus {
                 qDebug() << "Checking " << ecu->name();
             }
 
-            if (ecu->partNumbers().contains(response.value("part_number").toULongLong())) {
-                fullMatch |= ControlUnit::MatchAll;
+            bool pnMatch = ecu->partNumbers().contains(response.value("part_number").toULongLong());
+
+            if (!pnMatch and getenv("DPP_TRACE")) {
+                QStringList acceptableList;
+                foreach (quint64 acceptable_pn, ecu->partNumbers()) {
+                    acceptableList.append(QString::number(acceptable_pn));
+                }
+                acceptableList.sort();
+
+                QString matchString = QString("Part number mismatch. Got %1, needed %2")
+                                        .arg(response.value("part_number").toULongLong())
+                                        .arg(acceptableList.join(", "));
+                qDebug() << matchString;
+            }
+
+            quint64 diag_index = 0;
+            if (response.contains("diag_index")) {
+                diag_index = response.value("diag_index").toString().toULongLong(0, 16);
+            }
+
+            bool diMatch = ((response.contains("diag_index") and !ecu->diagIndexes().isEmpty() and ecu->diagIndexes().contains(diag_index)) or (pnMatch and ecu->diagIndexes().isEmpty()));
+            if (!diMatch and getenv("DPP_TRACE")) {
+                QStringList acceptableList;
+                foreach (quint64 acceptable_di, ecu->diagIndexes()) {
+                    acceptableList.append(QString::number(acceptable_di));
+                }
+                acceptableList.sort();
+
+                QString matchString = QString("Diag index mismatch. Got %1, needed %2")
+                                        .arg(diag_index)
+                                        .arg(acceptableList.join(", "));
+                qDebug() << matchString;
+            }
+
+            quint64 reportedSW = response.value("software_number").toString().toULongLong(NULL, 16);
+            bool swMatch = reportedSW != ecu->softwareNumber();
+
+            if (diMatch) {
+                fullMatch = ControlUnit::MatchAll;
+
                 ret = ecu;
                 ourKey = moduleIt.key();
+                if (!pnMatch) {
+                    fullMatch &= ~ControlUnit::MatchPN;
+                }
 
-                quint64 actualSW = response.value("software_number").toString().toULongLong(NULL, 16);
-                if (actualSW != ecu->softwareNumber()) {
-                    fullMatch &= ~ControlUnit::MatchAll;
-                    fullMatch |= ControlUnit::MatchSWMismatch;
+                if (!swMatch) {
+                    fullMatch &= ~ControlUnit::MatchSW;
                     QString matchString = QString("SW version mismatch %1 != expected 0x%2")
                                             .arg(response.value("software_number").toString())
                                             .arg(ecu->softwareNumber(), 2, 16, QChar('0'));
-                    //qDebug() << matchString;
+                    if (getenv("DPP_TRACE")) {
+                        qDebug() << matchString;
+                    }
                 }
 
                 quint64 actualHW = response.value("hardware_number").toString().toULongLong(NULL, 16);
                 if (actualHW != ecu->hardwareNumber()) {
-                    fullMatch &= ~ControlUnit::MatchAll;
-                    fullMatch |= ControlUnit::MatchHWMismatch;
+                    fullMatch &= ~ControlUnit::MatchHW;
                     QString matchString = QString("HW version mismatch %1 != expected 0x%2")
                                             .arg(response.value("hardware_number").toString())
                                             .arg(ecu->hardwareNumber(), 2, 16, QChar('0'));
@@ -480,15 +523,14 @@ namespace DS2PlusPlus {
 
                 quint64 actualCI = response.value("coding_index").toString().toULongLong(NULL, 16);
                 if (actualCI != ecu->codingIndex()) {
-                    fullMatch &= ~ControlUnit::MatchAll;
-                    fullMatch |= ControlUnit::MatchCIMismatch;
+                    fullMatch &= ~ControlUnit::MatchCI;
                     QString matchString = QString("CI mismatch %1 != expected 0x%2")
                                             .arg(response.value("coding_index").toString())
                                             .arg(ecu->codingIndex(), 2, 16, QChar('0'));
                     //qDebug() << matchString;
                 }
 
-                if (fullMatch & ControlUnit::MatchAll) {
+                if (fullMatch == ControlUnit::MatchAll) {
                     break;
                 }
             }
@@ -711,13 +753,13 @@ namespace DS2PlusPlus {
                                       "dpp_version  INTEGER NOT NULL,\n"        \
                                       "file_version INTEGER NOT NULL,\n"        \
                                       "uuid         BLOB UNIQUE NOT NULL PRIMARY KEY,\n" \
+                                      "uuid_string  VARCHAR UNIQUE NOT NULL,\n" \
                                       "protocol     VARCHAR,\n"                 \
                                       "address      INTEGER,\n"                 \
                                       "family       VARCHAR,\n"                 \
                                       "name         VARCHAR NOT NULL,\n"        \
                                       "mtime        INTEGER NOT NULL,\n"        \
                                       "parent_id    VARCHAR,\n"                 \
-                                      "part_number  VARCHAR,\n"                 \
                                       "hardware_num INTEGER,\n"                 \
                                       "software_num INTEGER,\n"                 \
                                       "coding_index INTEGER,\n"                 \
@@ -725,6 +767,38 @@ namespace DS2PlusPlus {
                                       "CHECK (uuid <> '')\n"                    \
                                   ");"                                          \
                     );
+
+            if (!ret) {
+                QString errorString = QString("Problem creating the modules table: %1").arg(query.lastError().driverText());
+                throw std::runtime_error(qPrintable(errorString));
+            }
+        }
+
+        if (!_db.tables().contains("modules_diag_indexes")) {
+            qDebug() << "Need to create modules_diag_indexes table";
+            QSqlQuery query(_db);
+            bool ret = query.exec(""                                            \
+                                  "CREATE TABLE modules_diag_indexes (\n"       \
+                                      "module_uuid BLOB NOT NULL,\n"            \
+                                      "diag_index  INTEGER NOT NULL\n"          \
+                                  ");"                                          \
+            );
+
+            if (!ret) {
+                QString errorString = QString("Problem creating the modules table: %1").arg(query.lastError().driverText());
+                throw std::runtime_error(qPrintable(errorString));
+            }
+        }
+
+        if (!_db.tables().contains("modules_part_numbers")) {
+            qDebug() << "Need to create modules_part_numbers table";
+            QSqlQuery query(_db);
+            bool ret = query.exec(""                                            \
+                                  "CREATE TABLE modules_part_numbers (\n"       \
+                                      "module_uuid        BLOB NOT NULL,\n"     \
+                                      "part_number        INTEGER NOT NULL\n"   \
+                                  ");"                                          \
+            );
 
             if (!ret) {
                 QString errorString = QString("Problem creating the modules table: %1").arg(query.lastError().driverText());

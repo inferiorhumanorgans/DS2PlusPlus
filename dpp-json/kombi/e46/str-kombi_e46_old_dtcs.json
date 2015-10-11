@@ -1,0 +1,11 @@
+{
+  "dpp_version":  1,
+  "file_version": 1,
+  "file_mtime":   "2015-10-09T20:45:00.0Z",
+  "file_type":    "string_table",
+  "uuid":         "00002222-00012-0000-0000-000000000000",
+  "table_name":   "kombi_e46_dtcs",
+  "strings": {
+
+  }
+}

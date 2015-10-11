@@ -35,8 +35,6 @@
 
 #include <QtEndian>
 
-#include <QUuid>
-
 #include <ds2/operation.h>
 #include <ds2/controlunit.h>
 #include <ds2/manager.h>
@@ -224,10 +222,31 @@ namespace DS2PlusPlus {
                     throw std::invalid_argument(qPrintable(QString("Invalid protocol.  ECU=%1, protocol=%2").arg(_uuid).arg(ourProtocol)));
                 }
 
-                const QStringList partStrings = theRecord.value("part_number").toString().split("/");
                 _partNumbers = QSet<quint64>();
-                foreach (const QString &partNumber, partStrings) {
-                    _partNumbers.insert(partNumber.toULongLong());
+
+                QSqlQuery partNumbersForModuleQuery(_manager->sqlDatabase());
+                partNumbersForModuleQuery.prepare("SELECT part_number FROM modules_part_numbers WHERE module_uuid = :module_uuid");
+                partNumbersForModuleQuery.bindValue(":module_uuid", DPP_V1_Parser::stringToUuidVariant(moduleParent));
+                partNumbersForModuleQuery.exec();
+
+                while (partNumbersForModuleQuery.next()) {
+                    QSqlRecord pnRecord = partNumbersForModuleQuery.record();
+                    const quint64 partNumber = pnRecord.value("part_number").toULongLong();
+                    _partNumbers.insert(partNumber);
+                }
+
+                _diagIndexes = QSet<quint64>();
+
+                QSqlQuery diagIndexesForModuleQuery(_manager->sqlDatabase());
+
+                diagIndexesForModuleQuery.prepare("SELECT diag_index FROM modules_diag_indexes WHERE module_uuid = :module_uuid");
+                diagIndexesForModuleQuery.bindValue(":module_uuid", DPP_V1_Parser::stringToUuidVariant(moduleParent));
+                diagIndexesForModuleQuery.exec();
+
+                while (diagIndexesForModuleQuery.next()) {
+                    QSqlRecord diRecord = diagIndexesForModuleQuery.record();
+                    const quint64 diagIndex = diRecord.value("diag_index").toULongLong();
+                    _diagIndexes.insert(diagIndex);
                 }
 
                 _hardwareNumber = theRecord.value("hardware_num").toULongLong();
@@ -561,6 +580,10 @@ namespace DS2PlusPlus {
 
     QSet<quint64> ControlUnit::partNumbers() const {
         return _partNumbers;
+    }
+
+    QSet<quint64> ControlUnit::diagIndexes() const {
+        return _diagIndexes;
     }
 
     quint64 ControlUnit::hardwareNumber() const {

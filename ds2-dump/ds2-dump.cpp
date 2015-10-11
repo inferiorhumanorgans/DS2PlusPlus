@@ -596,16 +596,28 @@ void DataCollection::probeAll()
         }
 
         QStringList notes;
-        if (autoDetect->matchFlags() & ControlUnit::MatchSWMismatch) {
+        if (!(autoDetect->matchFlags() & ControlUnit::MatchSW)) {
             notes.append("SW mismatch");
         }
 
-        if (autoDetect->matchFlags() & ControlUnit::MatchHWMismatch) {
+        if (!(autoDetect->matchFlags() & ControlUnit::MatchHW)) {
             notes.append("HW mismatch");
         }
 
-        if (autoDetect->matchFlags() & ControlUnit::MatchCIMismatch) {
-            notes.append("CI mismatch");
+        if (!(autoDetect->matchFlags() & ControlUnit::MatchCI)) {
+            notes.append("Coding Index mismatch");
+        }
+
+        if (!(autoDetect->matchFlags() & ControlUnit::MatchBI)) {
+            notes.append("Bus Index mismatch");
+        }
+
+        if (!(autoDetect->matchFlags() & ControlUnit::MatchDI)) {
+            notes.append("Diag Index mismatch");
+        }
+
+        if (!(autoDetect->matchFlags() & ControlUnit::MatchPN)) {
+            notes.append("P/N not recognized");
         }
 
         PacketResponse ourVin;

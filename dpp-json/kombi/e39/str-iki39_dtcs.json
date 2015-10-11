@@ -4,7 +4,7 @@
   "file_mtime":   "2015-09-10T17:04:09.0Z",
   "file_type":    "string_table",
   "uuid":         "00002222-0008-0000-0000-000000000000",
-  "table_name":   "kombi39_dtcs",
+  "table_name":   "iki39_dtcs",
   "strings": {
     "0x11": "Missing gong",
     "0x3E": "Missing datagram: speed, tacho, economy control, tank, temp.",
@@ -26,6 +26,7 @@
     "0xBF": "EEPROM Error: Coding incorrect/incomplete",
     "0xC1": "Missing signal: TWEG+ (input pulse generator wheel)",
     "0xC3": "Missing signal: RPM",
+    "0xC6": "Code",
     "0xC7": "Missing signal: fuel tank, sensor 1",
     "0xCD": "EC signal 1",
     "0xCE": "Missing signal: outside temperature",

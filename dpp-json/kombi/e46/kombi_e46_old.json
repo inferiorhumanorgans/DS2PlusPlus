@@ -1,17 +1,18 @@
 {
   "dpp_version":        1,
-  "file_version":       5,
-  "file_mtime":         "2015-10-08T18:53:17.0Z",
+  "file_version":       6,
+  "file_mtime":         "2015-10-10T05:16717.0Z",
   "file_type":          "ecu",
   "uuid":               "80000000-0001-0000-0000-000000000000",
   "address":            "0x80",
   "family":             "KOMBI",
-  "name":               "E46 Instrument Cluster",
+  "name":               "E46 Instrument Cluster (Old)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [6906896, 6910283],
   "hardware_number":    "0x10",
   "software_number":    "0x20",
   "coding_index":       "0x04",
+  "diag_index":         ["48-4D", "50-53"],
   "endian":             "little",
   "operations": {
     "canbus_rpm":  {

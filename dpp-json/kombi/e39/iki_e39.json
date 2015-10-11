@@ -1,18 +1,19 @@
 {
   "dpp_version":        1,
-  "file_version":       2,
-  "file_mtime":         "2015-09-11T06:02:00.0Z",
+  "file_version":       3,
+  "file_mtime":         "2015-10-11T06:21:00.0Z",
   "file_type":          "ecu",
   "uuid":               "80000000-0002-0000-0000-000000000000",
   "address":            "0x80",
   "family":             "KOMBI",
-  "name":               "E39 Instrument Cluster",
+  "name":               "E38/E39/E53 Instrument Cluster (High, IKI)",
   "parent_id":          "00001111-0000-0000-0000-000000000000",
   "part_number":        [6942178, 8381798],
   "hardware_number":    "0x25",
   "software_number":    "0x21",
   "coding_index":       "0x12",
-  "endian":             "little",
+  "diag_index":         ["05-0E", "10-14"],
+  "endian":             "big",
   "operations": {
     "vehicle_id_short": {
       "uuid":           "80000000-0002-0001-0000-000000000000",
@@ -162,6 +163,52 @@
           "start_pos":  16
         }
       }
+    },
+    "analog_status": {
+      "uuid":           "80000000-0002-0003-0000-000000000000",
+      "command":        ["0x0B", "0x0A"],
+      "results": {
+        "fuel_tank.sensor_1.raw": {
+          "uuid":       "80000000-0002-0003-0001-000000000000",
+          "type":       "short",
+          "display":    "int",
+          "start_pos":  3,
+          "length":     2,
+          "units":      "ADC"
+        },
+        "fuel_tank.sensor_2.raw": {
+          "uuid":       "80000000-0002-0003-0002-000000000000",
+          "type":       "short",
+          "display":    "int",
+          "start_pos":  5,
+          "length":     2,
+          "units":      "ADC"
+        },
+        "fuel_consumption.sensor_1.raw": {
+          "uuid":       "80000000-0002-0003-0003-000000000000",
+          "type":       "short",
+          "display":    "int",
+          "start_pos":  25,
+          "length":     2,
+          "units":      "ADC"
+        },
+        "fuel_consumption.sensor_2.raw": {
+          "uuid":       "80000000-0002-0003-0004-000000000000",
+          "type":       "short",
+          "display":    "int",
+          "start_pos":  27,
+          "length":     2,
+          "units":      "ADC"
+        },
+        "vehicle_speed": {
+          "uuid":       "80000000-0002-0003-0005-000000000000",
+          "type":       "signed_short",
+          "display":    "float",
+          "start_pos":  21,
+          "length":     2,
+          "units":      "km/h"
+        }
+      }      
     }
   }
 }
