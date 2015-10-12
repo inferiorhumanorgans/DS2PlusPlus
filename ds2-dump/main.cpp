@@ -30,7 +30,7 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    app.setApplicationVersion(QString("0.2 (libds2 %1)").arg(DS2PlusPlus::Manager::version()));
+    app.setApplicationVersion(QString("0.2.5 (libds2 %1)").arg(DS2PlusPlus::Manager::version()));
     app.setOrganizationDomain("inferiorhumanorgans.com");
     app.setOrganizationName("Inferior Human Organs, Inc.");
 
