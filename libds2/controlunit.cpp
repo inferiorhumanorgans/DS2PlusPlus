@@ -54,12 +54,13 @@ namespace DS2PlusPlus {
             _familyDictionary.insert("AIC",     QList<quint8>() << 0xE8        ); // Rain sensor? Automatic Interval Control?
             _familyDictionary.insert("DME",     QList<quint8>() << 0x12        ); // Digital Motor Electronics
             _familyDictionary.insert("DDE",     QList<quint8>() << 0x12        ); // Digital Diesel Electronics
-            _familyDictionary.insert("DSC",     QList<quint8>() << 0x56        ); // Dynamic Stability Control
+            _familyDictionary.insert("DSC",     QList<quint8>() << 0x56 << 0x29); // Dynamic Stability Control
             _familyDictionary.insert("EHC",     QList<quint8>() << 0xAC << 0x82); // Elektronische Hohenstands Control / Electronic Height Control (EHC,EHC2,EHC2N,EHC2N2=AC, EHC2RR=82
             _familyDictionary.insert("EGS",     QList<quint8>() << 0x32        ); // Electronic Transmission Control - Electronische Getriebe Steuerung
             _familyDictionary.insert("EWS",     QList<quint8>() << 0x44        ); // Electronic Immobiliser / Elektronische Wegfahrsperre
             _familyDictionary.insert("IHKA",    QList<quint8>() << 0x5B        ); // Auto Climate Control / Integrierte Heizung Kühlung?
             _familyDictionary.insert("IKE",     QList<quint8>() << 0x80        ); // Instrument Cluster
+            _familyDictionary.insert("IKI",     QList<quint8>() << 0x80        ); // Instrument Cluster
             _familyDictionary.insert("KOMBI",   QList<quint8>() << 0x80        ); // Instrument Cluster
             _familyDictionary.insert("LCM",     QList<quint8>() << 0xD0        ); // Light Switching Center / Lichtschaltzentrum
 //            _familyDictionary.insert("LRA",     QList<quint8>() << 0xXX        ); // Vertical Headlight Aiming
@@ -148,7 +149,8 @@ namespace DS2PlusPlus {
             _familyNames.insert("EGS",     "Auto Transmission");
             _familyNames.insert("EWS",     "Immobiliser");
             _familyNames.insert("IHKA",    "Climate Control - Auto");
-            _familyNames.insert("IKE",     "Instrument Cluster");
+            _familyNames.insert("IKE",     "Instrument Cluster - High");
+            _familyNames.insert("IKI",     "Instrument Cluster - High");
             _familyNames.insert("KOMBI",   "Instrument Cluster");
             _familyNames.insert("LCM",     "Light Module");
             _familyNames.insert("LSZ",     "Light Module");
