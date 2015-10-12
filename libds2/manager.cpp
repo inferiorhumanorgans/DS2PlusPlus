@@ -400,7 +400,8 @@ namespace DS2PlusPlus {
         }
 
         if (ourReceivedPacket.isNull()) {
-            if (anAddress == 0x12) {
+            // TODO: Scan the database for KWP ECUs at this address.
+            if ((anAddress == 0x12) || (anAddress = 0x29)) {
                 if (getenv("DPP_TRACE")) {
                     qDebug() << "-- Let's try KWP-2000";
                 }
