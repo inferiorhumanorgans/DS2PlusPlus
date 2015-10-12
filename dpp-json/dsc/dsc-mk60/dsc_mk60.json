@@ -1,0 +1,45 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2015-10-12T05:25:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "56000000-0005-0000-0000-000000000000",
+  "address":            "0x29",
+  "family":             "DSC",
+  "name":               "ATE Dynamic Stability Control III Mk60",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "protocol":           "KWP0",
+  "part_number":        [],
+  "hardware_number":    "0x02",
+  "software_number":    "0x54",
+  "coding_index":       "0x09",
+  "diag_index":         [],
+  "endian":             "big",
+  "operations": {
+    "sensor_status":  {
+      "uuid":           "56000000-0005-0001-0000-000000000000",
+      "command":        ["0x21", "0x06"],
+      "results": {
+        "yaw_rate": {
+          "uuid":       "56000000-0005-0001-0001-000000000000",
+          "type":       "signed_short",
+          "display":    "float",
+          "start_pos":  10,
+          "length":     2,
+          "rpn":        "N 0.002865 *",
+          "units":      "°/sec"
+        },
+        "lateral_acceleration": {
+          "uuid":       "56000000-0005-0001-0002-000000000000",
+          "type":       "signed_short",
+          "display":    "float",
+          "start_pos":  12,
+          "length":     2,
+          "rpn":        "N 0.001 *",
+          "units":      "g"
+        }
+
+      }
+    }
+  }
+}
