@@ -35,6 +35,8 @@
 
 #include <QtEndian>
 
+#include <QRegularExpression>
+
 #include <ds2/operation.h>
 #include <ds2/controlunit.h>
 #include <ds2/manager.h>
@@ -833,20 +835,42 @@ namespace DS2PlusPlus {
     QVariant ControlUnit::resultHexStringToVariant(const BasePacketPtr aPacket, const Result &aResult)
     {
         QString hex;
+        bool isChkSum = false;
+        bool isFull = false;
+
+        QRegularExpression re;
+        QRegularExpressionMatch match;
+        QString display_format = aResult.displayFormat();
+
+        re.setPattern("^chk_(.*)");
+        match = re.match(display_format);
+        if (match.hasMatch()) {
+            display_format = match.captured(1);
+            isChkSum = true;
+        }
+
+        re.setPattern("^full_(.*)");
+        match = re.match(display_format);
+        if (match.hasMatch()) {
+            display_format = match.captured(1);
+            isFull = true;
+        }
 
         for (int i=0; i < aResult.length(); i++) {
             const unsigned char byte = aPacket->data().at(aResult.startPosition() + i);
-            if (i == 0) {
+            if ((i == 0) and (isChkSum == false) and (isFull == false)) {
                 hex.append(QString("%1").arg(QString::number(byte & 0x0f, 16)));
+            } else if ((i == aResult.length() - 1) and (isChkSum == true)) {
+                hex.append(QChar(byte));
             } else {
                 hex.append(QString("%1").arg(QString::number(byte, 16), 2, zeroPadding));
             }
         }
 
-        if (aResult.displayFormat() == "int") {
+        if (display_format == "int") {
             const quint64 number = hex.toULongLong();
             return QVariant(number);
-        } else if (aResult.displayFormat() == "string") {
+        } else if (display_format == "string") {
             return QVariant(hex);
         } else {
             const QString ourError = QObject::tr("Unknown display format for hex_string type: %1").arg(aResult.displayFormat());

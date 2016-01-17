@@ -75,7 +75,13 @@ A string representing an RFC 4122 GUID.  Must be unique across all files and obj
 A string representing the strategy used to decode this result.  Required.  One of: `6bit-string`, `boolean`, `byte`, `hex_string`, `short`, `string`.
 
 ####`display`####
-A string representing the display format used to present this result.  Required.  One of: `enum`, `float`, `hex_int`, `hex_string`, `int`, `raw`, `string`.
+A string representing the display format used to present this result.  Required.
+
+A type of `byte` has the following formats: `hex_string`, `raw`, `float`, `string_table`, and `enum`.
+
+A type of `hex_string` has the following formats: `int`, `full_int`, `string`, `chk_string`, and `full_string`.
+
+Other format options include: `float`, `int`, `hex_int`, `string`, `hex_string`.
 
 ####`start_pos`####
 An integer representing the location of this result within the DS2 packet.  Offset relative to the start of the packet's payload.  Index 0 is the response status.  Required.

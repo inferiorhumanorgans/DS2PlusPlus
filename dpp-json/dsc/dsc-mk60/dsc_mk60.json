@@ -16,12 +16,170 @@
   "diag_index":         [],
   "endian":             "big",
   "operations": {
-    "sensor_status":  {
+    "identify":  {
       "uuid":           "56000000-0005-0001-0000-000000000000",
+      "command":        ["0xA2"],
+      "results": {
+        "part_number": {
+          "uuid":       "56000000-0005-0001-0001-000000000000",
+          "type":       "hex_string",
+          "display":    "int",
+          "start_pos":  4,
+          "length":     4,
+          "units":      "int"
+        },
+        "hardware_number": {
+          "uuid":       "56000000-0005-0001-0002-000000000000",
+          "type":       "byte",
+          "display":    "hex_string",
+          "start_pos":  8,
+          "length":     1,
+          "units":      "string"
+        },
+        "coding_index": {
+          "uuid":       "56000000-0005-0001-0003-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  9,
+          "length":     1,
+          "units":      "int"
+        },
+        "diag_index": {
+          "uuid":       "56000000-0005-0001-0004-000000000000",
+          "type":       "short",
+          "display":    "int",
+          "start_pos":  10,
+          "length":     2,
+          "units":      "int"
+        },
+        "build_date.week": {
+          "uuid":       "56000000-0005-0001-0005-000000000000",
+          "type":       "string",
+          "display":    "int",
+          "start_pos":  16,
+          "length":     2,
+          "units":      "week"
+        },
+        "build_date.year": {
+          "uuid":       "56000000-0005-0001-0006-000000000000",
+          "type":       "string",
+          "display":    "int",
+          "start_pos":  18,
+          "length":     2,
+          "units":      "year"
+        },
+        "supplier": {
+          "uuid":       "56000000-0005-0001-0007-000000000000",
+          "type":       "string",
+          "display":    "string",
+          "start_pos":  20,
+          "length":     6,
+          "units":      "string"
+        },
+        "software_number.mcv.0": {
+          "uuid":       "56000000-0005-0001-0008-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  19,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.mcv.1": {
+          "uuid":       "56000000-0005-0001-0009-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  20,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.mcv.2": {
+          "uuid":       "56000000-0005-0001-000A-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  21,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.program.0": {
+          "uuid":       "56000000-0005-0001-000B-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  22,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.program.1": {
+          "uuid":       "56000000-0005-0001-000C-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  23,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.program.2": {
+          "uuid":       "56000000-0005-0001-000D-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  24,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.operating_system.0": {
+          "uuid":       "56000000-0005-0001-000E-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  25,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.operating_system.1": {
+          "uuid":       "56000000-0005-0001-000F-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  26,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.operating_system.2": {
+          "uuid":       "56000000-0005-0001-0010-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  27,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.reserved.0": {
+          "uuid":       "56000000-0005-0001-0011-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  28,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.reserved.1": {
+          "uuid":       "56000000-0005-0001-0012-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  29,
+          "length":     1,
+          "units":      "int"
+        },
+        "software_number.reserved.2": {
+          "uuid":       "56000000-0005-0001-0013-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  30,
+          "length":     1,
+          "units":      "int"
+        }
+      }
+    },
+    "sensor_status":  {
+      "uuid":           "56000000-0005-0002-0000-000000000000",
       "command":        ["0x21", "0x06"],
       "results": {
         "yaw_rate": {
-          "uuid":       "56000000-0005-0001-0001-000000000000",
+          "uuid":       "56000000-0005-0002-0001-000000000000",
           "type":       "signed_short",
           "display":    "float",
           "start_pos":  10,
@@ -30,13 +188,75 @@
           "units":      "°/sec"
         },
         "lateral_acceleration": {
-          "uuid":       "56000000-0005-0001-0002-000000000000",
+          "uuid":       "56000000-0005-0002-0002-000000000000",
           "type":       "signed_short",
           "display":    "float",
           "start_pos":  12,
           "length":     2,
           "rpn":        "N 0.001 *",
           "units":      "g"
+        },
+        "primary_circuit.pressure": {
+          "uuid":       "56000000-0005-0002-0003-000000000000",
+          "type":       "signed_short",
+          "display":    "float",
+          "start_pos":  6,
+          "length":     2,
+          "rpn":        "N 0.01 *",
+          "units":      "bar"
+        },
+        "secondary_circuit.pressure": {
+          "uuid":       "56000000-0005-0002-0004-000000000000",
+          "type":       "signed_short",
+          "display":    "float",
+          "start_pos":  8,
+          "length":     2,
+          "rpn":        "N 0.01 *",
+          "units":      "bar"
+        },
+        "temperature": {
+          "uuid":       "56000000-0005-0002-0005-000000000000",
+          "type":       "signed_byte",
+          "display":    "float",
+          "start_pos":  14,
+          "length":     1,
+          "units":      "°C"
+        },
+        "voltage.battery": {
+          "uuid":       "56000000-0005-0002-0006-000000000000",
+          "type":       "signed_byte",
+          "display":    "float",
+          "start_pos":  2,
+          "length":     1,
+          "rpn":        "N 0.039 *",
+          "units":      "V"
+        },
+        "voltage.dsc_pump": {
+          "uuid":       "56000000-0005-0002-0007-000000000000",
+          "type":       "signed_byte",
+          "display":    "float",
+          "start_pos":  3,
+          "length":     1,
+          "rpn":        "N 0.0577 *",
+          "units":      "V"
+        },
+        "voltage.terminal_30": {
+          "uuid":       "56000000-0005-0002-0008-000000000000",
+          "type":       "signed_byte",
+          "display":    "float",
+          "start_pos":  4,
+          "length":     1,
+          "rpn":        "N 0.0708 *",
+          "units":      "V"
+        },
+        "voltage.vcc": {
+          "uuid":       "56000000-0005-0002-0009-000000000000",
+          "type":       "signed_byte",
+          "display":    "float",
+          "start_pos":  5,
+          "length":     1,
+          "rpn":        "N 0.0228 *",
+          "units":      "V"
         }
 
       }

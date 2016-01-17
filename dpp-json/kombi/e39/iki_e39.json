@@ -209,6 +209,64 @@
           "units":      "km/h"
         }
       }      
+    },
+    "load_zcs": {
+      "uuid":           "80000000-0002-0004-0000-000000000000",
+      "command":        ["0x02", "0x04"],
+      "results": {
+        "zcs.gm_code": {
+          "uuid":       "80000000-0002-0004-0001-000000000000",
+          "type":       "hex_string",
+          "display":    "chk_string",
+          "start_pos":  2,
+          "length":     5,
+          "units":      "string"
+        },
+        "zcs.sa_code": {
+          "uuid":       "80000000-0002-0004-0002-000000000000",
+          "type":       "hex_string",
+          "display":    "chk_string",
+          "start_pos":  7,
+          "length":     9,
+          "units":      "string"
+        },
+        "zcs.vn_code": {
+          "uuid":       "80000000-0002-0004-0003-000000000000",
+          "type":       "hex_string",
+          "display":    "chk_string",
+          "start_pos":  16,
+          "length":     6,
+          "units":      "string"
+        }
+      }
+    },
+    "vehicle_id_short": {
+      "uuid":           "80000000-0002-0005-0000-000000000000",
+      "command":        ["0x02", "0x02"],
+      "results": {
+        "short_vin": {
+          "uuid":       "80000000-0002-0005-0001-000000000000",
+          "type":       "short_vin",
+          "display":    "string",
+          "start_pos":  2,
+          "length":     5,
+          "units":      "string"
+        }
+      }
+    },
+    "current_mileage": {
+      "uuid":           "80000000-0002-0006-0000-000000000000",
+      "command":        ["0x02", "0x02"],
+      "results": {
+        "odometer": {
+          "uuid":       "80000000-0002-0006-0001-000000000000",
+          "type":       "hex_string",
+          "display":    "full_int",
+          "start_pos":  2,
+          "length":     3,
+          "units":      "km"
+        }
+      }
     }
   }
 }
