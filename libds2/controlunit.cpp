@@ -326,7 +326,8 @@ namespace DS2PlusPlus {
                         while (!resultId.isEmpty()) {
                             if (ourUuid == resultId) {
                                 result.setName(resultRecord.value("name").toString());
-                                result.setUuid(resultRecord.value("uuid").toString());
+                                const QString resultUuid = DPP_V1_Parser::rawUuidToString(resultRecord.value("uuid").toByteArray());
+                                result.setUuid(resultUuid);
                             }
 
                             if (result.startPosition() == -1) {
