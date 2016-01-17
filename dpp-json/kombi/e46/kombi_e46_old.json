@@ -1,7 +1,7 @@
 {
   "dpp_version":        1,
-  "file_version":       6,
-  "file_mtime":         "2015-10-10T05:16717.0Z",
+  "file_version":       7,
+  "file_mtime":         "2016-01-17T02:15700.0Z",
   "file_type":          "ecu",
   "uuid":               "80000000-0001-0000-0000-000000000000",
   "address":            "0x80",
@@ -42,7 +42,36 @@
           "length":     5,
           "units":      "string"
         }
-      }      
+      }
+    },
+    "current_mileage": {
+      "uuid":           "80000000-0001-0003-0000-000000000000",
+      "command":        ["0x02", "0x01"],
+      "results": {
+        "odometer": {
+          "uuid":       "80000000-0001-0003-0001-000000000000",
+          "type":       "hex_string",
+          "display":    "full_int",
+          "start_pos":  2,
+          "length":     3,
+          "units":      "km"
+        }
+      }
+    },
+    "sia_reset_oilservice": {
+      "uuid":           "80000000-0001-0005-0000-000000000000",
+      "command":        ["0x0c", "0x12", "0x01"],
+      "results":        {}
+    },
+    "sia_reset_inspection": {
+      "uuid":           "80000000-0001-0006-0000-000000000000",
+      "command":        ["0x0c", "0x12", "0x02"],
+      "results":        {}
+    },
+    "sia_display": {
+      "uuid":           "80000000-0001-0007-0000-000000000000",
+      "command":        ["0x0c", "0x12", "0x04"],
+      "results":        {}
     }
   }
 }
