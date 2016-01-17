@@ -16,8 +16,27 @@ namespace DS2PlusPlus {
      * \brief The PacketResponse class encapsulates a parsed response from an ECU.
      */
     typedef QHash<QString, QVariant> PacketResponse;
+
+    /*!
+     * \brief ResponseToJson
+     * \param aResponse
+     * \return
+     */
     const Json::Value *ResponseToJson(const PacketResponse &aResponse);
+
+    /*!
+     * \brief ResponseToJsonString
+     * \param aResponse
+     * \return
+     */
     const QString ResponseToJsonString(const PacketResponse &aResponse);
+
+    /*!
+     * \brief HashToJsonString
+     * \param aResponse
+     * \param aRootNode
+     * \return
+     */
     const QString HashToJsonString(const PacketResponse &aResponse, const QString &aRootNode = QString::null);
 
     /*!
@@ -66,7 +85,15 @@ namespace DS2PlusPlus {
          */
         static QString prettyPrintPartNumber(const QString &aPartNumber);
 
+        /*!
+         * \return The targetAddress
+         */
         quint8 targetAddress() const;
+
+        /*!
+         * \brief setTargetAddress sets the targetAddress
+         * \param anAddress the address for this packet
+         */
         void setTargetAddress(quint8 anAddress);
 
         /*!
