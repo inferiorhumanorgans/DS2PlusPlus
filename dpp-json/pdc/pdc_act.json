@@ -1,0 +1,126 @@
+{
+  "dpp_version":        1,
+  "file_version":       1,
+  "file_mtime":         "2016-03-26T00:32:00.0Z",
+  "file_type":          "ecu",
+  "uuid":               "60000000-0001-0000-0000-000000000000",
+  "address":            "0x60",
+  "family":             "PDC",
+  "name":               "Active Park Distance Control (E38/E39/E46)",
+  "parent_id":          "00001111-0000-0000-0000-000000000000",
+  "part_number":        [6904010],
+  "hardware_number":    "0x2B",
+  "software_number":    "0x17",
+  "coding_index":       "0x00",
+  "endian":             "big",
+  "operations": {
+    "dtc_load_bank1": {
+      "uuid":           "60000000-0001-0001-0000-000000000000",
+      "command":        ["0x04", "0x01"],
+      "results": {
+        "error_condition.sensor.rear.left.frequency": {
+          "uuid":       "60000000-0001-0001-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  4,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_condition.sensor.rear.right.frequency": {
+          "uuid":       "60000000-0001-0001-0003-000000000000",
+          "parent_id":  "60000000-0001-0001-0001-000000000000",
+          "start_pos":  7
+        },
+        "error_condition.sensor.rear.middle_left.frequency": {
+          "uuid":       "60000000-0001-0001-0005-000000000000",
+          "parent_id":  "60000000-0001-0001-0001-000000000000",
+          "start_pos":  10
+        },
+        "error_condition.sensor.rear.middle_right.frequency": {
+          "uuid":       "60000000-0001-0001-0007-000000000000",
+          "parent_id":  "60000000-0001-0001-0001-000000000000",
+          "start_pos":  13
+        },
+        "error_condition.sensor.front.left.frequency": {
+          "uuid":       "60000000-0001-0001-0009-000000000000",
+          "parent_id":  "60000000-0001-0001-0001-000000000000",
+          "start_pos":  16
+        },
+        "error_condition.sensor.front.right.frequency": {
+          "uuid":       "60000000-0001-0001-000B-000000000000",
+          "parent_id":  "60000000-0001-0001-0001-000000000000",
+          "start_pos":  19
+        },
+        "error_condition.sensor.front.middle_left.frequency": {
+          "uuid":       "60000000-0001-0001-000D-000000000000",
+          "parent_id":  "60000000-0001-0001-0001-000000000000",
+          "start_pos":  22
+        },
+        "error_condition.sensor.front.middle_right.frequency": {
+          "uuid":       "60000000-0001-0001-0010-000000000000",
+          "parent_id":  "60000000-0001-0001-0001-000000000000",
+          "start_pos":  25
+        },
+        "error_condition.sensor_voltage.frequency": {
+          "uuid":       "60000000-0001-0001-0012-000000000000",
+          "parent_id":  "60000000-0001-0001-0001-000000000000",
+          "start_pos":  28
+        }
+      }
+    },
+    "dtc_load_bank2": {
+      "uuid":           "60000000-0001-0002-0000-000000000000",
+      "command":        ["0x04", "0x02"],
+      "results": {
+        "error_condition.speaker.rear_off.frequency": {
+          "uuid":       "60000000-0001-0002-0001-000000000000",
+          "type":       "byte",
+          "display":    "raw",
+          "start_pos":  4,
+          "length":     1,
+          "units":      "int"
+        },
+        "error_condition.speaker.rear_on.frequency": {
+          "uuid":       "60000000-0001-0002-0003-000000000000",
+          "parent_id":  "60000000-0001-0002-0001-000000000000",
+          "start_pos":  7
+        },
+        "error_condition.speaker.front_off.frequency": {
+          "uuid":       "60000000-0001-0002-0005-000000000000",
+          "parent_id":  "60000000-0001-0002-0001-000000000000",
+          "start_pos":  10
+        },
+        "error_condition.speaker.front_on.frequency": {
+          "uuid":       "60000000-0001-0002-0007-000000000000",
+          "parent_id":  "60000000-0001-0002-0001-000000000000",
+          "start_pos":  13
+        },
+        "error_condition.light_off.frequency": {
+          "uuid":       "60000000-0001-0002-0009-000000000000",
+          "parent_id":  "60000000-0001-0002-0001-000000000000",
+          "start_pos":  16
+        },
+        "error_condition.light_on.frequency": {
+          "uuid":       "60000000-0001-0002-000B-000000000000",
+          "parent_id":  "60000000-0001-0002-0001-000000000000",
+          "start_pos":  19
+        },
+        "error_condition.distance_sensor.frequency": {
+          "uuid":       "60000000-0001-0002-000D-000000000000",
+          "parent_id":  "60000000-0001-0002-0001-000000000000",
+          "start_pos":  22
+        },
+        "error_condition.button.frequency": {
+          "uuid":       "60000000-0001-0002-0010-000000000000",
+          "parent_id":  "60000000-0001-0002-0001-000000000000",
+          "start_pos":  25
+        },
+        "error_condition.microcomputer.frequency": {
+          "uuid":       "60000000-0001-0002-0012-000000000000",
+          "parent_id":  "60000000-0001-0002-0001-000000000000",
+          "start_pos":  28
+        }
+      }
+    }
+  }
+}
